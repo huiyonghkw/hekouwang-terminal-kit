@@ -27,7 +27,7 @@ g='\033[1;32m'; r='\033[1;31m'; d='\033[2m'; o='\033[0m'
 #    截出来底下空了 40%）。做法是**先截高再自动裁掉末尾的纯色行**。
 # ⛔ 10-doctor / 11-session 用**真机截图**（2026-07-23 用户重截），不由 HTML 渲染 ——
 #    对应的 term-doctor.html / term-session.html 已删（它们还带着旧 skill 名的演示路径）。
-#    别再把这两张加回本清单。
+#    别再把这两张加回本清单。40-workspace 同理：改用真机截图（3 个彩色 tab），不由 HTML 渲染。
 MAP="
 term-tmux|20-tmux
 term-triggers|21-triggers

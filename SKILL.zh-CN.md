@@ -192,6 +192,7 @@ hekouwang-iterm2-skill/
 - **项目工作区** `./workspace.sh add <路径>` —— cd 进哪个项目，标签页自动变色 + 印项目名。
   标签色从当前调色板取，永远在同色系里；换肤后 `theme.sh` 会自动重建。
   实现与踩坑见付费包的 `config/themes/_workspace_pro.sh` 文件头。
+    ⭐ **卖点定位（写文案/分档时照此口径）**：给 tab 上色本身不难，一段 zsh precmd 钩子（十几行、发 iTerm2 `]6;1;bg;...` 转义码）免费就能做，但那颜色**写死、换肤不跟**。付费值钱的**唯一**一层是**「颜色跟着主题自动重算、永远同色系」**——别把「能上色」当卖点，「跟主题走」才是。演示图用真机截图 `docs/images/40-workspace.png`（3 个彩色 tab）。
   ⚠️ 依赖 Shell Integration（APS 靠它上报路径）+ `EnableAutomaticProfileSwitching` 总开关，
   `workspace.sh` 会替用户检查这两项。`theme.sh` 换肤后会调 `workspace.sh --rebuild` 重建，登记表 `~/.config/hekouwang-terminal/workspaces.conf` 是唯一真相源。
   ⚠️ 不走 Trigger 路线：那条路版式固定、删不掉「A trigger fired…」、说不出耗时与命令名。
