@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px;}
+  .c{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px 28px;
+    box-shadow:0 10px 26px rgba(60,45,30,.06);display:flex;flex-direction:column;}
+  .c .em{font-size:30px;}
+  .c h3{font-family:var(--cn);font-size:23px;font-weight:700;margin-top:14px;}
+  .c .en{font-family:var(--mono);font-size:14px;color:var(--clay);margin-top:4px;}
+  .c p{font-family:var(--cn);font-size:16px;color:var(--t2);margin-top:14px;line-height:1.55;flex:1;}
+  .c code{font-family:var(--mono);font-size:14px;background:var(--clay-bg);color:var(--clay);
+    padding:6px 12px;border-radius:8px;margin-top:16px;align-self:flex-start;}
+</style></head>
+<body>
+  <div class="eyebrow">Step 04 · Advanced</div>
+  <h1>Three <span class="hl">advanced tricks</span> (optional)</h1>
+  <div class="sub">Skipping these changes nothing in daily use — come back when you want to tinker.</div>
+  <div class="grid">
+    <div class="c"><div class="em">🧩</div><h3>Config as code</h3><div class="en">Dynamic Profile</div>
+      <p>Appearance as JSON, live on save, no restart; a new machine only needs one file.</p><code>~/…/DynamicProfiles/*.json</code></div>
+    <div class="c"><div class="em">🖼️</div><h3>Images in the terminal</h3><div class="en">Shell Integration</div>
+      <p>Show images right in the terminal, no switching to Preview.</p><code>imgcat cover.png</code></div>
+    <div class="c"><div class="em">⚡</div><h3>Terminal from the top</h3><div class="en">Hotkey Window</div>
+      <p>A hotkey in any app slides the terminal down from the top; press again to hide.</p><code>⌥ Option + Space</code></div>
+  </div>
+  <div class="grow"></div>
+  <div class="foot">
+    <div class="page">STEP 4 / 4 · more: tmux -CC / Triggers / status bar in references/</div>
+    <div style="text-align:right"><div class="brand">hekouwang's AI notes</div><div class="handle">@huiyonghkw</div></div>
+  </div>
+</body></html>

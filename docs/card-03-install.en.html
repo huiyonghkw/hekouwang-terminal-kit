@@ -1,0 +1,54 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .row{display:flex;gap:40px;margin-top:38px;align-items:stretch;}
+  .term{flex:1.25;display:flex;flex-direction:column;}
+  .term .body{flex:1;font-size:17px;}
+  .right{flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center;}
+  .it{display:flex;align-items:flex-start;gap:14px;}
+  .ic{width:34px;height:34px;border-radius:9px;background:var(--clay-bg);color:var(--clay);
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:16px;flex:none;}
+  .it b{font-family:var(--cn);font-size:18px;font-weight:600;}
+  .it span{font-family:var(--cn);font-size:15px;color:var(--t2);}
+  .it .col{display:flex;flex-direction:column;gap:2px;}
+  .cn-note{margin-top:24px;font-family:var(--cn);font-size:16px;color:var(--t2);}
+  .cn-note code{font-family:var(--mono);background:var(--clay-bg);color:var(--clay);padding:2px 8px;border-radius:6px;}
+</style></head>
+<body>
+  <div class="eyebrow">Step 01 · Install</div>
+  <h1>One command, <span class="hl">everything installed</span></h1>
+  <div class="row">
+    <div class="term">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      <div class="body"><span class="cmt"># cd into the folder, run the installer (English by default)</span>
+<span class="mv">❯</span> cd hekouwang-terminal-kit
+<span class="mv">❯</span> ./install.sh
+
+<span class="cmt"># want another language? add --lang zh and every command follows</span>
+<span class="mv">❯</span> ./install.sh <span class="ylw">--lang zh</span>
+
+<span class="cmt"># behind a slow GitHub? prefix CN=1 (uses a China mirror)</span>
+<span class="mv">❯</span> <span class="ylw">CN=1</span> ./install.sh --lang zh
+
+<span class="grn">▶</span> installing Homebrew…
+<span class="grn">▶</span> iTerm2 + fonts…
+<span class="grn">▶</span> CLI tool set…  <span class="grn">✓</span>
+<span class="grn">✅ all done! open iTerm2 and it takes effect</span></div>
+    </div>
+    <div class="right">
+      <div class="it"><div class="ic">1</div><div class="col"><b>iTerm2 + fonts</b><span>the terminal itself + icon font</span></div></div>
+      <div class="it"><div class="ic">2</div><div class="col"><b>11 command-line tools</b><span>starship / eza / bat / fzf / delta …</span></div></div>
+      <div class="it"><div class="ic">3</div><div class="col"><b>oh-my-zsh + config</b><span>theme / prompt / .zshrc all written</span></div></div>
+      <div class="it"><div class="ic">4</div><div class="col"><b>3 GUI settings</b><span>theme / default profile / newline key</span></div></div>
+      <div class="it"><div class="ic">✓</div><div class="col"><b>auto checkup</b><span>doctor.sh all green = you're set</span></div></div>
+    </div>
+  </div>
+  <div class="grow"></div>
+  <div class="cn-note">All free &amp; open source · idempotent, safe to rerun · your old <code>.zshrc</code> is backed up, roll back anytime</div>
+  <div class="foot">
+    <div class="page">STEP 1 / 4</div>
+    <div style="text-align:right"><div class="brand">hekouwang's AI notes</div><div class="handle">@huiyonghkw</div></div>
+  </div>
+</body></html>

@@ -1,0 +1,138 @@
+#!/bin/bash
+# 词条表 · 中文 · doctor.sh
+
+blk_doctor_help() {
+  cat <<'EOF'
+hekouwang-terminal-kit — 环境自检
+
+用法:
+  ./doctor.sh          纯只读体检，给 ✓/✗/⚠ 清单与修复建议
+  ./doctor.sh --fix    体检完逐项问你要不要修（每项都先说清楚要跑什么）
+  ./doctor.sh --quiet  只输出结论行（脚本里调用用）
+  ./doctor.sh --profile  顺带用 zprof 把最慢的启动项点名
+  ./doctor.sh --lang en  切回英文
+
+退出码：全过=0，有 ✗=1。
+不带 --fix 时**一个字节都不写**，可以放心随便跑。
+EOF
+}
+
+M_DOC_HEAD="═══ hekouwang-terminal-kit 体检 ═══"
+M_DOC_S1="1. CLI 全家桶"
+M_DOC_S2="2. 字体（缺图标字体 → ls/starship 图标变 ? 方块）"
+M_DOC_S3="3. iTerm2 Dynamic Profile"
+M_DOC_S4="4. iTerm2 GUI 设置"
+M_DOC_S5="5. 生态配色一致性（bat / fzf / eza / git diff / tmux）"
+M_DOC_S6="6. ~/.zshrc 加载顺序"
+M_DOC_S7="7. shell 启动耗时"
+M_DOC_S7B="7b. zprof 耗时排行（前 8）"
+M_DOC_S8="8. Shell 集成"
+
+M_DOC_TOOL_MISSING="%s 未安装"
+M_DOC_FONT_MAIN_OK="Maple Mono NF CN（主字体，自带图标+中文）"
+M_DOC_FONT_MAIN_BAD="Maple Mono NF CN 缺失"
+M_DOC_FONT_SYM_OK="Symbols Nerd Font Mono（图标兜底）"
+M_DOC_FONT_SYM_WARN="Symbols Nerd Font Mono 缺失（非致命，主字体已自带图标）"
+M_DOC_FONT_OSS_NOTE="开源版：用推荐默认字体 Maple Mono NF CN（字体优先级表属付费包）"
+M_DOC_FONT_PICKED="字体优先级：将使用 %s（%s）"
+M_DOC_FONT_ALSO="%s 也装了，但优先级更低"
+M_DOC_FONT_ABSENT="%s 未安装（%s）"
+M_DOC_FONT_NONE="font.conf 里一套字体都没装上"
+M_DOC_FONT_NONE_FIX="会回退默认名，终端可能显示系统字体"
+M_DOC_FONT_PS_OK="Profile 写的字体名解析得到 → %s"
+M_DOC_FONT_PS_WARN="Profile 写着 '%s'，但本机找不到同名字体文件"
+M_DOC_FONT_PS_FIX="iTerm2 会静默回退到系统字体。改 config/themes/_generate.py 的 NORMAL_FONT 再重跑"
+
+M_DOC_DP_OK="已部署 hekouwang-active-theme.json"
+M_DOC_DP_OLD="用的是旧单文件 catppuccin-mocha.json"
+M_DOC_DP_OLD_FIX="跑 ./theme.sh 迁移到新多主题结构"
+M_DOC_DP_NONE="DynamicProfiles 目录里没有本套装的 Profile"
+M_DOC_DP_NONE_FIX="跑 ./theme.sh <主题> 部署"
+M_DOC_DP_VALID="Profile 合法 → %s  [guid:%s]"
+M_DOC_DP_PARSE="Profile JSON 解析失败"
+M_DOC_DP_PARSE_FIX="检查 %s 格式"
+M_DOC_DP_DUP="有 %s 个文件共用同一 Guid（iTerm2 会拒载）"
+M_DOC_DP_DUP_FIX="删掉多余的，只留 hekouwang-active-theme.json"
+M_DOC_TRIG_OK="Triggers 已交付（%s 条：错误标红/警告标黄/成功标绿/密码管理器）"
+M_DOC_TRIG_WARN="Profile 里没有 Triggers（少了日志标色）"
+M_DOC_TRIG_FIX="重跑 config/themes/_generate.py 再 ./theme.sh，新开 tab 生效"
+M_DOC_DEFAULT_OK="已设为默认 Profile"
+M_DOC_DEFAULT_WARN="本套装的 Profile 还不是默认"
+M_DOC_DEFAULT_FIX="跑 ./setup-gui.sh 自动设默认"
+
+M_DOC_MINIMAL_OK="Minimal 主题已开"
+M_DOC_MINIMAL_WARN="Minimal 主题未开（当前值 %s）"
+M_DOC_VALUE_DEFAULT="默认"
+M_DOC_RUN_SETUPGUI="跑 ./setup-gui.sh"
+M_DOC_SHIFTENTER_OK="Shift+Enter 换行键映射已配"
+M_DOC_SHIFTENTER_WARN="Shift+Enter 换行键映射未配（AI CLI 多行输入）"
+
+M_DOC_ECO_OK="生态配色已部署 → %s"
+M_DOC_ECO_MISMATCH="终端主题(%s) 与生态配色(%s) 不是同一套"
+M_DOC_ECO_MISMATCH_FIX="跑 ./theme.sh %s 重新对齐"
+M_DOC_BAT_OK="bat 主题已装进缓存（hekouwang-%s）"
+M_DOC_BAT_OTHER="bat 缓存里有别的 hekouwang 主题，但**当前这套没有**（cat 会静默用默认色）"
+M_DOC_BAT_OTHER_FIX="跑 ./theme.sh %s 会自动补装"
+M_DOC_BAT_NONE="bat 认不出 hekouwang-* 主题（cat 的高亮还是默认色）"
+M_DOC_BAT_NONE_FIX="重跑 ./install.sh，或 ./theme.sh <主题> 自动补装"
+M_DOC_GIT_OK="git diff 配色已挂进 ~/.gitconfig"
+M_DOC_GIT_WARN="~/.gitconfig 没挂本套装的 delta 配色"
+M_DOC_APPLE_NONE="macOS 自带终端：没读到配置（没用过？）"
+M_DOC_APPLE_OK="macOS 自带终端已同步（默认 Profile：%s）"
+M_DOC_APPLE_FONT_NF="自带终端字体自带 Nerd 图标 → %s"
+M_DOC_APPLE_FONT_MATCH="自带终端字体与主字体统一 → %s（策略 match，已相应关掉 ls 图标）"
+M_DOC_APPLE_FONT_MARK_WARN="策略是 match，但没写下「该字体无图标」的标记"
+M_DOC_APPLE_FONT_MARK_FIX="跑 ./theme.sh %s 重新部署"
+M_DOC_APPLE_FONT_NOICON="自带终端用的 %s 不含 Nerd 图标（ls 的图标会是 ? 方块）"
+M_DOC_APPLE_FONT_NOICON_FIX="跑 ./theme.sh %s 会自动换成自带图标的那套"
+M_DOC_APPLE_UNSYNCED="macOS 自带终端还是原样（默认 Profile：%s）"
+M_DOC_APPLE_UNSYNCED_FIX="跑 ./theme.sh %s 会一并同步过去"
+M_DOC_TMUX_OK="tmux 配色已挂进 ~/.tmux.conf"
+M_DOC_TMUX_WARN="~/.tmux.conf 没挂本套装的 tmux 配色（非致命）"
+M_DOC_OSS_ONLY1="开源版：只同步 iTerm2"
+M_DOC_OSS_ONLY2="多终端（Ghostty / Warp / 自带终端）与生态同色（bat / fzf / eza /"
+M_DOC_OSS_ONLY3="  git diff / tmux / VS Code）属付费包，缺它们不是故障"
+M_DOC_ECO_MISSING="生态配色没部署（bat/fzf/eza/git diff 会各用各的色）"
+M_DOC_ECO_MISSING_FIX="跑 ./theme.sh <主题> 部署"
+M_DOC_AUTO_ON="跟随系统深浅色：已开"
+M_DOC_AUTO_OFF="跟随系统深浅色：未开（想开：./theme.sh --auto）"
+
+M_DOC_STARSHIP_OK="starship 已初始化"
+M_DOC_STARSHIP_WARN="没找到 starship init"
+M_DOC_STARSHIP_FIX="确认 .zshrc 里有 eval \"\$(starship init zsh)\""
+M_DOC_SYNTAX_OK="syntax-highlighting 在 starship 之后（顺序对）"
+M_DOC_SYNTAX_WARN="syntax-highlighting 位置可能偏早"
+M_DOC_SYNTAX_FIX="它必须在所有改键位插件之后，建议倒数第二行"
+M_DOC_ITERM_ORDER_WARN="iTerm2 integration 在 syntax-highlighting 之前"
+M_DOC_ITERM_ORDER_FIX="integration 应是最后一行"
+M_DOC_COLORS_OK="已 source 生态配色"
+M_DOC_COLORS_WARN="~/.zshrc 没 source 生态配色（换肤换不到 bat/fzf/eza）"
+M_DOC_COLORS_FIX="在 .zshrc 里加：source ~/.config/hekouwang-terminal/current/colors.sh"
+M_DOC_NODE_WARN="检测到多个 Node 版本管理器共存"
+M_DOC_NODE_FIX="只留 fnm，删掉 nvm 相关行"
+M_DOC_NODE_OK="Node 管理器无冲突"
+M_DOC_ZSHRC_MISSING="~/.zshrc 不存在"
+M_DOC_ZSHRC_MISSING_FIX="跑 ./install.sh 部署"
+
+M_DOC_START_FAIL="测不出启动耗时"
+M_DOC_START_FAIL_FIX="手动试：time zsh -i -c exit"
+M_DOC_START_FAST="启动 %sms（快）"
+M_DOC_START_SLOW="启动 %sms（偏慢，能感觉到）"
+M_DOC_START_SLOW_FIX="跑 ./doctor.sh --profile 看是谁占的"
+M_DOC_START_BAD="启动 %sms（明显卡）"
+M_DOC_START_BAD_FIX="跑 ./doctor.sh --profile 定位慢在哪个插件"
+M_DOC_PROF_LEGEND="左起：名次 / 调用次数 / 总毫秒 / 占比。数字大的那行就是元凶。"
+M_DOC_SI_OK="iTerm2 Shell Integration 已装"
+M_DOC_SI_WARN="Shell Integration 未装（没有 imgcat / 命令成败标记）"
+
+M_DOC_RESULT="═══ 结果 ═══"
+M_DOC_ALL_PASS="全部通过，环境健康 🎉"
+M_DOC_WARN_ONLY="%d 项警告（非致命），无致命问题"
+M_DOC_FAIL_N="%d 项致命问题"
+M_DOC_WARN_N="%d 项警告"
+M_DOC_FIX_HEAD="═══ 可自动修的项（逐项确认，不批量执行）═══"
+M_DOC_FIX_ITEM="问题"
+M_DOC_FIX_CMD="要跑：%s"
+M_DOC_FIX_ASK="执行？"
+M_DOC_FIX_RECHECK="修完重跑 ./doctor.sh 复检。"
+M_DOC_FIX_HINT="其中 %d 项能自动修：跑 ./doctor.sh --fix"

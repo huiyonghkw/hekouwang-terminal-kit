@@ -1,0 +1,46 @@
+/* shared V2 warm-white editorial base for README banners (1280×800) */
+:root{
+  --bg:#faf9f5; --surface:#fffdf8; --line:#e8e2d6;
+  --ink:#2a2521; --t2:#6b6258; --t3:#a89e90;
+  --clay:#c15f3c; --clay-soft:#e8c4b0; --clay-bg:#f6e9e1;
+  --ok:#5a8a5a;
+  /* catppuccin mocha for terminal insets */
+  --base:#1e1e2e; --mantle:#181825; --tx:#cdd6f4; --ov:#7f849c;
+  --blue:#89b4fa; --green:#a6e3a1; --teal:#94e2d5; --yellow:#f9e2af;
+  --mauve:#cba6f7; --peach:#fab387; --red:#f38ba8; --gray:#6c7086;
+  --font:'DM Sans','Noto Sans SC',system-ui,sans-serif;
+  --cn:'Noto Sans SC','DM Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:800px;background:var(--bg);}
+body{font-family:var(--font);color:var(--ink);
+  padding:62px 70px;display:flex;flex-direction:column;overflow:hidden;
+  -webkit-font-smoothing:antialiased;}
+.eyebrow{font-family:var(--mono);font-size:15px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--clay);font-weight:500;margin-bottom:14px;}
+h1{font-size:54px;line-height:1.08;font-weight:700;letter-spacing:-.01em;
+  font-family:var(--cn);}
+h1 .hl{color:var(--clay);}
+.sub{font-size:21px;color:var(--t2);font-family:var(--cn);margin-top:18px;
+  line-height:1.5;font-weight:400;}
+.grow{flex:1}
+.foot{display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--line);padding-top:20px;margin-top:8px;}
+.brand{font-family:var(--cn);font-weight:700;font-size:18px;color:var(--ink);}
+.handle{font-family:var(--mono);font-size:14px;color:var(--t3);}
+.page{font-family:var(--mono);font-size:14px;color:var(--t3);}
+.chips{display:flex;gap:10px;flex-wrap:wrap;}
+.chip{font-family:var(--mono);font-size:14px;color:var(--clay);
+  background:var(--clay-bg);border-radius:999px;padding:7px 16px;font-weight:500;}
+/* mini terminal window */
+.term{background:var(--base);border-radius:12px;overflow:hidden;
+  box-shadow:0 18px 40px rgba(60,45,30,.18);}
+.term .bar{height:34px;background:var(--mantle);display:flex;align-items:center;
+  gap:7px;padding:0 14px;}
+.term .dot{width:11px;height:11px;border-radius:50%}
+.r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
+.term .body{padding:18px 20px;font-family:var(--mono);font-size:16px;
+  line-height:1.7;color:var(--tx);white-space:pre-wrap;}
+.cmt{color:var(--ov)}.blue{color:var(--blue)}.grn{color:var(--green)}
+.ylw{color:var(--yellow)}.mv{color:var(--mauve)}.gr{color:var(--gray)}.rd{color:var(--red)}

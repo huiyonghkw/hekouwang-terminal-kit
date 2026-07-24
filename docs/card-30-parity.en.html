@@ -1,0 +1,88 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     30-ghostty-parity —— 一份色板，两个终端长得一样
+     ⛔ 旧版是手工合成的（左下角写着母版**私有**仓名、底部写「五套主题」都已过期，
+        而且面板里烧进了红圈标注和 ~/.claude 真实目录）。这一版改成 HTML 出图：
+        改一行重跑 `./docs/出图.sh parity` 就行，不用再手工拼。
+     ⚠️ 用的两张图是 cmp-*-paid.png —— 真机截图，同一份色板、同样三条命令，
+        内容是套装自己的仓库，无标注、无隐私痕迹。
+     ============================================================ */
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1600px;height:1000px;background:#f4f2ec;}
+  body{font-family:'DM Sans','Noto Sans SC',system-ui,sans-serif;color:#1a1a1c;
+    padding:52px 56px 44px;display:flex;flex-direction:column;}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+  .eyebrow{display:flex;justify-content:space-between;align-items:baseline;
+    font-size:15px;letter-spacing:.22em;color:#8a8578;font-weight:700}
+  .eyebrow b{color:#c2410c}
+  h1{font-size:52px;line-height:1.16;font-weight:900;letter-spacing:-.01em;margin-top:14px}
+  h1 em{font-style:normal;color:#c2410c}
+  .sub{margin-top:12px;font-size:18px;line-height:1.62;color:#57534e;max-width:1180px}
+  .sub b{color:#1a1a1c;font-weight:700}
+
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px;align-items:start}
+  .pane{background:#fff;border:1px solid #e2ded4;border-radius:16px;overflow:hidden;
+    box-shadow:0 16px 38px rgba(60,45,30,.10)}
+  .pane .cap{display:flex;justify-content:space-between;align-items:center;
+    padding:13px 18px;border-bottom:1px solid #eeebe3}
+  .pane .cap .name{font-size:19px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .pane .cap .name i{width:9px;height:9px;border-radius:50%;background:#c2410c;display:block}
+  .pane .cap .tag{font-size:12.5px;color:#8a8578;background:#f6f4ee;
+    border:1px solid #e6e2d8;border-radius:999px;padding:4px 11px}
+  /* ⚠️ 两张源图高宽比不同（1.53 / 1.67），用 object-fit:cover + 固定高对齐，
+       否则两栏底边参差，一眼就看出是拼的 */
+  .pane img{display:block;width:100%;height:566px;object-fit:cover;object-position:top left}
+
+  .eq{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:62px;height:62px;border-radius:50%;background:#c2410c;color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:800;
+    box-shadow:0 8px 22px rgba(194,65,12,.34);border:5px solid #f4f2ec}
+  .duo-wrap{position:relative}
+
+  .foot{margin-top:auto;padding-top:22px;border-top:1px solid #e4e0d6;
+    display:flex;justify-content:space-between;align-items:flex-end}
+  .foot .left{font-size:15.5px;line-height:1.75;color:#57534e}
+  .foot .left b{color:#1a1a1c}
+  .foot .cmdline{display:inline-flex;align-items:center;gap:10px;background:#1c1c1f;color:#e8e6e0;
+    border-radius:10px;padding:11px 18px;font-size:16px;margin-top:12px}
+  .foot .cmdline span{color:#7dd3a0}
+  .foot .brand{text-align:right}
+  .foot .brand .bn{font-size:17px;font-weight:800}
+  .foot .brand .hd{font-size:13.5px;color:#8a8578;margin-top:3px}
+</style></head>
+<body>
+  <div class="eyebrow"><span>ONE PALETTE · TWO TERMINALS</span><b>CONFIG AS CODE</b></div>
+  <h1>One command, <em>two terminals look identical</em></h1>
+  <p class="sub">The same palette generates iTerm2's and Ghostty's themes — colors, font, blur and cursor shape line up item by item.
+    Below: the <b>same machine, same three commands</b> (<span class="mono">eza -l</span> ·
+    <span class="mono">cat</span> · <span class="mono">git diff</span>).
+    <b>The only difference is the window shell — that belongs to each app, not config drift.</b></p>
+
+  <div class="duo-wrap">
+    <div class="duo">
+      <div class="pane">
+        <div class="cap"><div class="name"><i></i>iTerm2</div><div class="tag">Dynamic Profile</div></div>
+        <img src="images/cmp-iterm2-paid.png" alt="iTerm2 under the unified palette">
+      </div>
+      <div class="pane">
+        <div class="cap"><div class="name"><i></i>Ghostty</div><div class="tag">themes/ + config</div></div>
+        <img src="images/cmp-ghostty-paid.png" alt="Ghostty under the same palette">
+      </div>
+    </div>
+    <div class="eq">=</div>
+  </div>
+
+  <div class="foot">
+    <div class="left">
+      <b>Seven themes from one PALETTES source</b> — one command reskins four terminals at once.
+      <div class="cmdline mono"><span>$</span> ./theme.sh v2-mihei</div>
+    </div>
+    <div class="brand">
+      <div class="bn">hekouwang's AI notes</div>
+      <div class="hd">@huiyonghkw · hekouwang-terminal-kit</div>
+    </div>
+  </div>
+</body></html>

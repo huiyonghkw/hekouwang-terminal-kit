@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px;}
+  .c{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px 28px;
+    box-shadow:0 10px 26px rgba(60,45,30,.06);display:flex;flex-direction:column;}
+  .k{font-family:var(--mono);font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);}
+  .c h3{font-family:var(--cn);font-size:25px;font-weight:700;margin-top:10px;}
+  .c p{font-family:var(--cn);font-size:16px;color:var(--t2);margin-top:12px;line-height:1.55;flex:1;}
+  .sw{display:flex;gap:8px;margin-top:20px;}
+  .sw i{width:34px;height:34px;border-radius:8px;display:block;}
+  .win{margin-top:20px;border-radius:10px;overflow:hidden;background:#1e1e2e;box-shadow:0 8px 20px rgba(0,0,0,.2);}
+  .win .b{height:26px;background:#181825;display:flex;align-items:center;gap:5px;padding:0 10px;}
+  .win .b i{width:8px;height:8px;border-radius:50%;}
+  .win .scr{height:62px;background:#1e1e2e;}
+  .fontrow{margin-top:20px;font-family:var(--mono);font-size:17px;color:var(--ink);line-height:1.7;}
+  .fontrow .i{font-style:italic;color:var(--clay);}
+</style></head>
+<body>
+  <div class="eyebrow">Step 02 · Appearance</div>
+  <h1>Looks <span class="hl">sort themselves</span> — a glance is enough</h1>
+  <div class="sub">You do nothing here — the script already wrote it via <code style="font-family:var(--mono);color:var(--clay)">defaults write</code>. This just explains why it looks right.</div>
+  <div class="grid">
+    <div class="c"><div class="k">Theme</div><h3>Minimal</h3>
+      <p>Drops the title bar and border — the whole window becomes one clean dark-purple canvas.</p>
+      <div class="win"><div class="b"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="scr"></div></div>
+    </div>
+    <div class="c"><div class="k">Colors</div><h3>Catppuccin Mocha</h3>
+      <p>A soft, easy-on-the-eyes dark scheme — bat and fzf use the same palette.</p>
+      <div class="sw">
+        <i style="background:#cba6f7"></i><i style="background:#89b4fa"></i><i style="background:#a6e3a1"></i>
+        <i style="background:#f9e2af"></i><i style="background:#fab387"></i><i style="background:#f38ba8"></i><i style="background:#1e1e2e"></i>
+      </div>
+    </div>
+    <div class="c"><div class="k">Font</div><h3>Two-font strategy</h3>
+      <p>Body text in the elegant Operator Mono; icons fall back to Symbols Nerd Font — never ? boxes.</p>
+      <div class="fontrow"><span class="i">Operator Mono</span><br>+ Symbols Nerd Font</div>
+    </div>
+  </div>
+  <div class="grow"></div>
+  <div class="foot">
+    <div class="page">STEP 2 / 4 · want a different scheme? <code style="font-family:var(--mono);color:var(--clay)">./theme.sh tokyo-night</code></div>
+    <div style="text-align:right"><div class="brand">hekouwang's AI notes</div><div class="handle">@huiyonghkw</div></div>
+  </div>
+</body></html>

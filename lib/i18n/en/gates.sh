@@ -1,0 +1,17 @@
+#!/bin/bash
+# 词条表 · 英文 · 付费能力的「广告位」（import.sh / palette.sh / workspace.sh）
+# ⚠️ 这三条不是漏剔的残骸，是有意留的广告位：开源版跑这三个脚本时看到的就是它们。
+
+M_GATE_IMPORT="Importing ready-made themes is a paid-pack feature"
+M_GATE_IMPORT_1="  It translates any existing color scheme into this kit's palette format,"
+M_GATE_IMPORT_2="  then spreads it across the whole tool chain."
+M_GATE_IMPORT_3="  Want it: WeChat hekouwang"
+M_GATE_PALETTE="The palette deriver is a paid-pack feature"
+M_GATE_PALETTE_1="  Give it one brand color and it solves for a full 16-color theme by WCAG contrast —"
+M_GATE_PALETTE_2="  the four brand themes were derived exactly that way, and this tool hands you the method."
+M_GATE_PALETTE_3="  The open-source build can reach the same result by hand-writing palettes/mine.py;"
+M_GATE_PALETTE_4="  you just have to tune the contrast yourself."
+M_GATE_WORKSPACE="Project workspaces are a paid-pack feature"
+M_GATE_WORKSPACE_1="  cd into a project and the tab recolors itself and prints the project name,"
+M_GATE_WORKSPACE_2="  so several agents running at once stay tellable apart."
+M_GATE_WORKSPACE_3="  Want it: WeChat hekouwang"

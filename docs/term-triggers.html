@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --base:#1e1e2e; --mantle:#181825; --crust:#11111b;
+    --text:#cdd6f4; --sub:#a6adc8; --overlay:#7f849c; --overlay2:#9399b2;
+    --blue:#89b4fa; --green:#a6e3a1; --teal:#94e2d5; --yellow:#f9e2af;
+    --mauve:#cba6f7; --red:#f38ba8; --peach:#fab387; --gray:#6c7086;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:980px;background:#e9e7e0;}
+  body{display:flex;align-items:flex-start;justify-content:center;padding:40px 0;
+    font-family:'JetBrains Mono','Noto Sans SC',monospace;}
+  .win{width:900px;border-radius:14px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(40,30,20,.28),0 6px 18px rgba(40,30,20,.18);
+    background:var(--base);}
+  .bar{height:42px;background:var(--mantle);display:flex;align-items:center;
+    padding:0 16px;gap:8px;border-bottom:1px solid var(--crust);}
+  .dot{width:13px;height:13px;border-radius:50%}
+  .r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
+  .title{flex:1;text-align:center;color:var(--overlay);font-size:13px;
+    margin-right:46px;letter-spacing:.02em}
+  .scr{padding:22px 26px 24px;font-size:14.5px;line-height:1.72;color:var(--text);
+    white-space:pre-wrap;}
+  .dir{color:var(--blue);font-weight:500}
+  .ch{color:var(--mauve);font-weight:700}
+  .cmd{color:var(--text)}
+  .cmt{color:var(--overlay)}
+  .dim{color:var(--overlay)}
+  /* highlight badges — 只标匹配到的词，深色字 + 主题色底（= 真实效果） */
+  .red{background:#f38ba8;color:#11111b;font-weight:700;padding:1px 6px;border-radius:3px}
+  .ylw{background:#f9e2af;color:#11111b;font-weight:700;padding:1px 6px;border-radius:3px}
+  .grn{background:#a6e3a1;color:#11111b;font-weight:700;padding:1px 6px;border-radius:3px}
+  .pwbtn{display:inline-block;background:#313244;color:#cdd6f4;border:1px solid #45475a;
+    border-radius:7px;padding:2px 10px;font-size:13px}
+  /* rules footer */
+  .rules{background:var(--mantle);border-top:1px solid var(--crust);
+    padding:13px 26px;font-size:12.5px;color:var(--overlay2);line-height:1.95}
+  .rules b{color:var(--mauve);font-weight:700}
+  .rx{color:var(--yellow)}
+  .arr{color:var(--gray)}
+  .act{color:var(--teal)}
+</style>
+</head>
+<body>
+  <div class="win">
+    <div class="bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="title">huiyong — zsh · npm run build &amp;&amp; test — 100×30</span>
+    </div>
+<div class="scr"><span class="dir">~/app</span> <span class="ch">❯</span> <span class="cmd">npm run build &amp;&amp; npm test</span>
+<span class="dim">  webpack 5 compiling ...</span>
+  <span class="ylw">WARNING</span> <span class="dim"> deprecated API used in legacy/util.js:42</span>
+  <span class="red">ERROR</span><span class="dim">  Module not found: Can't resolve './config.prod'</span>
+<span class="dim">  retrying with fallback resolver ...</span>
+<span class="dim">  asset  bundle.js   2.1 MiB   [emitted]</span>
+<span class="dim">  BUILD </span><span class="grn">SUCCESSFUL</span><span class="dim">  ·  48 </span><span class="grn">PASSED</span><span class="dim">  0 failed</span>
+
+<span class="dir">~/app</span> <span class="ch">❯</span> <span class="cmd">sudo launchctl bootout system/com.app</span>
+  Password: <span class="pwbtn">🔑 iTerm2 密码管理器</span>   <span class="cmt">← 提示密码自动弹出，免手敲</span>
+<span class="dir">~/app</span> <span class="ch">❯</span> </div>
+    <div class="rules"><b>Profiles → Advanced → Triggers</b>　已随 Profile 默认交付 4 条，装完即用：
+<span class="rx">ERROR|FATAL|FAILED|PANIC</span> <span class="arr">→</span> <span class="act">红底</span>　<span class="rx">WARN|WARNING|TODO|FIXME</span> <span class="arr">→</span> <span class="act">黄底</span>　<span class="rx">SUCCESS|SUCCEEDED|PASSED</span> <span class="arr">→</span> <span class="act">绿底</span>　<span class="rx">Password:</span> <span class="arr">→</span> <span class="act">密码管理器</span></div>
+  </div>
+</body>
+</html>

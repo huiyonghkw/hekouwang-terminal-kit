@@ -1,0 +1,31 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;margin-top:34px;}
+  .it{display:flex;align-items:flex-start;gap:16px;padding:6px 0;}
+  .ic{width:42px;height:42px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:700;font-size:19px;color:#fff;}
+  .it .tx b{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--ink);}
+  .it .tx b .rep{font-family:var(--cn);font-size:14px;color:var(--t3);font-weight:400;margin-left:8px;}
+  .it .tx p{font-family:var(--cn);font-size:15px;color:var(--t2);margin-top:3px;line-height:1.5;}
+  .it .tx kbd{font-family:var(--mono);font-size:13px;background:var(--clay-bg);color:var(--clay);padding:1px 7px;border-radius:5px;}
+</style></head>
+<body>
+  <div class="eyebrow">Step 03 · Modern CLI</div>
+  <h1>6 个神器，<span class="hl">一句话会用</span></h1>
+  <div class="grid">
+    <div class="it"><div class="ic" style="background:#c15f3c">S</div><div class="tx"><b>starship</b><p>漂亮的提示符：在哪个目录、git 哪个分支、上条命令跑了多久，一眼看全。</p></div></div>
+    <div class="it"><div class="ic" style="background:#89b4fa">E</div><div class="tx"><b>eza<span class="rep">替代 ls</span></b><p>文件列表带彩色图标，文件夹、图片、代码各有图标。</p></div></div>
+    <div class="it"><div class="ic" style="background:#fab387">B</div><div class="tx"><b>bat<span class="rep">替代 cat</span></b><p>看文件自动语法高亮 + 行号，Markdown 直接渲染。</p></div></div>
+    <div class="it"><div class="ic" style="background:#a6e3a1">F</div><div class="tx"><b>fzf</b><p>模糊搜一切：按 <kbd>Ctrl+T</kbd> 搜文件，记不全名字也能挑出来。</p></div></div>
+    <div class="it"><div class="ic" style="background:#cba6f7">Z</div><div class="tx"><b>zoxide<span class="rep">替代 cd</span></b><p>去过的目录敲 <kbd>z 关键词</kbd> 直接跳，越用越准。</p></div></div>
+    <div class="it"><div class="ic" style="background:#f38ba8">A</div><div class="tx"><b>atuin</b><p>全文搜历史命令：按 <kbd>Ctrl+R</kbd>，几个月前的命令一搜就到。</p></div></div>
+  </div>
+  <div class="grow"></div>
+  <div class="foot">
+    <div class="page">STEP 3 / 4 · 还有 <code style="font-family:var(--mono);color:var(--clay)">Shift+Enter</code> 换行不提交，多行输入很顺手</div>
+    <div style="text-align:right"><div class="brand">会勇禾口王的AI笔记</div><div class="handle">@huiyonghkw</div></div>
+  </div>
+</body></html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* Catppuccin Mocha */
+  :root{
+    --base:#1e1e2e; --mantle:#181825; --crust:#11111b;
+    --text:#cdd6f4; --sub:#a6adc8; --overlay:#7f849c; --overlay2:#9399b2;
+    --blue:#89b4fa; --green:#a6e3a1; --teal:#94e2d5; --yellow:#f9e2af;
+    --mauve:#cba6f7; --red:#f38ba8; --peach:#fab387; --gray:#6c7086;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:980px;background:#e9e7e0;}
+  body{display:flex;align-items:flex-start;justify-content:center;padding:40px 0;
+    font-family:'JetBrains Mono','Noto Sans SC',monospace;}
+  .win{width:900px;border-radius:14px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(40,30,20,.28),0 6px 18px rgba(40,30,20,.18);
+    background:var(--base);}
+  .bar{height:42px;background:var(--mantle);display:flex;align-items:center;
+    padding:0 16px;gap:8px;border-bottom:1px solid var(--crust);}
+  .dot{width:13px;height:13px;border-radius:50%}
+  .r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
+  .title{flex:1;text-align:center;color:var(--overlay);font-size:13px;
+    margin-right:46px;letter-spacing:.02em}
+  /* tmux windows → native iTerm2 tabs */
+  .tabs{display:flex;background:var(--mantle);padding:0 12px;gap:2px;
+    border-bottom:1px solid var(--crust);}
+  .tab{font-size:12.5px;color:var(--overlay);padding:9px 16px;
+    border-top:2px solid transparent;}
+  .tab.on{color:var(--text);background:var(--base);border-top:2px solid var(--mauve);}
+  .tab .ico{color:var(--green)}
+  .scr{padding:20px 26px 26px;font-size:14.5px;line-height:1.66;color:var(--text);
+    white-space:pre-wrap;}
+  .dir{color:var(--blue);font-weight:500}
+  .ch{color:var(--mauve);font-weight:700}
+  .cmd{color:var(--text)}
+  .cmt{color:var(--overlay)}
+  .sys{color:var(--teal)}
+  .ok{color:var(--green);font-weight:700}
+  .warn{color:var(--peach);font-weight:700}
+  .bar2{color:var(--green)}
+  .barbg{color:var(--gray)}
+  .rd{color:var(--red)}
+  .hr{color:var(--gray)}
+  .em{color:var(--yellow);font-weight:700}
+</style>
+</head>
+<body>
+  <div class="win">
+    <div class="bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="title">huiyong — ssh my-server · tmux -CC «deploy» — 100×32</span>
+    </div>
+    <div class="tabs">
+      <span class="tab on"><span class="ico">●</span> deploy</span>
+      <span class="tab">logs</span>
+      <span class="tab">htop</span>
+      <span class="tab" style="color:var(--overlay)">＋</span>
+    </div>
+<div class="scr"><span class="dir">~/local</span> <span class="ch">❯</span> <span class="cmd">ssh my-server -t 'tmux -CC new -A -s deploy'</span>   <span class="cmt"># one connect, straight into a persistent session</span>
+<span class="sys">[tmux] reattached to «deploy» — 3 windows mapped to 3 native tabs ↑</span>
+<span class="cmt">        mouse / scroll / Cmd+F full-text search — all native, not character art</span>
+
+<span class="dir">deploy</span> <span class="ch">❯</span> <span class="cmd">./deploy.sh prod</span>          <span class="cmt"># a 12-minute long task on the server</span>
+  ▸ building image ............ <span class="ok">done</span>
+  ▸ pushing  <span class="bar2">████████░░</span> 82%
+
+<span class="hr">────────────────────────────────────────────────────────────</span>
+<span class="warn">⚠  Close the lid on the subway / switch Wi-Fi — SSH drops on the spot</span>
+<span class="rd">   plain ssh: the long task is killed, 12 minutes wasted ✗</span>
+<span class="hr">────────────────────────────────────────────────────────────</span>
+
+<span class="dir">~/local</span> <span class="ch">❯</span> <span class="cmd">ssh my-server -t 'tmux -CC new -A -s deploy'</span>   <span class="cmt"># reconnect when you're back</span>
+<span class="sys">[tmux] reattached to «deploy» — </span><span class="em">session restored exactly, the task never stopped</span>
+<span class="dir">deploy</span> <span class="ch">❯</span>   ▸ pushing  <span class="bar2">██████████</span> 100%  <span class="ok">deployed 🎉</span>
+<span class="ch">❯</span> </div>
+  </div>
+</body>
+</html>

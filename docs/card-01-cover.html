@@ -1,0 +1,54 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .top{display:flex;flex-direction:column;}
+  .row{display:flex;gap:34px;align-items:flex-end;margin-top:34px;}
+  .term{flex:1;}
+  .before{width:300px;background:#111;border-radius:12px;overflow:hidden;box-shadow:0 18px 40px rgba(60,45,30,.14);}
+  .before .bar{height:34px;background:#000;display:flex;align-items:center;gap:7px;padding:0 14px;}
+  .before .body{padding:18px 20px;font-family:var(--mono);font-size:15px;line-height:1.7;color:#b8b8b8;white-space:pre-wrap;}
+  .tag{font-family:var(--mono);font-size:13px;color:var(--t3);margin:0 0 8px 2px;letter-spacing:.04em;}
+  .arrow{font-size:34px;color:var(--clay);padding-bottom:42px;}
+  .col{display:flex;flex-direction:column;}
+</style></head>
+<body>
+  <div class="top">
+    <div class="eyebrow">iTerm2 · 新手到进阶 · 全程复制粘贴</div>
+    <h1>把又黑又丑的终端<br>调成<span class="hl">顺手的工作台</span></h1>
+    <div class="sub">一条命令装齐 · 主题字体换行全自动 · 新 Mac 约 3 分钟</div>
+  </div>
+  <div class="row">
+    <div class="col" style="width:300px">
+      <div class="tag">▌ 默认终端</div>
+      <div class="before">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+        <div class="body">Last login: Tue
+huiyong@Mac ~ % ls
+Desktop  Documents
+huiyong@Mac ~ % <span style="color:#666">▍</span></div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="col grow">
+      <div class="tag">▌ 装完之后</div>
+      <div class="term">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+        <div class="body"><span class="blue">~/work</span> <span class="gr">main</span> <span class="ylw">2ms</span>
+<span class="mv">❯</span> ls
+<span class="blue">📁 Desktop</span>  <span class="blue">📁 Documents</span>  <span class="grn">📄 README.md</span>
+<span class="blue">~/work</span> <span class="gr">main</span>
+<span class="mv">❯</span> <span style="color:#cdd6f4">▍</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="grow"></div>
+  <div class="foot">
+    <div class="chips">
+      <span class="chip">Minimal 主题</span><span class="chip">Catppuccin</span>
+      <span class="chip">Starship</span><span class="chip">eza · bat · fzf</span>
+    </div>
+    <div style="text-align:right"><div class="brand">会勇禾口王的AI笔记</div><div class="handle">@huiyonghkw</div></div>
+  </div>
+</body></html>

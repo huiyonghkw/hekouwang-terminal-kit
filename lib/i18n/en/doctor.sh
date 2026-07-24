@@ -1,0 +1,138 @@
+#!/bin/bash
+# 词条表 · 英文 · doctor.sh（环境自检）
+
+blk_doctor_help() {
+  cat <<'EOF'
+hekouwang-terminal-kit — environment check
+
+Usage:
+  ./doctor.sh          read-only check: a ✓/✗/⚠ list plus how to fix each item
+  ./doctor.sh --fix    check, then ask about each fix one by one (it tells you what it will run)
+  ./doctor.sh --quiet  print the verdict line only (for use inside scripts)
+  ./doctor.sh --profile  also rank the slowest zsh startup entries (zprof)
+  ./doctor.sh --lang zh  run in Chinese
+
+Exit code: 0 when everything passes, 1 when there is any ✗.
+Without --fix it writes nothing at all, so it is always safe to run.
+EOF
+}
+
+M_DOC_HEAD="═══ hekouwang-terminal-kit check ═══"
+M_DOC_S1="1. CLI tool set"
+M_DOC_S2="2. Fonts (a missing icon font turns ls/starship icons into ? boxes)"
+M_DOC_S3="3. iTerm2 Dynamic Profile"
+M_DOC_S4="4. iTerm2 GUI settings"
+M_DOC_S5="5. Ecosystem color consistency (bat / fzf / eza / git diff / tmux)"
+M_DOC_S6="6. ~/.zshrc load order"
+M_DOC_S7="7. shell startup time"
+M_DOC_S7B="7b. zprof time ranking (top 8)"
+M_DOC_S8="8. Shell integration"
+
+M_DOC_TOOL_MISSING="%s is not installed"
+M_DOC_FONT_MAIN_OK="Maple Mono NF CN (main font, icons + CJK built in)"
+M_DOC_FONT_MAIN_BAD="Maple Mono NF CN is missing"
+M_DOC_FONT_SYM_OK="Symbols Nerd Font Mono (icon fallback)"
+M_DOC_FONT_SYM_WARN="Symbols Nerd Font Mono is missing (not fatal, the main font already ships icons)"
+M_DOC_FONT_OSS_NOTE="Open-source build: uses the recommended default font Maple Mono NF CN (the font priority table is a paid-pack feature)"
+M_DOC_FONT_PICKED="Font priority: will use %s (%s)"
+M_DOC_FONT_ALSO="%s is installed too, but ranks lower"
+M_DOC_FONT_ABSENT="%s is not installed (%s)"
+M_DOC_FONT_NONE="none of the fonts listed in font.conf are installed"
+M_DOC_FONT_NONE_FIX="it falls back to the default name, so the terminal may end up on a system font"
+M_DOC_FONT_PS_OK="The font name written in the profile resolves → %s"
+M_DOC_FONT_PS_WARN="The profile says '%s' but this Mac has no font file with that name"
+M_DOC_FONT_PS_FIX="iTerm2 falls back to a system font silently. Change NORMAL_FONT in config/themes/_generate.py and re-run it"
+
+M_DOC_DP_OK="hekouwang-active-theme.json is deployed"
+M_DOC_DP_OLD="Still on the old single-file catppuccin-mocha.json"
+M_DOC_DP_OLD_FIX="run ./theme.sh to migrate to the multi-theme layout"
+M_DOC_DP_NONE="No profile from this kit in the DynamicProfiles folder"
+M_DOC_DP_NONE_FIX="run ./theme.sh <theme> to deploy one"
+M_DOC_DP_VALID="Profile is valid → %s  [guid:%s]"
+M_DOC_DP_PARSE="Profile JSON failed to parse"
+M_DOC_DP_PARSE_FIX="check the format of %s"
+M_DOC_DP_DUP="%s files share the same Guid (iTerm2 refuses to load any of them)"
+M_DOC_DP_DUP_FIX="delete the extras, keep only hekouwang-active-theme.json"
+M_DOC_TRIG_OK="Triggers delivered (%s of them: error red / warning yellow / success green / password manager)"
+M_DOC_TRIG_WARN="The profile has no Triggers (log coloring is missing)"
+M_DOC_TRIG_FIX="re-run config/themes/_generate.py then ./theme.sh; open a new tab to see it"
+M_DOC_DEFAULT_OK="Set as the default profile"
+M_DOC_DEFAULT_WARN="This kit's profile is not the default one yet"
+M_DOC_DEFAULT_FIX="run ./setup-gui.sh to set it automatically"
+
+M_DOC_MINIMAL_OK="Minimal theme is on"
+M_DOC_MINIMAL_WARN="Minimal theme is off (current value: %s)"
+M_DOC_VALUE_DEFAULT="default"
+M_DOC_RUN_SETUPGUI="run ./setup-gui.sh"
+M_DOC_SHIFTENTER_OK="Shift+Enter newline mapping is configured"
+M_DOC_SHIFTENTER_WARN="Shift+Enter newline mapping is missing (multi-line input for AI CLIs)"
+
+M_DOC_ECO_OK="Ecosystem colors deployed → %s"
+M_DOC_ECO_MISMATCH="Terminal theme (%s) and ecosystem colors (%s) are not the same one"
+M_DOC_ECO_MISMATCH_FIX="run ./theme.sh %s to realign them"
+M_DOC_BAT_OK="bat theme is in the cache (hekouwang-%s)"
+M_DOC_BAT_OTHER="bat's cache has other hekouwang themes but not the current one (cat silently uses default colors)"
+M_DOC_BAT_OTHER_FIX="./theme.sh %s installs it for you"
+M_DOC_BAT_NONE="bat does not recognise any hekouwang-* theme (cat highlighting is still the default)"
+M_DOC_BAT_NONE_FIX="re-run ./install.sh, or ./theme.sh <theme> to install it"
+M_DOC_GIT_OK="git diff colors are wired into ~/.gitconfig"
+M_DOC_GIT_WARN="~/.gitconfig does not include this kit's delta colors"
+M_DOC_APPLE_NONE="macOS Terminal: no settings found (never opened it?)"
+M_DOC_APPLE_OK="macOS Terminal is synced (default profile: %s)"
+M_DOC_APPLE_FONT_NF="macOS Terminal font ships Nerd icons → %s"
+M_DOC_APPLE_FONT_MATCH="macOS Terminal font matches the main font → %s (policy: match, ls icons turned off to suit)"
+M_DOC_APPLE_FONT_MARK_WARN="Policy is match, but the 'this font has no icons' marker was never written"
+M_DOC_APPLE_FONT_MARK_FIX="run ./theme.sh %s to redeploy"
+M_DOC_APPLE_FONT_NOICON="macOS Terminal uses %s, which has no Nerd icons (ls icons show up as ? boxes)"
+M_DOC_APPLE_FONT_NOICON_FIX="./theme.sh %s switches it to a font that ships icons"
+M_DOC_APPLE_UNSYNCED="macOS Terminal is untouched (default profile: %s)"
+M_DOC_APPLE_UNSYNCED_FIX="./theme.sh %s syncs it over too"
+M_DOC_TMUX_OK="tmux colors are wired into ~/.tmux.conf"
+M_DOC_TMUX_WARN="~/.tmux.conf does not source this kit's tmux colors (not fatal)"
+M_DOC_OSS_ONLY1="Open-source build: syncs iTerm2 only"
+M_DOC_OSS_ONLY2="Other terminals (Ghostty / Warp / macOS Terminal) and ecosystem colors (bat / fzf / eza /"
+M_DOC_OSS_ONLY3="  git diff / tmux / VS Code) are paid-pack features — missing them is not a fault"
+M_DOC_ECO_MISSING="Ecosystem colors are not deployed (bat/fzf/eza/git diff each use their own colors)"
+M_DOC_ECO_MISSING_FIX="run ./theme.sh <theme> to deploy them"
+M_DOC_AUTO_ON="Follow system light/dark: on"
+M_DOC_AUTO_OFF="Follow system light/dark: off (turn it on with ./theme.sh --auto)"
+
+M_DOC_STARSHIP_OK="starship is initialised"
+M_DOC_STARSHIP_WARN="No starship init found"
+M_DOC_STARSHIP_FIX="make sure .zshrc has eval \"\$(starship init zsh)\""
+M_DOC_SYNTAX_OK="syntax-highlighting loads after starship (right order)"
+M_DOC_SYNTAX_WARN="syntax-highlighting may be loading too early"
+M_DOC_SYNTAX_FIX="it has to come after every plugin that binds keys — second to last line is the safe spot"
+M_DOC_ITERM_ORDER_WARN="iTerm2 integration loads before syntax-highlighting"
+M_DOC_ITERM_ORDER_FIX="the integration should be the very last line"
+M_DOC_COLORS_OK="ecosystem colors are sourced"
+M_DOC_COLORS_WARN="~/.zshrc does not source the ecosystem colors (switching themes will not reach bat/fzf/eza)"
+M_DOC_COLORS_FIX="add this to .zshrc: source ~/.config/hekouwang-terminal/current/colors.sh"
+M_DOC_NODE_WARN="More than one Node version manager is loaded"
+M_DOC_NODE_FIX="keep fnm only, delete the nvm lines"
+M_DOC_NODE_OK="No Node manager conflict"
+M_DOC_ZSHRC_MISSING="~/.zshrc does not exist"
+M_DOC_ZSHRC_MISSING_FIX="run ./install.sh to deploy it"
+
+M_DOC_START_FAIL="Could not measure startup time"
+M_DOC_START_FAIL_FIX="try it by hand: time zsh -i -c exit"
+M_DOC_START_FAST="startup %sms (fast)"
+M_DOC_START_SLOW="startup %sms (slow enough to feel)"
+M_DOC_START_SLOW_FIX="run ./doctor.sh --profile to see what is eating it"
+M_DOC_START_BAD="startup %sms (clearly laggy)"
+M_DOC_START_BAD_FIX="run ./doctor.sh --profile to find the slow plugin"
+M_DOC_PROF_LEGEND="Columns: rank / calls / total ms / share. The row with the big number is your culprit."
+M_DOC_SI_OK="iTerm2 Shell Integration is installed"
+M_DOC_SI_WARN="Shell Integration is missing (no imgcat, no command success markers)"
+
+M_DOC_RESULT="═══ Result ═══"
+M_DOC_ALL_PASS="Everything passed, this environment is healthy 🎉"
+M_DOC_WARN_ONLY="%d warnings (non-fatal), no fatal problems"
+M_DOC_FAIL_N="%d fatal problems"
+M_DOC_WARN_N="%d warnings"
+M_DOC_FIX_HEAD="═══ Fixable items (asked one by one, nothing runs in bulk) ═══"
+M_DOC_FIX_ITEM="issue"
+M_DOC_FIX_CMD="will run: %s"
+M_DOC_FIX_ASK="run it? "
+M_DOC_FIX_RECHECK="Re-run ./doctor.sh once you are done."
+M_DOC_FIX_HINT="%d of them can be fixed automatically: run ./doctor.sh --fix"

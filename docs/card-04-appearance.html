@@ -1,0 +1,47 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px;}
+  .c{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px 28px;
+    box-shadow:0 10px 26px rgba(60,45,30,.06);display:flex;flex-direction:column;}
+  .k{font-family:var(--mono);font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);}
+  .c h3{font-family:var(--cn);font-size:25px;font-weight:700;margin-top:10px;}
+  .c p{font-family:var(--cn);font-size:16px;color:var(--t2);margin-top:12px;line-height:1.55;flex:1;}
+  .sw{display:flex;gap:8px;margin-top:20px;}
+  .sw i{width:34px;height:34px;border-radius:8px;display:block;}
+  .win{margin-top:20px;border-radius:10px;overflow:hidden;background:#1e1e2e;box-shadow:0 8px 20px rgba(0,0,0,.2);}
+  .win .b{height:26px;background:#181825;display:flex;align-items:center;gap:5px;padding:0 10px;}
+  .win .b i{width:8px;height:8px;border-radius:50%;}
+  .win .scr{height:62px;background:#1e1e2e;}
+  .fontrow{margin-top:20px;font-family:var(--mono);font-size:17px;color:var(--ink);line-height:1.7;}
+  .fontrow .i{font-style:italic;color:var(--clay);}
+</style></head>
+<body>
+  <div class="eyebrow">Step 02 · Appearance</div>
+  <h1>颜值<span class="hl">自动搞定</span>，看一眼就懂</h1>
+  <div class="sub">这一步你什么都不用做 —— 脚本已用 <code style="font-family:var(--mono);color:var(--clay)">defaults write</code> 写好，这里只解释为什么变好看。</div>
+  <div class="grid">
+    <div class="c"><div class="k">主题</div><h3>Minimal</h3>
+      <p>去掉标题栏和边框，整个窗口变成一块干净的暗紫画布。</p>
+      <div class="win"><div class="b"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="scr"></div></div>
+    </div>
+    <div class="c"><div class="k">配色</div><h3>Catppuccin Mocha</h3>
+      <p>柔和不刺眼的暗色调，连 bat、fzf 都跟着用同一套色。</p>
+      <div class="sw">
+        <i style="background:#cba6f7"></i><i style="background:#89b4fa"></i><i style="background:#a6e3a1"></i>
+        <i style="background:#f9e2af"></i><i style="background:#fab387"></i><i style="background:#f38ba8"></i><i style="background:#1e1e2e"></i>
+      </div>
+    </div>
+    <div class="c"><div class="k">字体</div><h3>双拼策略</h3>
+      <p>正文用优雅的 Operator Mono，图标用 Symbols Nerd Font 兜底 —— 图标永不变 ? 方块。</p>
+      <div class="fontrow"><span class="i">Operator Mono</span><br>+ Symbols Nerd Font</div>
+    </div>
+  </div>
+  <div class="grow"></div>
+  <div class="foot">
+    <div class="page">STEP 2 / 4 · 想换配色？<code style="font-family:var(--mono);color:var(--clay)">./theme.sh tokyo-night</code></div>
+    <div style="text-align:right"><div class="brand">会勇禾口王的AI笔记</div><div class="handle">@huiyonghkw</div></div>
+  </div>
+</body></html>

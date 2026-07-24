@@ -1,0 +1,38 @@
+.DS_Store
+
+# Python 字节码缓存：生成器/色板是当模块 import 的，跑一次就会留下
+# __pycache__。它跟着 Python 版本走（.cpython-314.pyc），换机器/换版本就失效，
+# 而且删掉主题后旧 .pyc 还会赖着，绝不该进仓库。
+__pycache__/
+*.py[cod]
+
+# 用户自己导入的主题（./import.sh 生成）—— 跟 .zshrc.local 同性质，属个人状态不属产品。
+# ⛔ 别跟踪：否则我本地测试导入的主题会跟着发版走进买家的包里；
+#    连带它生成的 <主题>.json / ghostty/ warp/ ecosystem/ 也是一次性的。
+config/themes/palettes/imported.py
+
+# 付费包内容：不进公开仓（本段由 release.sh 从 PAID_PATHS 生成，别手改）
+config/themes/palettes/brand.py
+config/themes/generators/pro.py
+config/font.conf
+config/themes/palettes/_derive.py
+config/themes/palettes/_import.py
+config/themes/_apply_pro.sh
+config/themes/_workspace_pro.sh
+import.sh
+palette.sh
+workspace.sh
+references/terminals.md
+references/terminals.zh-CN.md
+CHANGELOG.md
+docs/速查卡.html
+docs/速查卡.pdf
+config/themes/ghostty/
+config/themes/warp/
+config/themes/ecosystem/
+
+# 付费色板生成出来的 iTerm2 Profile（色板不在＝这些也不该在）
+config/themes/v2-mihei.json
+config/themes/v1-keji.json
+config/themes/v2-mibai.json
+config/themes/v3-caijing-bai.json
