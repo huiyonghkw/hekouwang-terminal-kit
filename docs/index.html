@@ -2,22 +2,34 @@
 <!--
   hekouwang-terminal-kit — 落地页（GitHub Pages · 公开仓 main 分支 /docs 目录）
   线上地址：https://huiyonghkw.github.io/hekouwang-terminal-kit/
+  视觉：V1科技白（hekouwang-content-factory-skill · references/v1-base.md 第16节）
+        冷调亮灰底 + 绿/紫/琥珀三色加深版；亮底靠 1px 边框 + 柔投影，不靠辉光。
+        语义色对位：绿=核心（开源版）· 紫=扩展（付费档）· 琥珀=提醒（诚实边界）。
 
   ⭐ 这一页是**唯一的中转点**。换肤回执 / doctor 汇总 / 装完收尾 / README /
-     FUNDING.yml 全部指向这个地址（真相源 lib/links.sh）。收款方式只写在这儿 ——
-     以后加爱发电或 Lemon Squeezy，改这一页就行，已经装到几百台机器上的脚本
-     一行都不用动，也不用逼谁升级。别把二维码或收款链接写回脚本里。
+     FUNDING.yml / 仓库 About 栏全部指向这个地址（真相源 lib/links.sh）。
+     收款方式只写在这儿 —— 以后加爱发电或 Lemon Squeezy，改这一页就行，
+     已经装到几百台机器上的脚本一行都不用动。别把二维码或收款链接写回脚本里。
 
-  ⚠️ 页面必须**自包含**：不引外部字体、不引 CDN。GitHub Pages 是给全世界看的，
-     一个墙内加载不出来的 Google Fonts 就能让首屏空半天。
+  ⚠️ 页面必须**自包含**：不引 CDN、不引外部字体。
+     字体因此不走 Google Fonts（skill 精美档默认那样），而是系统栈 ——
+     ① 本产品只支持 macOS，访客几乎全在 mac 上，PingFang SC 是必中的原生思源黑同位体；
+     ② 受众有很大一块从小红书/公众号来，Google Fonts 在墙内又慢又常失败，
+        一个加载不出来的字体会让首屏空半天。见 memory tietu-fonts-local-not-google。
 
   ⚠️ 文案只许写**本档真有**的能力。免费版只同步 iTerm2 —— 页面上凡是多终端 /
      工具链同色的说法，必须落在付费那一栏里。这是被真实用户当场挑出来过的坑
      （见 release.sh 顶部注释与 memory skill-oss-paid-tiering-model）。
 
-  ⚠️ 还缺两张图（我自己放）：images/wechat-qr.png（微信二维码）、
-     images/pay-qr.png（收款码）。没放之前页面会自动降级成一个占位方块 +
-     文字微信号，不会出现裂图。
+  收款码：images/pay-wechat.png（微信支付）、images/pay-alipay.png（支付宝），
+     都是从原始收款海报裁出白卡那块再统一到 560 宽 —— 整张海报比例太竖，
+     缩进方框里二维码会小到扫不动。
+  ⚠️ **加好友的微信二维码还没有**（那跟收款码不是一张）。所以第 02 步用大字微信号顶着，
+     没在线上留虚线占位框 —— 两个真码旁边杵一个虚线框，观感是「这站还没做完」。
+     以后拿到联系码，加一个 .qrbox 进去即可。
+
+  ⛔ 入场动画只做位移，绝不控 opacity（memory reveal-never-animate-opacity）——
+     动画没跑起来时，控 opacity 会让整页后半段永远看不见。
 -->
 <html lang="en">
 <head>
@@ -26,128 +38,249 @@
 <title>hekouwang-terminal-kit — one palette for your whole terminal</title>
 <meta name="description" content="A macOS terminal you can install and also fully uninstall. Open source and complete for iTerm2; the paid build makes the same palette walk out of iTerm2.">
 <style>
-  /* 无外部依赖：字体全走系统栈，等宽用各平台自带的终端字体 */
-  :root{
-    --bg:#0d0e12; --bg2:#14161c; --line:#242833;
-    --fg:#e6e8ee; --fg2:#9aa1b1; --fg3:#6b7280;
-    --accent:#a78bfa; --accent2:#7c6ce8; --ok:#4ade80; --warn:#fbbf24;
-    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
-       font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  img{max-width:100%;height:auto;display:block}
-  code,kbd{font-family:var(--mono);font-size:.9em}
+/* ============ V1科技白 token（v1-base.md 第16.1节）============ */
+:root{
+  --bg:#f4f6f9;          /* 冷调亮灰白，⛔ 别用纯白 */
+  --surface:#ffffff;
+  --surface2:#eef1f5;
+  --border:rgba(15,20,30,.08);
+  --border2:rgba(15,20,30,.14);
+  --text:#0f1320;        /* 冷近黑，⛔ 别纯黑 */
+  --text2:#535b6b;
+  --text3:#8a92a3;
+  --accent:#06a88c;      /* 绿 · 核心概念 → 开源版 */
+  --accent2:#6a45e0;     /* 紫 · 扩展能力 → 付费档 */
+  --accent3:#bf7d1a;     /* 琥珀 · 类比/提醒 → 诚实边界 */
+  --danger:#d23f4d;
+  --shadow:0 8px 28px rgba(20,30,50,.06);
+  --shadow2:0 16px 44px rgba(20,30,50,.10);
+  /* 字体见文件头说明：自包含系统栈，中文优先 PingFang SC（mac 原生） */
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC','Microsoft YaHei',system-ui,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',SFMono-Regular,Menlo,Consolas,ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:var(--font);
+  font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;
+  /* 极淡点阵蓝图底（第16.2节）：亮底的质感来源，替代暗版的光球+噪点 */
+  background-image:radial-gradient(circle,rgba(15,20,30,.05) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;height:auto;display:block}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface2);
+     padding:1px 6px;border-radius:5px;border:1px solid var(--border)}
 
-  .wrap{max-width:940px;margin:0 auto;padding:0 24px}
-  section{padding:64px 0;border-top:1px solid var(--line)}
-  section:first-of-type{border-top:0}
-  h1,h2,h3{line-height:1.3;margin:0 0 16px}
-  h1{font-size:clamp(30px,5vw,46px);letter-spacing:-.02em}
-  h2{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.01em}
-  h3{font-size:18px}
-  p{margin:0 0 16px;color:var(--fg2)}
-  .lead{font-size:clamp(17px,2.2vw,20px);color:var(--fg);max-width:70ch}
-  .muted{color:var(--fg3);font-size:14px}
+.wrap{max-width:980px;margin:0 auto;padding:0 26px}
 
-  /* ---- 语言开关：两份文案都在 DOM 里，切 html 上的 class ---- */
-  .zh{display:none}
-  html.lang-zh .en{display:none}
-  html.lang-zh .zh{display:revert}
-  .langbar{position:sticky;top:0;z-index:20;background:rgba(13,14,18,.86);
-           backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .langbar .wrap{display:flex;align-items:center;justify-content:space-between;
-                 gap:16px;padding-top:10px;padding-bottom:10px}
-  .brand{font-family:var(--mono);font-size:13px;color:var(--fg2)}
-  .brand b{color:var(--fg);font-weight:600}
-  .toggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .toggle button{background:none;border:0;color:var(--fg3);font:inherit;font-size:13px;
-                 padding:4px 14px;cursor:pointer}
-  .toggle button[aria-pressed="true"]{background:var(--accent);color:#12101c;font-weight:600}
+/* ---- 顶部滚动进度条（绿→紫）---- */
+.prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:60;
+      background:linear-gradient(90deg,var(--accent),var(--accent2))}
 
-  /* ---- hero ---- */
-  .hero{padding-top:56px}
-  .tagline{font-family:var(--mono);font-size:13px;color:var(--accent);
-           letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-  .btns{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0}
-  .btn{display:inline-block;padding:11px 22px;border-radius:8px;font-weight:600;
-       font-size:15px;border:1px solid var(--line);color:var(--fg)}
-  .btn:hover{text-decoration:none;border-color:var(--fg3)}
-  .btn-primary{background:var(--accent);border-color:var(--accent);color:#12101c}
-  .btn-primary:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
+/* ---- 四角取景框（第4.4节）---- */
+.frame{position:fixed;inset:14px;pointer-events:none;z-index:5}
+.frame i{position:absolute;width:22px;height:22px;border:2px solid var(--accent2);opacity:.28}
+.frame i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.frame i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.frame i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.frame i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+@media(max-width:760px){.frame{display:none}}
 
-  .term{background:#000;border:1px solid var(--line);border-radius:10px;
-        padding:16px 18px;font-family:var(--mono);font-size:13.5px;line-height:1.85;
-        overflow-x:auto;margin:20px 0}
-  .term .p{color:var(--accent)}
-  .term .c{color:var(--fg3)}
+/* ---- 粘顶报头 masthead ---- */
+.masthead{position:sticky;top:0;z-index:40;background:rgba(244,246,249,.88);
+          backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.masthead .wrap{display:flex;align-items:center;justify-content:space-between;
+                gap:16px;padding-top:11px;padding-bottom:11px}
+.mh-l{font-family:var(--mono);font-size:12.5px;color:var(--text2);letter-spacing:.04em}
+.mh-l b{color:var(--text);font-weight:600}
+.mh-l s{text-decoration:none;color:var(--text3);margin:0 7px}
+.toggle{display:flex;border:1px solid var(--border2);border-radius:999px;overflow:hidden;background:var(--surface)}
+.toggle button{background:none;border:0;color:var(--text3);font:inherit;font-size:12.5px;
+               padding:4px 15px;cursor:pointer;font-family:var(--mono)}
+.toggle button[aria-pressed="true"]{background:var(--accent2);color:#fff;font-weight:600}
 
-  /* ---- 对比图 ---- */
-  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:26px 0 8px}
-  @media(max-width:700px){.cmp{grid-template-columns:1fr}}
-  .shot{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg2)}
-  .shot img{width:100%}
-  .shot .cap{padding:9px 13px;font-size:13px;color:var(--fg2);
-             border-top:1px solid var(--line);font-family:var(--mono)}
-  .shot .cap b{color:var(--fg)}
-  .tag{display:inline-block;font-size:11px;font-family:var(--mono);padding:1px 7px;
-       border-radius:4px;vertical-align:1px;margin-left:6px}
-  .tag-free{background:#1c2a1f;color:var(--ok)}
-  .tag-paid{background:#241f38;color:var(--accent)}
+/* ---- 语言层：两份文案都在 DOM 里，切 html 上的 class ---- */
+.zh{display:none}
+html.lang-zh .en{display:none}
+html.lang-zh .zh{display:revert}
 
-  /* ---- 分档表 ---- */
-  .tablewrap{overflow-x:auto;margin:24px 0}
-  table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
-  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
-  thead th{color:var(--fg);font-size:14px;white-space:nowrap}
-  tbody td:first-child{color:var(--fg2)}
-  td.y{color:var(--ok);font-weight:600}
-  td.n{color:var(--fg3)}
-  .price{font-family:var(--mono);color:var(--accent);font-weight:700}
+/* ---- 章节 ---- */
+main{counter-reset:sec}
+section{padding:70px 0;border-top:1px solid var(--border);position:relative}
+section:first-child{border-top:0;padding-top:52px}
+h1,h2,h3{line-height:1.28;margin:0 0 16px;letter-spacing:-.01em}
+h1{font-size:clamp(32px,5.2vw,50px);font-weight:800;letter-spacing:-.025em}
+/* 标题关键词绿→紫渐字（第16.2节 第3条）：亮底上很出彩 */
+h1 .hl{background:linear-gradient(100deg,var(--accent),var(--accent2));
+       -webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(23px,3.3vw,31px);font-weight:700;position:relative;z-index:1}
+/* 每节背后的巨型幽灵序号（counter 自动递增，不用手填） */
+h2::after{counter-increment:sec;content:counter(sec,decimal-leading-zero);
+          position:absolute;right:-6px;top:50%;transform:translateY(-52%);
+          font-family:var(--mono);font-size:118px;font-weight:700;
+          color:var(--text);opacity:.06;z-index:-1;pointer-events:none;line-height:1}
+h3{font-size:16.5px;font-weight:700}
+p{margin:0 0 16px;color:var(--text2)}
+.dek{font-size:clamp(17px,2.1vw,20.5px);color:var(--text);max-width:70ch;line-height:1.7}
+.dek b{font-weight:700}
+.muted{color:var(--text3);font-size:14px;line-height:1.7}
 
-  /* ---- 卡片（⛔ 不用左侧彩色竖条）---- */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:24px 0}
-  .card{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:20px}
-  .card h3{margin-bottom:8px;font-size:16px}
-  .card p{margin:0;font-size:14.5px}
-  .card .num{font-family:var(--mono);font-size:12px;color:var(--accent);
-             letter-spacing:.1em;display:block;margin-bottom:10px}
+/* ---- mono 眉标 + 渐变短横 ---- */
+.eyebrow{display:flex;align-items:center;gap:12px;font-family:var(--mono);
+         font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+         color:var(--accent2);margin-bottom:16px}
+.eyebrow span{flex:0 0 54px;height:2px;border-radius:2px;
+              background:linear-gradient(90deg,var(--accent2),transparent)}
+/* h2 下的 mono 副标题 */
+.h2sub{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;
+       color:var(--accent);margin:-8px 0 22px}
+.h2sub.w{color:var(--accent3)}
 
-  /* ---- 买 ---- */
-  .buy{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:28px}
-  .qr{display:flex;flex-wrap:wrap;gap:26px;margin:22px 0 6px}
-  .qrbox{text-align:center}
-  .qrbox img,.qrph{width:164px;height:164px;border-radius:10px;background:#fff;
-                   border:1px solid var(--line);object-fit:contain}
-  .qrph{display:flex;align-items:center;justify-content:center;background:var(--bg);
-        color:var(--fg3);font-family:var(--mono);font-size:12px;text-align:center;
-        padding:12px;border-style:dashed;line-height:1.6}
-  .qrbox .lbl{margin-top:10px;font-size:13.5px;color:var(--fg2)}
-  .qrbox .lbl b{color:var(--fg);font-family:var(--mono)}
+/* ---- 按钮 ---- */
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 0}
+.btn{display:inline-block;padding:12px 24px;border-radius:9px;font-weight:600;
+     font-size:15px;border:1px solid var(--border2);color:var(--text);
+     background:var(--surface);box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.btn:hover{text-decoration:none;transform:translateY(-2px);box-shadow:var(--shadow2)}
+.btn-primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.btn-primary:hover{background:#5a37c8;border-color:#5a37c8}
 
-  .note{border:1px solid var(--line);border-radius:10px;padding:16px 18px;
-        background:var(--bg2);margin:20px 0;font-size:14.5px;color:var(--fg2)}
-  .note b{color:var(--fg)}
+/* ---- readout 三槽数据台（发光方点）---- */
+.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:34px 0 0;
+         background:var(--border);border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.readout div{background:var(--surface);padding:16px 18px}
+.readout .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+            text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:7px}
+.readout .k::before{content:'';width:7px;height:7px;border-radius:2px;background:var(--accent);
+                    box-shadow:0 0 0 3px rgba(6,168,140,.14)}
+.readout div:nth-child(2) .k::before{background:var(--accent2);box-shadow:0 0 0 3px rgba(106,69,224,.14)}
+.readout div:nth-child(3) .k::before{background:var(--accent3);box-shadow:0 0 0 3px rgba(191,125,26,.14)}
+.readout .v{font-size:18px;font-weight:700;margin-top:5px;line-height:1.4}
+.readout .v em{font-style:normal;font-family:var(--mono);color:var(--accent2)}
+@media(max-width:700px){.readout{grid-template-columns:1fr}}
 
-  ul{margin:0 0 16px;padding-left:20px;color:var(--fg2)}
-  li{margin-bottom:7px}
-  li b{color:var(--fg)}
+/* ---- mock 终端窗口：终端题的视觉锚点（memory xhs-v1-baseline-and-terminal-anchor）---- */
+.term{border:1px solid var(--border2);border-radius:11px;overflow:hidden;
+      box-shadow:var(--shadow2);margin:26px 0;background:#0f1320}
+.term .bar{display:flex;align-items:center;gap:7px;padding:9px 13px;
+           background:#181d2e;border-bottom:1px solid rgba(255,255,255,.06)}
+.term .bar i{width:11px;height:11px;border-radius:50%;display:block}
+.term .bar i:nth-child(1){background:#ff5f57}
+.term .bar i:nth-child(2){background:#febc2e}
+.term .bar i:nth-child(3){background:#28c840}
+.term .bar span{margin-left:9px;font-family:var(--mono);font-size:11.5px;color:#7b8499}
+/* ⚠️ white-space:pre 是必须的，否则多行提示符会挤成一坨 */
+.term .sc{margin:0;padding:16px 18px;font-family:var(--mono);font-size:13px;
+          line-height:1.95;color:#d7dbe6;white-space:pre;overflow-x:auto}
+.term .p{color:#06d3ae}    /* 提示符 */
+.term .o{color:#f0a050}    /* 命令 */
+.term .cm{color:#6b7488}   /* 注释 */
+.term .ok{color:#28c840}
 
-  footer{border-top:1px solid var(--line);padding:34px 0 56px;color:var(--fg3);font-size:14px}
-  footer a{color:var(--fg2)}
+/* ---- FIG 图表框 ---- */
+.fig{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+     overflow:hidden;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.fig:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
+.fig .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
+         padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.fig .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--text3)}
+.fig .cap{padding:11px 14px;font-size:13.5px;color:var(--text2);border-top:1px solid var(--border)}
+.fig .cap b{color:var(--text)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0 10px}
+@media(max-width:760px){.cmp{grid-template-columns:1fr}}
+.tag{display:inline-block;font-size:10.5px;font-family:var(--mono);padding:2px 8px;
+     border-radius:5px;letter-spacing:.06em;text-transform:uppercase}
+.tag-free{background:rgba(6,168,140,.10);color:var(--accent);border:1px solid rgba(6,168,140,.28)}
+.tag-paid{background:rgba(106,69,224,.10);color:var(--accent2);border:1px solid rgba(106,69,224,.28)}
+
+/* ---- pull 渐变顶杠金句 ---- */
+.pull{margin:34px 0;padding:24px 0 0;border-top:3px solid transparent;
+      border-image:linear-gradient(90deg,var(--accent),var(--accent2)) 1;
+      font-size:clamp(19px,2.5vw,25px);font-weight:800;line-height:1.55;color:var(--text)}
+.pull em{font-style:normal;color:var(--accent2)}
+
+/* ---- rows 方徽卡（⛔ 不用左侧彩色竖条）---- */
+.rows{display:grid;gap:13px;margin:26px 0}
+.row{display:grid;grid-template-columns:38px 1fr;gap:15px;background:var(--surface);
+     border:1px solid var(--border);border-radius:11px;padding:17px 19px;
+     box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.row:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
+.row .sq{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;
+         justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;
+         background:rgba(6,168,140,.09);color:var(--accent);border:1px solid rgba(6,168,140,.24)}
+.row.v .sq{background:rgba(106,69,224,.09);color:var(--accent2);border-color:rgba(106,69,224,.24)}
+.row .tt{font-weight:700;margin-bottom:3px}
+.row .ds{font-size:14.5px;color:var(--text2);line-height:1.7}
+.row .ds code{font-size:.88em}
+
+/* ---- 分档表 ---- */
+.tablewrap{overflow-x:auto;margin:26px 0;border:1px solid var(--border);
+           border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+thead th{background:var(--surface2);font-size:13.5px;white-space:nowrap;font-weight:700}
+thead th:nth-child(2){color:var(--accent)}
+thead th:nth-child(3){color:var(--accent2)}
+tbody td:first-child{color:var(--text2);font-size:14.5px}
+td.y{color:var(--accent);font-weight:700;font-family:var(--mono)}
+td.v{color:var(--accent2);font-weight:700;font-family:var(--mono)}
+td.n{color:var(--text3);font-family:var(--mono)}
+.price{font-family:var(--mono);font-weight:700}
+
+/* ---- 琥珀提醒框（第4.3节 .ask · 用于诚实边界）---- */
+.ask{background:rgba(191,125,26,.06);border:1px solid rgba(191,125,26,.26);
+     border-radius:11px;padding:17px 20px;margin:22px 0;font-size:14.8px;color:var(--text2);line-height:1.75}
+.ask b{color:var(--text)}
+.ask .lb{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+         color:var(--accent3);display:block;margin-bottom:7px}
+
+/* ---- 购买区 ---- */
+.buy{background:var(--surface);border:1px solid var(--border2);border-radius:14px;
+     padding:30px;box-shadow:var(--shadow2)}
+.qr{display:flex;flex-wrap:wrap;gap:24px;margin:26px 0 4px;align-items:flex-start}
+.qrbox{text-align:center}
+/* 200px 不是随便定的：收款码要能被手机从屏幕上一次扫中，再小就得让人放大 */
+.qrbox img{width:200px;height:auto;border-radius:11px;background:#fff;
+           border:1px solid var(--border2);padding:6px}
+.qrbox .lbl{margin-top:10px;font-size:13.5px;color:var(--text2)}
+.qrbox .lbl b{color:var(--text)}
+/* 微信号卡：联系二维码还没给，先用大字号顶上 —— 线上留一个虚线占位框比没有更难看 */
+.wxid{flex:1;min-width:224px;align-self:stretch;display:flex;flex-direction:column;
+      justify-content:center;background:var(--surface2);border:1px solid var(--border);
+      border-radius:11px;padding:20px 22px}
+.wxid .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+         text-transform:uppercase;color:var(--text3)}
+.wxid .id{font-family:var(--mono);font-size:27px;font-weight:700;color:var(--accent2);
+          margin:7px 0 8px;letter-spacing:-.01em}
+.wxid .n{font-size:13.5px;color:var(--text2);line-height:1.7}
+
+ul{margin:0 0 16px;padding-left:21px;color:var(--text2)}
+li{margin-bottom:8px;line-height:1.75}
+li b{color:var(--text)}
+
+footer{border-top:1px solid var(--border);padding:34px 0 60px;
+       display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline}
+.brand{font-weight:700;color:var(--text)}
+.handle{font-family:var(--mono);font-size:13px;color:var(--text3)}
+
+/* ---- 滚动入场 ---- */
+/* ⛔ 只做位移，绝不动 opacity —— 观察器没跑起来时控 opacity 会让整页后半永远看不见 */
+.pre{transform:translateY(16px);transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+.in{transform:none}
+@media(prefers-reduced-motion:reduce){.pre{transform:none;transition:none}}
 </style>
 </head>
 <body>
 
-<div class="langbar">
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+
+<div class="masthead">
   <div class="wrap">
-    <!-- ⛔ 别在这儿写版本号：它会跟 SKILL.md 的 version 和 CHANGELOG 漂成三份，
-         而且没人会为了看版本号来落地页。要版本去 GitHub 看 releases。 -->
-    <span class="brand"><b>hekouwang-terminal-kit</b></span>
+    <span class="mh-l"><b>hekouwang-terminal-kit</b><s>·</s>macOS terminal as code</span>
     <div class="toggle" role="group" aria-label="Language">
       <button id="btn-en" aria-pressed="true">EN</button>
       <button id="btn-zh" aria-pressed="false">中文</button>
@@ -155,21 +288,24 @@
   </div>
 </div>
 
-<div class="wrap">
+<div class="wrap"><main>
 
 <!-- ============ HERO ============ -->
-<section class="hero">
-  <div class="tagline">macOS · iTerm2 · zsh</div>
+<section>
+  <div class="eyebrow"><span></span>macOS · iTerm2 · zsh</div>
 
-  <h1><span class="en">One palette for your whole terminal.</span><span class="zh">一份色板，管住整个终端。</span></h1>
+  <h1>
+    <span class="en">One palette for <span class="hl">your whole terminal</span>.</span>
+    <span class="zh">一份色板，<span class="hl">管住整个终端</span>。</span>
+  </h1>
 
-  <p class="lead">
+  <p class="dek">
     <span class="en">Most terminal setups hand you a <code>.zshrc</code> and tell you to overwrite your own.
       You don't know what it will touch, you don't know what it changed, and you can't get back.
-      I looked for one that was safe to install <em>and</em> safe to remove, didn't find it, and wrote this.</span>
+      <b>I looked for one that was safe to install and safe to remove, didn't find it, and wrote this.</b></span>
     <span class="zh">网上的终端配置方案，几乎都是给你一份 <code>.zshrc</code> 让你覆盖掉自己那份。
       装之前不知道它要动什么，装完不知道它改了什么，不想要了退不回去。
-      我找了很久一个「敢装也敢卸」的，没找到，最后自己写了一个。</span>
+      <b>我找了很久一个「敢装也敢卸」的，没找到，最后自己写了一个。</b></span>
   </p>
 
   <div class="btns">
@@ -181,12 +317,30 @@
     </a>
   </div>
 
+  <div class="readout">
+    <div>
+      <div class="k"><span class="en">open source</span><span class="zh">开源版</span></div>
+      <div class="v"><span class="en">A complete iTerm2, free</span><span class="zh">一台配好的 iTerm2，免费</span></div>
+    </div>
+    <div>
+      <div class="k"><span class="en">paid build</span><span class="zh">付费档</span></div>
+      <div class="v"><em>¥19.9</em> <span class="en">· one year of updates</span><span class="zh">· 一年更新</span></div>
+    </div>
+    <div>
+      <div class="k"><span class="en">refund</span><span class="zh">退款</span></div>
+      <div class="v"><span class="en">7 days, no questions</span><span class="zh">七天无理由</span></div>
+    </div>
+  </div>
+
   <div class="term">
-    <span class="c"># <span class="en">the whole open-source build, free, MIT</span><span class="zh">整个开源版，免费，MIT</span></span><br>
-    <span class="p">$</span> git clone https://github.com/huiyonghkw/hekouwang-terminal-kit<br>
-    <span class="p">$</span> cd hekouwang-terminal-kit<br>
-    <span class="p">$</span> ./install.sh --dry-run &nbsp;<span class="c"># <span class="en">see exactly what it would touch, first</span><span class="zh">先看清楚它要动什么</span></span><br>
-    <span class="p">$</span> ./install.sh
+    <div class="bar"><i></i><i></i><i></i><span>hekouwang-terminal-kit</span></div>
+<pre class="sc"><span class="cm"># <span class="en">the whole open-source build, free, MIT</span><span class="zh">整个开源版，免费，MIT</span></span>
+<span class="p">$</span> <span class="o">git clone</span> https://github.com/huiyonghkw/hekouwang-terminal-kit
+<span class="p">$</span> <span class="o">cd</span> hekouwang-terminal-kit
+<span class="p">$</span> <span class="o">./install.sh</span> --dry-run
+    <span class="cm"># <span class="en">lists what it would touch. nothing changed yet.</span><span class="zh">先列出它要动什么，此时一个字节都没改</span></span>
+<span class="p">$</span> <span class="o">./install.sh</span>
+<span class="ok">✓</span> <span class="cm"><span class="en">done. changed your mind? ./uninstall.sh restores from backup.</span><span class="zh">装好了。后悔了？./uninstall.sh 从备份还原</span></span></pre>
   </div>
   <p class="muted">
     <span class="en">macOS only. Ships no font files — it detects what you already have installed.</span>
@@ -194,85 +348,102 @@
   </p>
 </section>
 
-<!-- ============ 对比图 ============ -->
-<section>
+<!-- ============ 01 对比 ============ -->
+<section class="pre">
   <h2><span class="en">What the paid build actually buys you</span><span class="zh">付费版到底买到什么</span></h2>
+  <div class="h2sub">free vs paid · same machine, same three commands</div>
   <p>
-    <span class="en">Same machine, same three commands. On the left, each tool picks its own colors.
-      On the right, every one of them is generated from a single palette — so switching theme once
-      moves all of them together.</span>
-    <span class="zh">同一台机器、同样三条命令。左边是每个工具各说各的颜色，
-      右边是它们全部由同一份色板生成 —— 所以换一次肤，它们会一起变。</span>
+    <span class="en">On the left, each tool picks its own colors. On the right, every one of them is
+      generated from a single palette — so switching theme once moves all of them together.</span>
+    <span class="zh">左边是每个工具各说各的颜色，右边是它们全部由同一份色板生成 ——
+      所以换一次肤，它们会一起变。</span>
   </p>
 
   <div class="cmp">
-    <div class="shot">
+    <div class="fig">
+      <div class="hd"><span class="no">FIG.01</span><span class="tag tag-free">free</span></div>
       <img src="images/cmp-iterm2-free.png" alt="iTerm2, open-source build: tools keep their own default colors" loading="lazy">
-      <div class="cap"><b>iTerm2</b> <span class="en">— open source</span><span class="zh">— 开源版</span><span class="tag tag-free">free</span></div>
+      <div class="cap"><b>iTerm2</b> <span class="en">— open source: the terminal looks right, the tools keep their own colors</span><span class="zh">— 开源版：终端好看了，工具各自保持默认色</span></div>
     </div>
-    <div class="shot">
+    <div class="fig">
+      <div class="hd"><span class="no">FIG.02</span><span class="tag tag-paid">paid</span></div>
       <img src="images/cmp-iterm2-paid.png" alt="iTerm2, paid build: the whole tool chain in one color family" loading="lazy">
-      <div class="cap"><b>iTerm2</b> <span class="en">— one palette</span><span class="zh">— 一份色板</span><span class="tag tag-paid">paid</span></div>
+      <div class="cap"><b>iTerm2</b> <span class="en">— one palette: <b>cat</b>, <b>git diff</b>, <b>ls</b> all in the same family</span><span class="zh">— 一份色板：<b>cat</b>、<b>git diff</b>、<b>ls</b> 全在同一个色系里</span></div>
     </div>
-    <div class="shot">
+    <div class="fig">
+      <div class="hd"><span class="no">FIG.03</span><span class="tag tag-free">free</span></div>
       <img src="images/cmp-ghostty-free.png" alt="Ghostty with its own default colors" loading="lazy">
-      <div class="cap"><b>Ghostty</b> <span class="en">— its own defaults</span><span class="zh">— 各自默认色</span><span class="tag tag-free">free</span></div>
+      <div class="cap"><b>Ghostty</b> <span class="en">— untouched by the open-source build</span><span class="zh">— 开源版不动它，保持各自默认色</span></div>
     </div>
-    <div class="shot">
+    <div class="fig">
+      <div class="hd"><span class="no">FIG.04</span><span class="tag tag-paid">paid</span></div>
       <img src="images/cmp-ghostty-paid.png" alt="Ghostty carrying the same colors as iTerm2" loading="lazy">
-      <div class="cap"><b>Ghostty</b> <span class="en">— same as iTerm2</span><span class="zh">— 与 iTerm2 同色</span><span class="tag tag-paid">paid</span></div>
+      <div class="cap"><b>Ghostty</b> <span class="en">— same colors as iTerm2, from the same source</span><span class="zh">— 与 iTerm2 同色，同一个来源生成</span></div>
     </div>
   </div>
 
-  <div class="note">
-    <span class="en"><b>Why this is worth paying for rather than doing by hand:</b> doing it by hand drifts,
-      silently. A Warp theme I maintained myself carried a comment saying "identical to the iTerm2 one"
+  <div class="pull">
+    <span class="en">Doing this by hand drifts, and it drifts <em>silently</em>.</span>
+    <span class="zh">这件事手工做一定会漂，而且是<em>静默地</em>漂。</span>
+  </div>
+  <p>
+    <span class="en">A Warp theme I maintained myself carried a comment saying "identical to the iTerm2 one"
       while <b>8 of its 16 color slots were actually wrong</b> — and nothing ever reported an error.
       In the paid build the colors are derived, not copied, so a theme switch recomputes all of them.</span>
-    <span class="zh"><b>为什么这件事值得买、而不是自己手工做：</b>手工做一定会漂，而且是静默地漂。
-      我自己手工维护的一套 Warp 主题，注释上写着「与 iTerm2 那套完全一致」，
+    <span class="zh">我自己手工维护的一套 Warp 主题，注释上写着「与 iTerm2 那套完全一致」，
       实际上 <b>16 个色槽错了 8 个</b> —— 全程没有任何报错。
       付费版里颜色是推导出来的、不是抄过去的，所以换一次肤就重算一遍，永远同色系。</span>
+  </p>
+</section>
+
+<!-- ============ 02 开源版是完整产品 ============ -->
+<section class="pre">
+  <h2><span class="en">The open-source build is a complete product</span><span class="zh">开源版本身就是完整产品</span></h2>
+  <div class="h2sub">not a trial · nothing expires · MIT</div>
+  <p>
+    <span class="en">Install it, never pay me anything, and keep using it forever. Here is what it does on its own:</span>
+    <span class="zh">装完一分钱不花，可以一直用下去。开源版自己就做到这些：</span>
+  </p>
+
+  <div class="rows">
+    <div class="row"><div class="sq">01</div><div>
+      <div class="tt"><span class="en">It doesn't overwrite you</span><span class="zh">不覆盖你的东西</span></div>
+      <div class="ds"><span class="en">Your existing config is moved into another file section by section — three years of aliases, not one line lost. It then really starts a shell to check the syntax, and rolls back if it won't start.</span>
+        <span class="zh">按段落把你原来的配置搬进另一个文件，三年攒的别名一行不丢；写完真起一个 shell 验语法，起不来自动回滚。</span></div></div></div>
+    <div class="row"><div class="sq">02</div><div>
+      <div class="tt"><span class="en">You can rehearse it</span><span class="zh">装之前能预演</span></div>
+      <div class="ds"><span class="en"><code>--dry-run</code> lists every file and system setting it would touch, and what it will never touch, before you commit.</span>
+        <span class="zh"><code>--dry-run</code> 先把要改哪些文件、写哪些系统设置、什么绝对不碰列成清单给你看。</span></div></div></div>
+    <div class="row"><div class="sq">03</div><div>
+      <div class="tt"><span class="en">You can get back</span><span class="zh">不想要了能还原</span></div>
+      <div class="ds"><span class="en">Uninstall <b>restores from a backup</b> rather than deleting things, and returns system settings to the real factory defaults.</span>
+        <span class="zh">卸载是<b>从备份还原</b>，不是删了拉倒；系统设置恢复真正的出厂默认。</span></div></div></div>
+    <div class="row"><div class="sq">04</div><div>
+      <div class="tt"><span class="en">It checks itself</span><span class="zh">出问题会自检</span></div>
+      <div class="ds"><span class="en"><code>doctor.sh</code> runs eight checks — tool chain, whether the font actually resolved, config load order, startup time — and tells you how to fix each one.</span>
+        <span class="zh"><code>doctor.sh</code> 八项体检 —— 工具链、字体是否真的上屏、配置加载顺序、启动耗时 —— 哪项不对直接告诉你怎么修。</span></div></div></div>
+    <div class="row"><div class="sq">05</div><div>
+      <div class="tt"><span class="en">It doesn't slow you down</span><span class="zh">不拖慢终端</span></div>
+      <div class="ds"><span class="en">One line added to shell startup, not a pile of plugins.</span>
+        <span class="zh">只往启动里加一行，不是堆一大摞插件。</span></div></div></div>
+    <div class="row"><div class="sq">06</div><div>
+      <div class="tt"><span class="en">Everything else you'd expect</span><span class="zh">该有的都有</span></div>
+      <div class="ds"><span class="en">3 community color schemes, blur, ERROR/WARN auto-coloring, Shift+Enter for multi-line prompts, and the modern CLI set (eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta).</span>
+        <span class="zh">3 套社区配色、毛玻璃、ERROR/WARN 自动标色、Shift+Enter 写多行 prompt，以及现代 CLI 全家桶（eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta）。</span></div></div></div>
+  </div>
+
+  <div class="ask">
+    <span class="lb">honest limit</span>
+    <span class="en">It will <b>not</b> make your terminal faster. It only manages not to slow it down.
+      Anyone promising a one-click beautifier that also speeds things up hasn't measured it.</span>
+    <span class="zh">它<b>不会</b>让终端变快，只做到不拖慢。谁跟你说一键美化还能提速，那是没量过。</span>
   </div>
 </section>
 
-<!-- ============ 免费版是完整产品 ============ -->
-<section>
-  <h2><span class="en">The open-source build is a complete product</span><span class="zh">开源版本身就是完整产品</span></h2>
-  <p>
-    <span class="en">It is not a trial and not a crippled demo. Install it, never pay me anything,
-      and keep using it forever. Here is what it does on its own:</span>
-    <span class="zh">它不是试用版，也不是阉割的演示版。装完一分钱不花，可以一直用下去。
-      开源版自己就做到这些：</span>
-  </p>
-  <ul>
-    <li><span class="en"><b>It doesn't overwrite you.</b> Your existing config is moved into another file section by section — three years of aliases, not one line lost. It then really starts a shell to check the syntax, and rolls back if it won't start.</span>
-        <span class="zh"><b>不覆盖你的东西。</b>按段落把你原来的配置搬进另一个文件，三年攒的别名一行不丢；写完真起一个 shell 验语法，起不来自动回滚。</span></li>
-    <li><span class="en"><b>You can rehearse it.</b> <code>--dry-run</code> lists every file and system setting it would touch, and what it will never touch, before you commit.</span>
-        <span class="zh"><b>装之前能预演。</b><code>--dry-run</code> 先把要改哪些文件、写哪些系统设置、什么绝对不碰列成清单给你看。</span></li>
-    <li><span class="en"><b>You can get back.</b> Uninstall <em>restores from a backup</em> rather than deleting things, and returns system settings to the real factory defaults.</span>
-        <span class="zh"><b>不想要了能还原。</b>卸载是从备份还原，不是删了拉倒；系统设置恢复真正的出厂默认。</span></li>
-    <li><span class="en"><b>It checks itself.</b> <code>doctor.sh</code> runs eight checks — tool chain, whether the font actually resolved, config load order, startup time — and tells you how to fix each one.</span>
-        <span class="zh"><b>出问题会自检。</b><code>doctor.sh</code> 八项体检 —— 工具链、字体是否真的上屏、配置加载顺序、启动耗时 —— 哪项不对直接告诉你怎么修。</span></li>
-    <li><span class="en"><b>It doesn't slow you down.</b> One line added to shell startup, not a pile of plugins.</span>
-        <span class="zh"><b>不拖慢终端。</b>只往启动里加一行，不是堆一大摞插件。</span></li>
-    <li><span class="en">3 community color schemes, blur, ERROR/WARN auto-coloring, Shift+Enter for multi-line prompts, and the modern CLI set (eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta).</span>
-        <span class="zh">3 套社区配色、毛玻璃、ERROR/WARN 自动标色、Shift+Enter 写多行 prompt，以及现代 CLI 全家桶（eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta）。</span></li>
-  </ul>
-  <p class="muted">
-    <span class="en">Honest limit: it will <em>not</em> make your terminal faster. It only manages not to slow it down. Anyone promising a one-click beautifier that also speeds things up hasn't measured it.</span>
-    <span class="zh">诚实说边界：它<em>不会</em>让终端变快，只做到不拖慢。谁跟你说一键美化还能提速，那是没量过。</span>
-  </p>
-</section>
-
-<!-- ============ 分档表 ============ -->
-<section>
+<!-- ============ 03 分档 ============ -->
+<section class="pre">
   <h2><span class="en">Where the line is</span><span class="zh">线划在哪儿</span></h2>
-  <p>
-    <span class="en">In one sentence: <b>the open-source build makes your iTerm2 look right; the paid build
-      makes that same palette walk out of iTerm2.</b></span>
-    <span class="zh">一句话：<b>开源版让你的 iTerm2 好看；付费版让这份色板走出 iTerm2。</b></span>
-  </p>
+  <div class="h2sub">free = a good-looking iTerm2 · paid = that palette walks out of it</div>
 
   <div class="tablewrap">
   <table>
@@ -286,35 +457,35 @@
     <tbody>
       <tr>
         <td><span class="en">A fully configured iTerm2 (3 schemes, blur, triggers, CLI set, doctor, migrate, uninstall)</span><span class="zh">配好的 iTerm2（3 套配色、毛玻璃、Triggers、CLI 全家桶、体检、迁移、卸载）</span></td>
-        <td class="y">✓</td><td class="y">✓</td>
+        <td class="y">✓</td><td class="v">✓</td>
       </tr>
       <tr>
         <td><span class="en">Ghostty / Warp / the built-in macOS Terminal follow the same palette</span><span class="zh">Ghostty / Warp / macOS 自带终端跟着同一份色板</span></td>
-        <td class="n">—</td><td class="y">✓</td>
+        <td class="n">—</td><td class="v">✓</td>
       </tr>
       <tr>
         <td><span class="en"><code>bat</code> / <code>fzf</code> / <code>eza</code> / <code>git diff</code> / tmux / VS Code in the same colors</span><span class="zh"><code>bat</code> / <code>fzf</code> / <code>eza</code> / <code>git diff</code> / tmux / VS Code 同色</span></td>
-        <td class="n">—</td><td class="y">✓</td>
+        <td class="n">—</td><td class="v">✓</td>
       </tr>
       <tr>
         <td><span class="en">Project workspaces — <code>cd</code> into a project, the tab recolors and prints its name</span><span class="zh">项目工作区 —— <code>cd</code> 进项目，标签页自动变色 + 印项目名</span></td>
-        <td class="n">—</td><td class="y">✓</td>
+        <td class="n">—</td><td class="v">✓</td>
       </tr>
       <tr>
         <td><span class="en">Import hundreds of existing themes, plus a palette deriver (one brand color → a whole set)</span><span class="zh">导入几百套现成主题，外加色板推导器（给一个品牌色 → 推出整套）</span></td>
-        <td class="n">—</td><td class="y">✓</td>
+        <td class="n">—</td><td class="v">✓</td>
       </tr>
       <tr>
         <td><span class="en">4 brand themes, two of them light (contrast actually computed, not eyeballed)</span><span class="zh">4 套品牌主题，含 2 套亮色（对比度是算出来的，不是眼估的）</span></td>
-        <td class="n">—</td><td class="y">✓</td>
+        <td class="n">—</td><td class="v">✓</td>
       </tr>
       <tr>
         <td><span class="en">Font priority table — picks up commercial fonts you already bought (Operator Mono, …)</span><span class="zh">字体优先级表 —— 自动认出你已购买安装的商业字体（Operator Mono 等）</span></td>
-        <td class="n">—</td><td class="y">✓</td>
+        <td class="n">—</td><td class="v">✓</td>
       </tr>
       <tr>
         <td><span class="en">A4 cheat sheet · one year of updates · help when it breaks</span><span class="zh">A4 速查卡 · 一年更新 · 装崩了有人管</span></td>
-        <td class="n">—</td><td class="y">✓</td>
+        <td class="n">—</td><td class="v">✓</td>
       </tr>
     </tbody>
   </table>
@@ -329,60 +500,64 @@
   </p>
 </section>
 
-<!-- ============ 怎么买 ============ -->
-<section id="buy">
+<!-- ============ 04 怎么买 ============ -->
+<section class="pre" id="buy">
   <h2><span class="en">Getting the paid build</span><span class="zh">怎么买</span></h2>
+  <div class="h2sub">three steps · WeChat Pay or Alipay · ¥19.9</div>
 
   <div class="buy">
-    <div class="cards">
-      <div class="card">
-        <span class="num">01</span>
-        <h3><span class="en">Pay ¥19.9</span><span class="zh">付款 ¥19.9</span></h3>
-        <p><span class="en">Scan the payment code on the right with WeChat.</span><span class="zh">用微信扫右边那个收款码。</span></p>
-      </div>
-      <div class="card">
-        <span class="num">02</span>
-        <h3><span class="en">Add me, send the receipt</span><span class="zh">加我，发付款截图</span></h3>
-        <p><span class="en">WeChat <b>hekouwang</b>, note "terminal kit".</span><span class="zh">微信 <b>hekouwang</b>，备注「终端套装」。</span></p>
-      </div>
-      <div class="card">
-        <span class="num">03</span>
-        <h3><span class="en">Pick how you want it</span><span class="zh">选一条交付路</span></h3>
-        <p><span class="en">A zip with <code>./unlock.sh</code> (no GitHub account needed), or I add you to the private repo so <code>git pull</code> keeps you updated.</span><span class="zh">一个 zip，<code>./unlock.sh</code> 一键装（不用 GitHub 账号）；或者我把你加进私有仓，以后 <code>git pull</code> 拿更新。</span></p>
-      </div>
+    <div class="rows">
+      <div class="row v"><div class="sq">01</div><div>
+        <div class="tt"><span class="en">Pay ¥19.9</span><span class="zh">付款 ¥19.9</span></div>
+        <div class="ds"><span class="en">Scan either code below — WeChat Pay or Alipay, whichever you have.</span><span class="zh">扫下面任意一个码 —— 微信支付、支付宝都行，你顺手哪个用哪个。</span></div></div></div>
+      <div class="row v"><div class="sq">02</div><div>
+        <div class="tt"><span class="en">Add me, send the receipt</span><span class="zh">加我，发付款截图</span></div>
+        <div class="ds"><span class="en">WeChat <code>hekouwang</code>, note "terminal kit".</span><span class="zh">微信 <code>hekouwang</code>，备注「终端套装」。</span></div></div></div>
+      <div class="row v"><div class="sq">03</div><div>
+        <div class="tt"><span class="en">Pick how you want it</span><span class="zh">选一条交付路</span></div>
+        <div class="ds"><span class="en">A zip with <code>./unlock.sh</code> (no GitHub account needed), or I add you to the private repo so <code>git pull</code> keeps you updated.</span>
+          <span class="zh">一个 zip，<code>./unlock.sh</code> 一键装（不用 GitHub 账号）；或者我把你加进私有仓，以后 <code>git pull</code> 拿更新。</span></div></div></div>
     </div>
 
     <div class="qr">
       <div class="qrbox">
-        <img src="images/pay-qr.png" alt="WeChat payment code" onerror="this.outerHTML='&lt;div class=&quot;qrph&quot;&gt;payment code&lt;br&gt;收款码&lt;/div&gt;'">
-        <div class="lbl"><span class="en">Pay ¥19.9 (WeChat)</span><span class="zh">微信支付 ¥19.9</span></div>
+        <img src="images/pay-wechat.png" alt="WeChat Pay code">
+        <div class="lbl"><span class="en"><b>WeChat Pay</b> · ¥19.9</span><span class="zh"><b>微信支付</b> · ¥19.9</span></div>
       </div>
       <div class="qrbox">
-        <img src="images/wechat-qr.png" alt="WeChat contact QR code" onerror="this.outerHTML='&lt;div class=&quot;qrph&quot;&gt;WeChat QR&lt;br&gt;微信二维码&lt;/div&gt;'">
-        <div class="lbl"><span class="en">Add me · <b>hekouwang</b></span><span class="zh">加我 · <b>hekouwang</b></span></div>
+        <img src="images/pay-alipay.png" alt="Alipay payment code">
+        <div class="lbl"><span class="en"><b>Alipay</b> · ¥19.9</span><span class="zh"><b>支付宝</b> · ¥19.9</span></div>
+      </div>
+      <div class="wxid">
+        <div class="k"><span class="en">then add me on wechat</span><span class="zh">付完加我微信</span></div>
+        <div class="id">hekouwang</div>
+        <div class="n"><span class="en">Send the payment screenshot and note "terminal kit". I'll ask which delivery route you want and send it over.</span><span class="zh">把付款截图发我，备注「终端套装」。我会问你走哪条交付路，然后发给你。</span></div>
       </div>
     </div>
 
-    <div class="note">
+    <div class="ask">
+      <span class="lb">no risk</span>
       <span class="en"><b>Seven-day refund, no questions asked.</b> Installing the open-source build first and
         deciding two days later is completely fine — it is not a trial, and nothing expires.</span>
       <span class="zh"><b>七天无理由退款。</b>先装开源版、过两天再决定完全没问题 —— 它不是试用版，也不会到期。</span>
     </div>
 
-    <div class="note">
-      <span class="en"><b>Outside China / no WeChat Pay?</b> Card payment isn't set up yet — I'd rather say that
-        than pretend. Email <a href="mailto:huiyonghkw@gmail.com">huiyonghkw@gmail.com</a> and we'll sort out
-        a way; you'll get the same zip and the same year of updates.</span>
-      <span class="zh"><b>在海外、用不了微信支付？</b>目前还没接信用卡收款，这点我就直说了。
+    <div class="ask">
+      <span class="lb">outside china</span>
+      <span class="en"><b>No WeChat Pay or Alipay?</b> Card payment isn't set up yet — I'd rather say that than pretend.
+        Email <a href="mailto:huiyonghkw@gmail.com">huiyonghkw@gmail.com</a> and we'll sort out a way;
+        you'll get the same zip and the same year of updates.</span>
+      <span class="zh"><b>在海外、微信支付和支付宝都用不了？</b>目前还没接信用卡收款，这点我就直说了。
         邮件 <a href="mailto:huiyonghkw@gmail.com">huiyonghkw@gmail.com</a>，我们另想办法，
         拿到的是同一个 zip、同样一年更新。</span>
     </div>
   </div>
 </section>
 
-<!-- ============ 边界 ============ -->
-<section>
+<!-- ============ 05 边界 ============ -->
+<section class="pre">
   <h2><span class="en">Before you buy, the limits</span><span class="zh">买之前，先看边界</span></h2>
+  <div class="h2sub w">what it does not do</div>
   <ul>
     <li><span class="en"><b>macOS only.</b> There is no Linux or Windows build and I'm not planning one.</span>
         <span class="zh"><b>只支持 macOS。</b>没有 Linux / Windows 版，也没打算做。</span></li>
@@ -395,15 +570,13 @@
   </ul>
 </section>
 
-<footer>
-  <div>
-    <span class="en">Built by 会勇禾口王 · Open-source build is MIT ·
-      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">source on GitHub</a></span>
-    <span class="zh">作者 会勇禾口王 · 开源版 MIT 授权 ·
-      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub 源码</a></span>
-  </div>
-</footer>
+</main></div>
 
+<div class="wrap">
+<footer>
+  <span class="brand">会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <span class="en">open-source build is MIT · </span><span class="zh">开源版 MIT 授权 · </span><a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer>
 </div>
 
 <script>
@@ -425,11 +598,39 @@
 
   var saved = null;
   try { saved = localStorage.getItem(KEY); } catch (e) {}
-  // 记住的优先；没记过就看浏览器语言
   set(saved || (/^zh/i.test(navigator.language || '') ? 'zh' : 'en'), false);
 
   btnEn.addEventListener('click', function () { set('en', true); });
   btnZh.addEventListener('click', function () { set('zh', true); });
+})();
+
+// 顶部滚动进度条
+(function () {
+  var bar = document.getElementById('prog');
+  function tick() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', tick, { passive: true });
+  window.addEventListener('resize', tick);
+  tick();
+})();
+
+// 滚动入场：⛔ 只解除位移，不碰 opacity —— 观察器没跑起来时元素照样看得见
+(function () {
+  var els = document.querySelectorAll('.pre');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (e) { e.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  els.forEach(function (e) { io.observe(e); });
+  // 兜底：任何原因没触发，1.8s 后全部落位
+  setTimeout(function () { els.forEach(function (e) { e.classList.add('in'); }); }, 1800);
 })();
 </script>
 

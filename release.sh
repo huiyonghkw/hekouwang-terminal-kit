@@ -60,6 +60,13 @@ PRO_REPO="huiyonghkw/hekouwang-terminal-kit-pro"
 OSS_HOMEPAGE="$HKW_URL_BUY"
 PRO_HOMEPAGE=""   # 付费仓的读者已经是买家，挂个还在卖东西的落地页很怪（同「首页换成 README-PRO」）
 
+# GitHub Pages 的 source 同样是**非文件**的服务端状态 —— 落地页整个靠它上线。
+# 仓库一重建、或者谁在网页 Settings 里把 source 改了，页面就没了，而母版里查无此事，
+# 偏偏所有 CTA（换肤回执 / doctor / install / README / FUNDING）都在往那儿送人。
+# ⛔ 只管公开仓：付费仓是 private，不该有 Pages。
+OSS_PAGES_BRANCH="main"
+OSS_PAGES_PATH="/docs"
+
 # ⚠️ GitHub 的 description 上限是 **350 字符**，超一个字符整次调用报 HTTP 422、
 #    什么都不改。原来这两条是 529 / 418 字符 —— 也就是说 2026-07-23 改成英文之后，
 #    `--meta` 一次都没成功过，线上一直是更早的中文版，而错误被 `>/dev/null 2>&1` 藏住了。
@@ -240,7 +247,8 @@ PYIMP
     #                         向他推销他已经买了的东西，跟上面换 README 是同一个道理
     rm -rf "$dest/.github"
     rm -f "$dest/docs/index.html"
-    printf "  ${d}- .github/FUNDING.yml、docs/index.html（都是给未购买者看的）${o}\n"
+    rm -f "$dest/docs/images/pay-wechat.png" "$dest/docs/images/pay-alipay.png"
+    printf "  ${d}- .github/FUNDING.yml、docs/index.html、两张收款码（都是给未购买者看的）${o}\n"
     # 首页换成写给买家看的那份。公开版 README 开头就是免费/付费对比表和 ¥19.9 ——
     # 买家点进来看到有人向他推销他已经买的东西，很怪。
     # ⚠️ 但**不要**为此维护两份 30k 手册：正文只留一份母本（README.md），
@@ -592,6 +600,25 @@ EOF
   return $V_BAD
 }
 
+ensure_pages() {   # ensure_pages <repo> <branch> <path>
+  local repo="$1" br="$2" p="$3" cur out rc
+  cur="$(gh api "repos/$repo/pages" --jq '.source.branch + " " + .source.path' 2>/dev/null || echo "")"
+  if [ "$cur" = "$br $p" ]; then
+    printf "  ${g}✓${o} Pages 已是 %s %s\n" "$br" "$p"; return 0
+  fi
+  # 没开过用 POST 建站，开过但 source 不对用 PUT 改回来 —— 后者是关键：
+  # 在网页 Settings 里手滑改一下 source，落地页当场 404，而母版毫不知情。
+  if [ -z "$cur" ]; then
+    out="$(gh api -X POST "repos/$repo/pages" -f "source[branch]=$br" -f "source[path]=$p" 2>&1)"; rc=$?
+    [ "$rc" -eq 0 ] && { printf "  ${g}✓${o} Pages 已开启（%s %s）\n" "$br" "$p"; return 0; }
+  else
+    out="$(gh api -X PUT "repos/$repo/pages" -f "source[branch]=$br" -f "source[path]=$p" 2>&1)"; rc=$?
+    [ "$rc" -eq 0 ] && { printf "  ${g}✓${o} Pages source 已改回 %s %s（原来是 %s）\n" "$br" "$p" "$cur"; return 0; }
+  fi
+  printf "  ${r}✗ Pages 设置失败${o}\n"; printf '%s\n' "$out" | sed 's/^/      /'
+  return 1
+}
+
 apply_meta() {   # apply_meta <标签> <repo> <description> <topics 逗号分隔> <homepage>
   local label="$1" repo="$2" desc="$3" topics="$4" home="${5:-}"
   printf "\n${b}%s → %s${o}\n" "$label" "$repo"
@@ -655,9 +682,11 @@ case "${1:-}" in
   command -v gh >/dev/null 2>&1 || { printf "${r}✗ 需要 gh CLI${o}\n"; exit 1; }
   MBAD=0
   case "${2:-all}" in
-    oss) apply_meta "开源版" "$OSS_REPO" "$OSS_DESC" "$OSS_TOPICS" "$OSS_HOMEPAGE" || MBAD=1 ;;
+    oss) apply_meta "开源版" "$OSS_REPO" "$OSS_DESC" "$OSS_TOPICS" "$OSS_HOMEPAGE" || MBAD=1
+         ensure_pages "$OSS_REPO" "$OSS_PAGES_BRANCH" "$OSS_PAGES_PATH" || MBAD=1 ;;
     pro) apply_meta "付费仓" "$PRO_REPO" "$PRO_DESC" "$PRO_TOPICS" "$PRO_HOMEPAGE" || MBAD=1 ;;
     all) apply_meta "开源版" "$OSS_REPO" "$OSS_DESC" "$OSS_TOPICS" "$OSS_HOMEPAGE" || MBAD=1
+         ensure_pages "$OSS_REPO" "$OSS_PAGES_BRANCH" "$OSS_PAGES_PATH" || MBAD=1
          apply_meta "付费仓" "$PRO_REPO" "$PRO_DESC" "$PRO_TOPICS" "$PRO_HOMEPAGE" || MBAD=1 ;;
     *)   printf "${r}用法：./release.sh --meta [oss|pro]${o}\n"; exit 1 ;;
   esac
