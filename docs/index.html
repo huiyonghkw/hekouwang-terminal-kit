@@ -11,11 +11,12 @@
      收款方式只写在这儿 —— 以后加爱发电或 Lemon Squeezy，改这一页就行，
      已经装到几百台机器上的脚本一行都不用动。别把二维码或收款链接写回脚本里。
 
-  ⚠️ 页面必须**自包含**：不引 CDN、不引外部字体。
-     字体因此不走 Google Fonts（skill 精美档默认那样），而是系统栈 ——
-     ① 本产品只支持 macOS，访客几乎全在 mac 上，PingFang SC 是必中的原生思源黑同位体；
-     ② 受众有很大一块从小红书/公众号来，Google Fonts 在墙内又慢又常失败，
-        一个加载不出来的字体会让首屏空半天。见 memory tietu-fonts-local-not-google。
+  ⚠️ 页面必须**自包含**：不引 CDN、不引外部字体。受众有很大一块从小红书/公众号来，
+     Google Fonts 在墙内又慢又常失败，一个加载不出来的字体会让首屏空半天
+     （见 memory tietu-fonts-local-not-google）。
+     所以中文走 **自托管子集** docs/fonts/hkw-sans-sc-subset.woff2（102 KB，详见下面 @font-face）。
+     ⛔ 曾经图省事只用系统栈让 PingFang SC 扛中文，结果标题一律发虚 ——
+        PingFang 最粗只到 Semibold(600)，font-weight:800/900 在它身上不成立。
 
   ⚠️ 文案只许写**本档真有**的能力。免费版只同步 iTerm2 —— 页面上凡是多终端 /
      工具链同色的说法，必须落在付费那一栏里。这是被真实用户当场挑出来过的坑
@@ -38,6 +39,24 @@
 <title>hekouwang-terminal-kit — one palette for your whole terminal</title>
 <meta name="description" content="A macOS terminal you can install and also fully uninstall. Open source and complete for iTerm2; the paid build makes the same palette walk out of iTerm2.">
 <style>
+/* ============ 中文字体：自托管子集，不走 CDN ============
+   ⛔ 别把中文交给 PingFang SC 去扛粗体 —— 它最粗只到 Semibold(600)，
+      font-weight:800/900 在它上面要么被合成、要么直接落回 600，标题就是发虚的。
+      这是「字重不够先查字体栈顺序」那条坑（memory xhs-cover-vf-font-and-2x）。
+   本文件 = Noto Sans SC 可变字体子集：只留本页真正用到的 425 个字形
+   （7.6 MB → 102 KB），wght 100–900 轴完整保留，所以 900 是真字重不是合成的。
+   ⚠️ 页面文案改动较大时要重新子集化，否则新字会掉回系统字体（粗细对不上就是这个原因）。
+   授权：原字体 SIL OFL 1.1；子集属修改版，按 OFL 要求已改族名（不沿用保留字体名），
+        版权与全文见 docs/fonts/OFL.txt。 */
+@font-face{
+  font-family:'HKW Sans SC';
+  src:url('fonts/hkw-sans-sc-subset.woff2') format('woff2-variations'),
+      url('fonts/hkw-sans-sc-subset.woff2') format('woff2');
+  font-weight:100 900;   /* 可变轴范围，一个文件供全部字重 */
+  font-style:normal;
+  font-display:swap;
+}
+
 /* ============ V1科技白 token（v1-base.md 第16.1节）============ */
 :root{
   --bg:#f4f6f9;          /* 冷调亮灰白，⛔ 别用纯白 */
@@ -54,8 +73,9 @@
   --danger:#d23f4d;
   --shadow:0 8px 28px rgba(20,30,50,.06);
   --shadow2:0 16px 44px rgba(20,30,50,.10);
-  /* 字体见文件头说明：自包含系统栈，中文优先 PingFang SC（mac 原生） */
-  --font:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC','Microsoft YaHei',system-ui,sans-serif;
+  /* 顺序有讲究：拉丁交给系统 SF Pro（自带 Heavy），中文交给自托管的可变子集。
+     PingFang SC 只当兜底 —— 子集没覆盖到的字会落到它身上（那时粗细会对不上，是信号）。 */
+  --font:-apple-system,BlinkMacSystemFont,'Inter','HKW Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
   --mono:'JetBrains Mono','SF Mono',SFMono-Regular,Menlo,Consolas,ui-monospace,monospace;
 }
 *{box-sizing:border-box}
@@ -111,11 +131,11 @@ main{counter-reset:sec}
 section{padding:70px 0;border-top:1px solid var(--border);position:relative}
 section:first-child{border-top:0;padding-top:52px}
 h1,h2,h3{line-height:1.28;margin:0 0 16px;letter-spacing:-.01em}
-h1{font-size:clamp(32px,5.2vw,50px);font-weight:800;letter-spacing:-.025em}
+h1{font-size:clamp(32px,5.2vw,50px);font-weight:900;letter-spacing:-.025em}
 /* 标题关键词绿→紫渐字（第16.2节 第3条）：亮底上很出彩 */
 h1 .hl{background:linear-gradient(100deg,var(--accent),var(--accent2));
        -webkit-background-clip:text;background-clip:text;color:transparent}
-h2{font-size:clamp(23px,3.3vw,31px);font-weight:700;position:relative;z-index:1}
+h2{font-size:clamp(23px,3.3vw,31px);font-weight:800;position:relative;z-index:1}
 /* 每节背后的巨型幽灵序号（counter 自动递增，不用手填） */
 h2::after{counter-increment:sec;content:counter(sec,decimal-leading-zero);
           position:absolute;right:-6px;top:50%;transform:translateY(-52%);
@@ -124,7 +144,7 @@ h2::after{counter-increment:sec;content:counter(sec,decimal-leading-zero);
 h3{font-size:16.5px;font-weight:700}
 p{margin:0 0 16px;color:var(--text2)}
 .dek{font-size:clamp(17px,2.1vw,20.5px);color:var(--text);max-width:70ch;line-height:1.7}
-.dek b{font-weight:700}
+.dek b{font-weight:800}
 .muted{color:var(--text3);font-size:14px;line-height:1.7}
 
 /* ---- mono 眉标 + 渐变短横 ---- */
@@ -198,7 +218,7 @@ p{margin:0 0 16px;color:var(--text2)}
 /* ---- pull 渐变顶杠金句 ---- */
 .pull{margin:34px 0;padding:24px 0 0;border-top:3px solid transparent;
       border-image:linear-gradient(90deg,var(--accent),var(--accent2)) 1;
-      font-size:clamp(19px,2.5vw,25px);font-weight:800;line-height:1.55;color:var(--text)}
+      font-size:clamp(19px,2.5vw,25px);font-weight:900;line-height:1.55;color:var(--text)}
 .pull em{font-style:normal;color:var(--accent2)}
 
 /* ---- rows 方徽卡（⛔ 不用左侧彩色竖条）---- */

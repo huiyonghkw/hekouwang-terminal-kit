@@ -248,7 +248,8 @@ PYIMP
     rm -rf "$dest/.github"
     rm -f "$dest/docs/index.html"
     rm -f "$dest/docs/images/pay-wechat.png" "$dest/docs/images/pay-alipay.png"
-    printf "  ${d}- .github/FUNDING.yml、docs/index.html、两张收款码（都是给未购买者看的）${o}\n"
+    rm -rf "$dest/docs/fonts"          # 落地页专用的中文字体子集，页面都不在了它没用
+    printf "  ${d}- .github/FUNDING.yml、docs/index.html、两张收款码、docs/fonts（都只服务落地页）${o}\n"
     # 首页换成写给买家看的那份。公开版 README 开头就是免费/付费对比表和 ¥19.9 ——
     # 买家点进来看到有人向他推销他已经买的东西，很怪。
     # ⚠️ 但**不要**为此维护两份 30k 手册：正文只留一份母本（README.md），
