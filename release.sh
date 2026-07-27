@@ -52,11 +52,23 @@ g='\033[1;32m'; r='\033[1;31m'; y='\033[1;33m'; b='\033[1;34m'; d='\033[2m'; o='
 OSS_REPO="huiyonghkw/hekouwang-terminal-kit"
 PRO_REPO="huiyonghkw/hekouwang-terminal-kit-pro"
 
-OSS_DESC="A macOS terminal reconfigured for the AI era: iTerm2 Minimal with no borders, blur, automatic ERROR/WARN coloring and Shift+Enter for multi-line prompts, on top of oh-my-zsh / Starship / the modern CLI set. Config as code — one script run restores a new machine; safe to install and safe to remove (--dry-run first, migrate.sh keeps your .zshrc, doctor.sh --fix repairs itself). English by default, --lang zh for Chinese. The open-source build is complete with 3 schemes; the paid build makes that one palette walk out of iTerm2."
+# 仓库页右侧 About 栏的 Website 字段 —— 又一个**非文件**的服务端状态，同样收进母版。
+# 它是 GitHub 白送的转化位：任何人点进仓库都看得见，不用翻到 README 第三节。
+# ⛔ 地址从 lib/links.sh 取，别在这儿写第二份（--check 的一致性门管不到硬编码在本文件里的）。
+# shellcheck disable=SC1091
+. "$SCRIPT_DIR/lib/links.sh"
+OSS_HOMEPAGE="$HKW_URL_BUY"
+PRO_HOMEPAGE=""   # 付费仓的读者已经是买家，挂个还在卖东西的落地页很怪（同「首页换成 README-PRO」）
+
+# ⚠️ GitHub 的 description 上限是 **350 字符**，超一个字符整次调用报 HTTP 422、
+#    什么都不改。原来这两条是 529 / 418 字符 —— 也就是说 2026-07-23 改成英文之后，
+#    `--meta` 一次都没成功过，线上一直是更早的中文版，而错误被 `>/dev/null 2>&1` 藏住了。
+#    2026-07-27 缩到限内，并在 --check 里加了长度门（改文案时会当场红，不用等推）。
+OSS_DESC="A macOS terminal reconfigured for the AI era: iTerm2 Minimal with no borders, blur, automatic ERROR/WARN coloring and Shift+Enter for multi-line prompts, on top of oh-my-zsh / Starship / the modern CLI set. Config as code, safe to install and safe to remove. English by default, --lang zh for Chinese."
 # 公开仓**不打** ghostty / warp —— 那两个是付费能力，打了会把搜这两个词的人骗进来
 OSS_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh"
 
-PRO_DESC="The complete paid build · 4 brand themes (two of them light) · one palette syncing iTerm2 + Ghostty + Warp + the built-in macOS Terminal, with bat / fzf / eza / git diff / tmux / VS Code in the same colors · palette deriver (one brand color to a whole theme) · font priority table · project workspaces · A4 cheat sheet. Install instructions in the README, full manual in docs/manual.md (Chinese: docs/manual.zh-CN.md)."
+PRO_DESC="The complete paid build: 4 brand themes (two of them light) and one palette syncing iTerm2 + Ghostty + Warp + the built-in macOS Terminal, with bat / fzf / eza / git diff / tmux / VS Code in the same colors. Palette deriver, font priority table, project workspaces, A4 cheat sheet. Full manual in docs/manual.md."
 PRO_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh,ghostty,warp,tmux"
 
 # 付费包独占的东西（导出开源版时逐条剔掉）
@@ -580,19 +592,39 @@ EOF
   return $V_BAD
 }
 
-apply_meta() {   # apply_meta <标签> <repo> <description> <topics 逗号分隔>
-  local label="$1" repo="$2" desc="$3" topics="$4"
+apply_meta() {   # apply_meta <标签> <repo> <description> <topics 逗号分隔> <homepage>
+  local label="$1" repo="$2" desc="$3" topics="$4" home="${5:-}"
   printf "\n${b}%s → %s${o}\n" "$label" "$repo"
-  local cur_desc cur_topics t add=() del=()
+  local cur_desc cur_topics cur_home t add=() del=()
   if ! cur_desc="$(gh repo view "$repo" --json description --jq '.description // ""' 2>/dev/null)"; then
     printf "  ${r}✗ 读不到这个仓（gh 没登录？仓库不存在？）${o}\n"; return 1
   fi
   if [ "$cur_desc" = "$desc" ]; then
     printf "  ${g}✓${o} description 已是最新\n"
   else
-    gh repo edit "$repo" --description "$desc" >/dev/null 2>&1 \
-      && printf "  ${g}✓${o} description 已更新\n" \
-      || { printf "  ${r}✗ description 更新失败${o}\n"; return 1; }
+    # ⛔ 别把 gh 的错误 `>/dev/null 2>&1` 掉。原来就是这么写的，于是
+    #    「description 超过 350 字符 → HTTP 422」这个真因被藏了整整四天，
+    #    对外只打一句「更新失败」，谁也不知道失败在哪儿，线上一直是旧文案。
+    #    一个不说原因的失败，跟一个永远报平安的检查一样没用。
+    local out rc
+    out="$(gh repo edit "$repo" --description "$desc" 2>&1)"; rc=$?
+    if [ "$rc" -eq 0 ]; then
+      printf "  ${g}✓${o} description 已更新\n"
+    else
+      printf "  ${r}✗ description 更新失败${o}\n"
+      printf '%s\n' "$out" | sed 's/^/      /'
+      return 1
+    fi
+  fi
+  # homepage：空串是**有意的**（付费仓不挂），所以要跟线上比对后显式清空，
+  # 不能「非空才设」—— 那样线上一旦被手工填过就永远清不掉，真相源又漏了一块。
+  cur_home="$(gh repo view "$repo" --json homepageUrl --jq '.homepageUrl // ""' 2>/dev/null || echo "")"
+  if [ "$cur_home" = "$home" ]; then
+    printf "  ${g}✓${o} homepage 已是最新%s\n" "${home:+（${home}）}"
+  else
+    gh repo edit "$repo" --homepage "$home" >/dev/null 2>&1 \
+      && printf "  ${g}✓${o} homepage 已更新%s\n" "${home:+ → $home}" \
+      || { printf "  ${r}✗ homepage 更新失败${o}\n"; return 1; }
   fi
   # topics 要算双向差集：--add-topic 只会加，线上多出来的旧标签得显式删，
   # 否则「母版是唯一真相源」这句就不成立了（线上会慢慢攒出母版里没有的标签）。
@@ -623,10 +655,10 @@ case "${1:-}" in
   command -v gh >/dev/null 2>&1 || { printf "${r}✗ 需要 gh CLI${o}\n"; exit 1; }
   MBAD=0
   case "${2:-all}" in
-    oss) apply_meta "开源版" "$OSS_REPO" "$OSS_DESC" "$OSS_TOPICS" || MBAD=1 ;;
-    pro) apply_meta "付费仓" "$PRO_REPO" "$PRO_DESC" "$PRO_TOPICS" || MBAD=1 ;;
-    all) apply_meta "开源版" "$OSS_REPO" "$OSS_DESC" "$OSS_TOPICS" || MBAD=1
-         apply_meta "付费仓" "$PRO_REPO" "$PRO_DESC" "$PRO_TOPICS" || MBAD=1 ;;
+    oss) apply_meta "开源版" "$OSS_REPO" "$OSS_DESC" "$OSS_TOPICS" "$OSS_HOMEPAGE" || MBAD=1 ;;
+    pro) apply_meta "付费仓" "$PRO_REPO" "$PRO_DESC" "$PRO_TOPICS" "$PRO_HOMEPAGE" || MBAD=1 ;;
+    all) apply_meta "开源版" "$OSS_REPO" "$OSS_DESC" "$OSS_TOPICS" "$OSS_HOMEPAGE" || MBAD=1
+         apply_meta "付费仓" "$PRO_REPO" "$PRO_DESC" "$PRO_TOPICS" "$PRO_HOMEPAGE" || MBAD=1 ;;
     *)   printf "${r}用法：./release.sh --meta [oss|pro]${o}\n"; exit 1 ;;
   esac
   [ "$MBAD" = "0" ] && printf "\n${g}✓ 仓库元数据已与母版一致${o}\n" || { printf "\n${r}✗ 有仓没同步上${o}\n"; exit 1; }
@@ -918,6 +950,22 @@ PYI18N
   else
     printf "  ${g}✓ 英文词条表无漏翻${o}\n"
   fi
+
+  # ---- 仓库 description 长度（GitHub 硬上限 350）--------------
+  # 超一个字符，gh repo edit 整次调用报 HTTP 422、什么都不改。放在这里是为了
+  # **改文案的当下就红**，而不是等你 --meta 推的时候才发现（那时候你多半以为推成功了）。
+  printf "\n${b}仓库 description 长度（上限 350）${o}\n"
+  DESC_BAD=0
+  for pair in "OSS_DESC:$OSS_DESC" "PRO_DESC:$PRO_DESC"; do
+    dname="${pair%%:*}"; dval="${pair#*:}"
+    dlen="$(printf '%s' "$dval" | wc -m | tr -d ' ')"
+    if [ "$dlen" -gt 350 ]; then
+      printf "  ${r}✗ %s = %s 字符，超 %s${o}\n" "$dname" "$dlen" "$((dlen-350))"; DESC_BAD=1
+    else
+      printf "  ${g}✓${o} %s = %s 字符\n" "$dname" "$dlen"
+    fi
+  done
+  [ "$DESC_BAD" = "1" ] && LINT_BAD=1
 
   # ---- 落地页地址：一处定义、七处引用，别漂 -------------------
   # lib/links.sh 是唯一真相源。README（中英）、FUNDING.yml、落地页自己都得跟它一致，
