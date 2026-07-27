@@ -139,6 +139,7 @@ macOS 自带终端、`cat`、`git diff`、tmux、VS Code 全都跟着一起变�
 | **字体优先级表**：自动认出你已装的 Operator Mono 等商业字体 | 用推荐默认字体 | ✅ |
 | **跟随系统深浅色自动切**（`./theme.sh --auto`） | — | ✅ |
 | **项目工作区**：`cd` 进哪个项目，标签页自己变色 + 印项目名 | — | ✅ |
+| **Claude Code Skill**：装进 `~/.claude/skills/`，直接跟 AI 说「给我换个亮色主题」「我终端怎么开得这么慢」，它自己把整套跑完 | — | ✅ |
 | **色板推导器**：给一个品牌色，算出整套主题 | — | ✅ 无限套主题 |
 | **导入现成主题**：Ghostty 自带 463 套 / iTerm2-Color-Schemes 450+ 套，一条命令收编 | — | ✅ 导进来就铺满整条工具链 |
 | **A4 可打印《终端速查卡》**（PDF） | — | ✅ |
@@ -164,6 +165,7 @@ macOS 自带终端、`cat`、`git diff`、tmux、VS Code 全都跟着一起变�
 | `config/keymap.json` —— 全局键映射 | `config/font.conf` —— 字体优先级表 |
 | | `palettes/_derive.py` —— 色板推导器 |
 | | `palettes/_import.py` —— 现成主题导入引擎 |
+| | `SKILL.md` / `SKILL.zh-CN.md` —— Claude Code Skill |
 
 付费件不在时，生成器**照常出完整的 iTerm2 主题**，只是明确打印「以下属付费包，当前不生成」，
 不报错也不留半成品。
@@ -356,7 +358,7 @@ ERROR/WARN 自动标色全在一张图里。它用 24 位真彩色画，**跟你
 
 ### 字体：认你已有的，不替你装
 
-字体走 [`config/font.conf`](config/font.conf) 的**优先级表**，部署时探测本机实际装了哪套，第一个命中的采用——iTerm2、Ghostty、自带终端三处写同一个结果。
+字体走 `config/font.conf`〔付费〕 的**优先级表**，部署时探测本机实际装了哪套，第一个命中的采用——iTerm2、Ghostty、自带终端三处写同一个结果。
 
 ```
 OperatorMono-Book|Operator Mono|Book|H&Co 商业字体，需自购授权
@@ -529,7 +531,7 @@ ssh server -t 'tmux -CC new -A -s deploy'   # 有就接管、没有就新建
 
 上图两侧是同一台机器上的 iTerm2 与 Ghostty，跑的是同一条 `./theme.sh`。配色、字体、毛玻璃、光标形态逐项对齐——唯一差别在标题栏，那是两个 App 自己的外壳。
 
-三点结构差异值得记（完整踩坑见 [`references/terminals.md`](references/terminals.md)）：
+三点结构差异值得记（完整踩坑见 `references/terminals.md`〔付费〕）：
 
 - Ghostty 的**主题只管颜色**，字体/毛玻璃/光标在 `~/.config/ghostty/config` 里全局一份；iTerm2 是全塞进一个 Profile
 - **Ghostty 和 macOS 自带终端都不会保存即生效**：Ghostty 按 `Cmd+Shift+,` 重载，自带终端要 `Cmd+Q` 完全退出（它退出时会用内存配置覆盖）。点红叉不算退出
@@ -642,15 +644,17 @@ HKW_LANG=zh ./theme.sh      # 只让这一条命令说中文
 
 ## 十三、参考
 
-### 作为 Claude Code Skill 使用
+### 作为 Claude Code Skill 使用 〔付费〕
 
-这个目录同时是一个 Claude Code Skill：
+付费包里带 `SKILL.md` / `SKILL.zh-CN.md`，把这个目录变成一个 Claude Code Skill：
 
 ```bash
 cp -r hekouwang-terminal-kit ~/.claude/skills/hekouwang-iterm2-skill
 ```
 
-之后在 Claude Code 里它会在这些场景自动触发：新 Mac 还原终端环境、解读/优化 `.zshrc`、排查启动慢、改配色或加主题、给 Ghostty/Warp 同步、推荐 iTerm2 高阶功能。
+之后在 Claude Code 里它会自己触发：新 Mac 还原终端环境、解读/优化 `.zshrc`、排查启动慢、改配色或加主题、给 Ghostty/Warp 同步、推荐 iTerm2 高阶功能 —— 你说要什么结果，它去挑脚本、配参数、跑完。
+
+**开源版没有 `SKILL.md`**，但没有任何功能因此残废：脚本一个不少，只是你自己敲（`./theme.sh`、`./doctor.sh`、`./migrate.sh`）。付费档在这里多出来的是「AI 会用它」。
 
 ---
 
@@ -658,7 +662,7 @@ cp -r hekouwang-terminal-kit ~/.claude/skills/hekouwang-iterm2-skill
 
 | 文件 | 内容 |
 |---|---|
-| [SKILL.md](SKILL.md) | Skill 入口 + 使用流程 + 关键原则 |
+| `SKILL.md` 〔付费〕 | Skill 入口 + 使用流程 + 关键原则 |
 | [CHANGELOG.md](CHANGELOG.md) | 版本变更 |
 | [references/zshrc-explained.md](references/zshrc-explained.md) | `.zshrc` 逐块详解 + 插件推荐 + 已知问题修复 |
 | [references/iterm2-gui-settings.md](references/iterm2-gui-settings.md) | GUI 设置清单 + Dynamic Profile + 高级功能 |
@@ -680,7 +684,7 @@ cp -r hekouwang-terminal-kit ~/.claude/skills/hekouwang-iterm2-skill
 
 ### 许可
 
-**代码：MIT**（见 [LICENSE](LICENSE)），随便用、随便改、随便分发。
+**代码：MIT**（见 [LICENSE](LICENSE.txt)），随便用、随便改、随便分发。
 
 **付费主题包**（`config/themes/palettes/brand.py` 及其生成物、速查卡 PDF）：仅供购买者个人使用，请勿二次分发。
 更新会在群内同步发布；安装遇到问题，群内发报错截图即可。

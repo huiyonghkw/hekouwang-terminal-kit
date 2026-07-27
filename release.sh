@@ -88,8 +88,9 @@ OSS_DESC="A macOS terminal reconfigured for the AI era: iTerm2 Minimal with no b
 # 公开仓**不打** ghostty / warp —— 那两个是付费能力，打了会把搜这两个词的人骗进来
 OSS_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh"
 
-PRO_DESC="The complete paid build: 4 brand themes (two of them light) and one palette syncing iTerm2 + Ghostty + Warp + the built-in macOS Terminal, with bat / fzf / eza / git diff / tmux / VS Code in the same colors. Palette deriver, font priority table, project workspaces, A4 cheat sheet. Full manual in docs/manual.md."
-PRO_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh,ghostty,warp,tmux"
+PRO_DESC="The complete paid build: 4 brand themes (two of them light) and one palette syncing iTerm2 + Ghostty + Warp + the built-in macOS Terminal, with bat / fzf / eza / git diff / tmux / VS Code in the same colors. Palette deriver, font table, workspaces, cheat sheet, plus the Claude Code Skill that lets an agent drive it. Manual: docs/manual.md."
+# claude-code / agent-skill 只打在付费仓：Skill 是付费能力，公开仓打上就是钓鱼
+PRO_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh,ghostty,warp,tmux,claude-code,agent-skill"
 
 # 付费包独占的东西（导出开源版时逐条剔掉）
 BRAND_THEMES="v2-mihei v1-keji v2-mibai v3-caijing-bai"
@@ -116,6 +117,14 @@ PAID_PATHS=(
   "import.sh"
   "palette.sh"
   "workspace.sh"
+  # ⭐ 2026-07-27 三次收紧：**Claude Code Skill 整个归付费档**。
+  #    这套目录本身就是一个 Agent Skill —— 装进 ~/.claude/skills/ 之后，「换个亮色主题」
+  #    「我的终端为什么开得慢」这类话 AI 能直接驱动整套脚本跑完。那是这个产品最贵的
+  #    一层能力（不是配色，是让 AI 会用它），跟「多终端 + 全生态」并列，不该白送。
+  #    免费档＝人自己敲 ./theme.sh、./doctor.sh，脚本一个不少、功能一个不缺。
+  # ⛔ 两份一起加（英文 + 中文镜像）。剔了英文那份、漏了中文那份，等于原样发出去。
+  "SKILL.md"
+  "SKILL.zh-CN.md"
   "references/terminals.md"              # 各 App 的格式口径与踩坑（核心 know-how）
   # ⛔ 双语之后每份付费文档都多出一个 .zh-CN.md 镜像 —— 剔了英文那份、漏了中文那份，
   #    等于核心 know-how 原样进了公开仓。新增付费文档时**两份一起加**。
@@ -409,7 +418,9 @@ PY
   # ——文件躺在磁盘上、导出日志一切正常，只有 git 不认它。
   # 判据是「开源版必须发的文件，不许在 .gitignore 里有精确匹配行」。
   # ⚠️ 以后往 PAID_PATHS 加东西，如果名字和这里任何一项撞上，这道门会当场红。
-  local must_ship=(CHANGELOG.md README.md README.zh-CN.md LICENSE.txt SKILL.md
+  # ⚠️ SKILL.md 从 2.4.0 起**不在这张表里**了 —— 它归付费档，开源树里压根没有这个文件。
+  #    VERSION 顶上它的位置：版本号真相源，两档都必须发（update.sh 读它）。
+  local must_ship=(CHANGELOG.md README.md README.zh-CN.md LICENSE.txt VERSION
                    lib/links.sh docs/index.html .github/FUNDING.yml)
   local ms clash=0
   for ms in "${must_ship[@]}"; do
@@ -470,14 +481,47 @@ verify_tree() {  # verify_tree <oss|pro> <目录> → 不通过返回 1
     vrun "生成器降级（只出 iTerm2）"           "config/themes" python3 _generate.py
     # 3) 付费入口必须**优雅**退场（打说明 + exit 0），不能因为缺文件炸掉
     # 三个付费入口脚本必须**不在**开源版里（以前是留成广告位，07-23 改成整个不发）。
+    # 两份 SKILL 同理（2.4.0 起 Claude Code Skill 归付费档）：判据是**文件不存在**。
     # ⚠️ 判据是「文件不存在」，不是「跑起来会打印广告」—— 后者在文件被误发时同样是绿的。
     local gone=1 f
-    for f in import.sh palette.sh workspace.sh; do
+    for f in import.sh palette.sh workspace.sh SKILL.md SKILL.zh-CN.md; do
       if [ -e "$V_DEST/$f" ]; then
         printf "  ${r}✗ %s 不该出现在开源版${o}\n" "$f"; gone=0; V_BAD=1
       fi
     done
-    [ "$gone" = "1" ] && printf "  ${g}✓${o} 三个付费入口脚本都没跟出去\n"
+    [ "$gone" = "1" ] && printf "  ${g}✓${o} 付费入口脚本与两份 SKILL 都没跟出去\n"
+
+    # ⛔ 版本号：SKILL.md 走了，免费版的版本号必须还有地方读。
+    #    没这道门的话，update.sh 会安安静静打「版本未知」——功能没坏、没人报错，
+    #    但用户看不出自己是哪一版，也就不知道该不该更新。这是典型的静默降级。
+    if [ -s "$V_DEST/VERSION" ]; then
+      printf "  ${g}✓${o} 版本号真相源在（VERSION = %s）\n" "$(tr -d '[:space:]' < "$V_DEST/VERSION")"
+    else
+      printf "  ${r}✗ 开源树里没有 VERSION —— update.sh 会打「版本未知」且零报错${o}\n"; V_BAD=1
+    fi
+    # 顺带盯住「谁在读 SKILL.md」：只扫**可执行文件**（.sh/.py），别扫 md ——
+    # README 里正常会提到这个名字，扫文档只会制造假警报。
+    # ⚠️ 两条免疫：
+    #   1. release.sh 自己 —— 它随开源版分发，而 PAID_PATHS 里**本来就写着** SKILL.md
+    #      （分档逻辑摆在明面上是卖点）。不排就是自指误报，天天红、最后没人看。
+    #   2. 注释行 —— 判据是「有没有真去读它」，不是「有没有提到这个名字」。
+    #      update.sh 里那句「⛔ 别改回读 SKILL.md」正是防复发的提醒，把它判红
+    #      等于逼人删掉提醒。⚠️ 这跟密钥扫描**不许**豁免注释是相反的两件事：
+    #      注释里的密钥照样泄漏，注释里的文件名不会被执行。
+    local vsrc="" vf
+    while IFS= read -r vf; do
+      [ -n "$vf" ] || continue
+      if sed 's/#.*//' "$vf" | grep -q 'SKILL\.md'; then vsrc="$vsrc $vf"; fi
+    done <<EOF_VSRC
+$(find "$V_DEST" -name .git -prune -o \( -name '*.sh' -o -name '*.py' \) -print 2>/dev/null | grep -v '/release\.sh$')
+EOF_VSRC
+    if [ -n "$vsrc" ]; then
+      printf "  ${r}✗ 开源树里还有脚本在读 SKILL.md，而那个文件不在这一档${o}\n"
+      printf '%s\n' $vsrc | sed "s|$V_DEST/|      |"
+      V_BAD=1
+    else
+      printf "  ${g}✓${o} 没有脚本再从 SKILL.md 取东西\n"
+    fi
 
     # ⛔ 付费 know-how 指纹扫描 —— 这次收紧分档的**回归闸门**。
     #    2026-07-23 之前免费仓里躺着多终端同步的完整实现、各 App 的格式踩坑手册，
@@ -487,7 +531,10 @@ verify_tree() {  # verify_tree <oss|pro> <目录> → 不通过返回 1
     # 指纹表放在 docs/泄漏指纹.txt（INTERNAL_PATHS，两档都不发）。
     # ⛔ 别把字串写回本文件 —— release.sh 是发进公开仓的，写在这儿等于把
     #    「付费档在处理哪些东西」的路线图一起发出去，而且扫描会全部自指误报。
-    local SIGFILE="$SCRIPT_DIR/docs/泄漏指纹.txt" sig hits n_sig=0
+    # ⛔ 报平安要用**自己的**标志位。这里原来写的是 `[ "$V_BAD" = "1" ] || 打绿字`——
+    #    V_BAD 是整个 verify_tree 共用的，前面任何一项挂了都会把这行绿字吞掉，
+    #    看起来像「指纹扫描静默跳过了」。一个检查的结论不该被别的检查的结论污染。
+    local SIGFILE="$SCRIPT_DIR/docs/泄漏指纹.txt" sig hits n_sig=0 sig_bad=0
     if [ -f "$SIGFILE" ]; then
       printf "  ${d}付费 know-how 指纹${o}\n"
       while IFS= read -r sig; do
@@ -496,10 +543,10 @@ verify_tree() {  # verify_tree <oss|pro> <目录> → 不通过返回 1
         hits="$(grep -rl --exclude-dir=.git -F "$sig" "$V_DEST" 2>/dev/null | sed "s|$V_DEST/||" | tr '\n' ' ')"
         if [ -n "$hits" ]; then
           printf "    ${r}✗ 泄漏在：%s${o}\n" "$hits"
-          V_BAD=1
+          sig_bad=1; V_BAD=1
         fi
       done < "$SIGFILE"
-      [ "$V_BAD" = "1" ] || printf "    ${g}✓${o} %s 个指纹字串一个都没出现\n" "$n_sig"
+      [ "$sig_bad" = "1" ] || printf "    ${g}✓${o} %s 个指纹字串一个都没出现\n" "$n_sig"
     fi
 
     # 本机导入的主题不许随产品分发（我试色留下的 rose-pine 之类）
@@ -528,6 +575,34 @@ PYI
       V_BAD=1
     else
       printf "  ${g}✓${o} ghostty.config 未引用付费主题\n"
+    fi
+
+    # ⛔ 相对链接必须在**这一档里**解析得到。
+    #    这道门以前只装在付费分支（手册搬进 docs/ 会把路径整体压深一层），
+    #    开源分支没有 —— 而开源版才是链接最容易断的那一档：README 是母本，
+    #    里面正常会提到 config/font.conf、references/terminals.md 这些**付费件**，
+    #    剔掉之后每一条都成了 404，点一条死一条，从 2.0.0 起没人发现（07-27 补）。
+    #    判据同付费分支：把路径解析一遍看文件在不在，别 grep 字符串。
+    if python3 - "$V_DEST" <<'PYLNKOSS'
+import pathlib, re, sys
+root = pathlib.Path(sys.argv[1])
+bad = []
+mds = sorted(root.glob("*.md")) + sorted((root / "references").glob("*.md"))
+for md in mds:
+    for m in re.finditer(r'\[[^\]]+\]\(([^)#][^)]*)\)', md.read_text(encoding="utf-8")):
+        t = m.group(1).split("#")[0]
+        if not t or t.startswith(("http", "mailto")):
+            continue
+        if not (md.parent / t).exists():
+            bad.append(f"{md.relative_to(root)} → {t}")
+for b in bad[:12]:
+    print("      " + b)
+sys.exit(1 if bad else 0)
+PYLNKOSS
+    then
+      printf "  ${g}✓${o} 文档相对链接全部解析得到\n"
+    else
+      printf "  ${r}✗ 上面这些链接在开源版里指向不存在的文件（多半是引用了付费件）${o}\n"; V_BAD=1
     fi
   else
     # 2') 付费仓反过来验：全量产物必须真的都在，付费能力必须真的能干活
@@ -1020,6 +1095,33 @@ PYI18N
     fi
   done
   [ "$DESC_BAD" = "1" ] && LINT_BAD=1
+
+  # ---- 版本号：VERSION 是真相源，SKILL frontmatter 必须跟它相等 ----
+  # 2.4.0 起 SKILL.md 归付费档，所以版本号真相源挪到了仓根的 VERSION（两档都发）。
+  # 但 SKILL.md 的 frontmatter 仍**必须**有 version（Claude Code / SkillHub 都读它），
+  # 于是又出现了一份副本 —— 这个仓已经因为「硬编码副本漂掉」栽过四次，直接补门。
+  # ⛔ 判据是「每一份都等于 VERSION」，不是「有没有 version 这一行」。
+  printf "\n${b}版本号一致性（VERSION 是真相源）${o}\n"
+  VER_SRC="$(tr -d '[:space:]' < "$SCRIPT_DIR/VERSION" 2>/dev/null)"
+  if [ -z "$VER_SRC" ]; then
+    printf "  ${r}✗ 仓根没有 VERSION 或它是空的${o}\n"; LINT_BAD=1
+  else
+    printf "  ${d}真相源：%s${o}\n" "$VER_SRC"
+    VER_BAD=0
+    for f in SKILL.md SKILL.zh-CN.md; do
+      [ -f "$SCRIPT_DIR/$f" ] || continue     # 中文镜像没 frontmatter 时跳过
+      grep -q '^version:' "$SCRIPT_DIR/$f" || continue
+      fv="$(grep -m1 '^version:' "$SCRIPT_DIR/$f" | awk '{print $2}' | tr -d '[:space:]')"
+      if [ "$fv" != "$VER_SRC" ]; then
+        printf "  ${r}✗ %s 的 frontmatter 是 %s，VERSION 是 %s${o}\n" "$f" "$fv" "$VER_SRC"; VER_BAD=1
+      fi
+    done
+    if [ "$VER_BAD" -eq 0 ]; then
+      printf "  ${g}✓ SKILL frontmatter 与 VERSION 一致${o}\n"
+    else
+      printf "  ${r}→ 升版本改 VERSION，SKILL frontmatter 要跟着改${o}\n"; LINT_BAD=1
+    fi
+  fi
 
   # ---- 落地页地址：一处定义、七处引用，别漂 -------------------
   # lib/links.sh 是唯一真相源。README（中英）、FUNDING.yml、落地页自己都得跟它一致，

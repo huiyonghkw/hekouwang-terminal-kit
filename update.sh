@@ -30,7 +30,10 @@ say() { printf "\n${b}%s${o}\n" "$(t "$@")"; }
 
 cd "$SCRIPT_DIR"
 
-CUR_VER="$(grep -m1 '^version:' SKILL.md 2>/dev/null | awk '{print $2}')"
+# 版本号真相源＝仓根的 VERSION（两档都发）。
+# ⛔ 别改回读 SKILL.md：那份从 2.4.0 起归付费档（Claude Code Skill 是付费能力），
+#    免费版根本没有这个文件 —— 读不到只会安静地打「版本未知」，零报错。
+CUR_VER="$(tr -d '[:space:]' < VERSION 2>/dev/null)"
 printf "${b}%s${o}\n" "$(t M_UP_HEAD)"
 printf "${d}%s${o}\n" "$(t M_UP_CURRENT "${CUR_VER:-$(t M_UP_UNKNOWN)}")"
 
@@ -139,6 +142,6 @@ if command -v bat >/dev/null 2>&1; then
   fi
 fi
 
-NEW_VER="$(grep -m1 '^version:' SKILL.md 2>/dev/null | awk '{print $2}')"
+NEW_VER="$(tr -d '[:space:]' < VERSION 2>/dev/null)"
 printf "\n${g}%s${o}  ${d}%s → %s${o}\n" "$(t M_UP_DONE)" "${CUR_VER:-?}" "${NEW_VER:-?}"
 printf "${d}%s${o}\n" "$(t M_UP_DONE_NOTE)"

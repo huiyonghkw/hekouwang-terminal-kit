@@ -7,6 +7,16 @@
 
 ---
 
+## [2.4.0]
+
+- **变更：Claude Code Skill 归付费档。** 开源版不再带 `SKILL.md`，
+  「装进 `~/.claude/skills/` 让 AI 驱动整套」从这一版起属于付费包。
+  **开源版没有任何功能因此少掉**：脚本一个不少、参数一个不改，
+  只是由你自己敲 `./theme.sh` / `./doctor.sh` / `./migrate.sh`，而不是让 AI 替你挑
+- 新增仓根 `VERSION` 文件当版本号唯一真相源。以前版本号读的是 `SKILL.md` 的
+  frontmatter，那个文件走了之后 `update.sh` 会安静地打「版本未知」——
+  功能没坏、也没有任何报错，但你看不出自己在哪一版。已连同一道校验门一起补上
+
 ## [2.3.0]
 
 - 新增项目主页 <https://huiyonghkw.github.io/hekouwang-terminal-kit/>：

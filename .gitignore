@@ -22,6 +22,8 @@ config/themes/_workspace_pro.sh
 import.sh
 palette.sh
 workspace.sh
+SKILL.md
+SKILL.zh-CN.md
 references/terminals.md
 references/terminals.zh-CN.md
 docs/速查卡.html

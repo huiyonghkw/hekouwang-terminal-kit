@@ -134,6 +134,7 @@ The open-source build is not a demo: 3 color schemes, blur, automatic log colori
 | **Font priority table**: picks up commercial fonts you already own, e.g. Operator Mono | uses the recommended default | ✅ |
 | **Follows the system light/dark switch** (`./theme.sh --auto`) | — | ✅ |
 | **Project workspaces**: `cd` into a project and the tab recolors and prints its name | — | ✅ |
+| **Claude Code Skill**: drop it into `~/.claude/skills/` and an agent drives the whole kit — "switch me to a light theme", "why does my terminal take so long to open" | — | ✅ |
 | **Palette deriver**: give it one brand color, get a whole theme | — | ✅ unlimited themes |
 | **Import existing themes**: Ghostty's 463 / iTerm2-Color-Schemes' 450+, one command | — | ✅ imported ones cover the whole tool chain too |
 | **Printable A4 cheat sheet** (PDF) | — | ✅ |
@@ -154,6 +155,7 @@ The open-source build is not a demo: 3 color schemes, blur, automatic log colori
 | `config/keymap.json` — global key map | `config/font.conf` — font priority table |
 | | `palettes/_derive.py` — palette deriver |
 | | `palettes/_import.py` — theme import engine |
+| | `SKILL.md` / `SKILL.zh-CN.md` — the Claude Code Skill |
 
 With the paid files absent, the generator **still produces the complete iTerm2 theme** and simply prints "the following belong to the paid pack and are not generated" — no errors, no half-built state.
 
@@ -341,7 +343,7 @@ Switch once and all of the following become the same palette **at the same time*
 
 ### Fonts: uses what you have, installs nothing
 
-Fonts go through the **priority table** in [`config/font.conf`](config/font.conf). At deploy time it detects which of them are actually installed and takes the first hit — and writes that same result into iTerm2, Ghostty and the built-in Terminal.
+Fonts go through the **priority table** in `config/font.conf` 〔paid〕. At deploy time it detects which of them are actually installed and takes the first hit — and writes that same result into iTerm2, Ghostty and the built-in Terminal.
 
 ```
 OperatorMono-Book|Operator Mono|Book|H&Co commercial font, license must be bought
@@ -510,7 +512,7 @@ ssh server -t 'tmux -CC new -A -s deploy'   # attach if it exists, create if not
 
 Above are iTerm2 and Ghostty on the same machine, after the same `./theme.sh`. Colors, font, blur and cursor shape line up item by item — the only difference is the title bar, which belongs to each app's own shell.
 
-Three structural differences worth remembering (the full set of pitfalls is in [`references/terminals.md`](references/terminals.md)):
+Three structural differences worth remembering (the full set of pitfalls is in `references/terminals.md` 〔paid〕):
 
 - A Ghostty **theme only carries colors**; font, blur and cursor live globally in `~/.config/ghostty/config`. iTerm2 packs all of it into one profile
 - **Neither Ghostty nor the built-in Terminal applies changes on save**: Ghostty reloads with `Cmd+Shift+,`, and Terminal.app needs a full `Cmd+Q` (it overwrites settings from memory when it quits). Clicking the red dot does not count as quitting
@@ -619,15 +621,17 @@ The `.zshrc` template comes in both languages too (`config/zshrc.template` / `.z
 
 ## 13. Reference
 
-### Using it as a Claude Code Skill
+### Using it as a Claude Code Skill 〔paid〕
 
-This directory is also a Claude Code Skill:
+The paid pack ships `SKILL.md` / `SKILL.zh-CN.md`, which turn this directory into a Claude Code Skill:
 
 ```bash
 cp -r hekouwang-terminal-kit ~/.claude/skills/hekouwang-iterm2-skill
 ```
 
-After that Claude Code triggers it automatically for: restoring a terminal environment on a new Mac, explaining or tuning a `.zshrc`, debugging slow startup, changing colors or adding a theme, syncing Ghostty/Warp, and recommending advanced iTerm2 features.
+After that Claude Code triggers it on its own for: restoring a terminal environment on a new Mac, explaining or tuning a `.zshrc`, debugging slow startup, changing colors or adding a theme, syncing Ghostty/Warp, and recommending advanced iTerm2 features — you describe the outcome, the agent runs the right script with the right flags.
+
+**The open-source build has no `SKILL.md`**, and nothing about it is crippled by that: every script is there and you run them yourself (`./theme.sh`, `./doctor.sh`, `./migrate.sh`). What the paid tier adds here is that an agent knows how to run them for you.
 
 ---
 
@@ -635,7 +639,7 @@ After that Claude Code triggers it automatically for: restoring a terminal envir
 
 | File | Contents |
 |---|---|
-| [SKILL.md](SKILL.md) | Skill entry point + workflows + principles |
+| `SKILL.md` 〔paid〕 | Skill entry point + workflows + principles |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
 | [references/zshrc-explained.md](references/zshrc-explained.md) | `.zshrc` block by block + plugin picks + known issues |
 | [references/iterm2-gui-settings.md](references/iterm2-gui-settings.md) | GUI checklist + Dynamic Profile + advanced features |
@@ -657,7 +661,7 @@ After that Claude Code triggers it automatically for: restoring a terminal envir
 
 ### License
 
-**Code: MIT** (see [LICENSE](LICENSE)) — use it, change it, redistribute it.
+**Code: MIT** (see [LICENSE](LICENSE.txt)) — use it, change it, redistribute it.
 
 **The paid theme pack** (`config/themes/palettes/brand.py`, its generated artifacts and the cheat sheet PDF) is for the buyer's personal use; please do not redistribute it.
 Updates are published in the group; if installation gives you trouble, post the error screenshot there.
