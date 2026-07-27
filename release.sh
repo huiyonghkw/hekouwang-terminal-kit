@@ -67,6 +67,19 @@ PRO_HOMEPAGE=""   # 付费仓的读者已经是买家，挂个还在卖东西的
 OSS_PAGES_BRANCH="main"
 OSS_PAGES_PATH="/docs"
 
+# 只服务落地页（＝只对**还没买**的人有意义）的东西：付费仓一律不带。
+# ⛔ 必须是**一份清单**。2026-07-27 我先把两张收款码写成两行 rm，隔半小时加第三张
+#    （加好友码）时忘了同步，那张就跟着进了付费仓 —— 跟 PAID_PATHS 被硬编码三份、
+#    同一天漂两次是同一个病。下面 build_tree 按这个数组删，删完还要逐项验一遍。
+SITE_ONLY_PATHS=(
+  ".github"                       # Sponsor 按钮，冲已付过钱的买家弹很怪
+  "docs/index.html"               # 落地页正文
+  "docs/fonts"                    # 落地页专用中文字体子集
+  "docs/images/pay-wechat.png"
+  "docs/images/pay-alipay.png"
+  "docs/images/wechat-qr.png"
+)
+
 # ⚠️ GitHub 的 description 上限是 **350 字符**，超一个字符整次调用报 HTTP 422、
 #    什么都不改。原来这两条是 529 / 418 字符 —— 也就是说 2026-07-23 改成英文之后，
 #    `--meta` 一次都没成功过，线上一直是更早的中文版，而错误被 `>/dev/null 2>&1` 藏住了。
@@ -245,11 +258,22 @@ PYIMP
     #   .github/FUNDING.yml → 仓库页顶部的 Sponsor 按钮，冲已经付过钱的买家弹很怪
     #   docs/index.html     → 落地页（含收款码和分档表），买家点进来看到有人
     #                         向他推销他已经买了的东西，跟上面换 README 是同一个道理
-    rm -rf "$dest/.github"
-    rm -f "$dest/docs/index.html"
-    rm -f "$dest/docs/images/pay-wechat.png" "$dest/docs/images/pay-alipay.png"
-    rm -rf "$dest/docs/fonts"          # 落地页专用的中文字体子集，页面都不在了它没用
-    printf "  ${d}- .github/FUNDING.yml、docs/index.html、两张收款码、docs/fonts（都只服务落地页）${o}\n"
+    # 落地页那一套：按 SITE_ONLY_PATHS 单一清单删，删完逐项验 —— 光删不验，
+    # 漏一项照样零报错发出去（wechat-qr.png 就是这么漏进付费仓的）。
+    local sp leak=0
+    for sp in "${SITE_ONLY_PATHS[@]}"; do
+      rm -rf "$dest/$sp"
+      printf "  ${d}- %s${o}\n" "$sp"
+    done
+    for sp in "${SITE_ONLY_PATHS[@]}"; do
+      if [ -e "$dest/$sp" ]; then
+        printf "  ${r}✗ 落地页专用件没删掉：%s${o}\n" "$sp"; leak=1
+      fi
+    done
+    if [ "$leak" = "1" ]; then
+      printf "  ${r}→ 付费仓不该带只服务未购买者的东西${o}\n"; return 1
+    fi
+    printf "  ${g}✓ 落地页专用件已全部剔除（%s 项）${o}\n" "${#SITE_ONLY_PATHS[@]}"
     # 首页换成写给买家看的那份。公开版 README 开头就是免费/付费对比表和 ¥19.9 ——
     # 买家点进来看到有人向他推销他已经买的东西，很怪。
     # ⚠️ 但**不要**为此维护两份 30k 手册：正文只留一份母本（README.md），
