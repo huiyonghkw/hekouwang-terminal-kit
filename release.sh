@@ -8,6 +8,7 @@
 #   ./release.sh --pack [文件.zip]          打付费包 zip（给不用 git 的买家）
 #   ./release.sh --meta [oss|pro]           把仓库 description / topics 推上 GitHub
 #   ./release.sh --tag  [子仓目录...]        按 VERSION 给母版+子仓打 tag 并推（幂等）
+#   ./release.sh --release [版本号]          按 CHANGELOG-OSS 发公开仓的 GitHub Release
 #   ./release.sh --check                    只检查：有没有夹带不该带出去的东西
 #
 #   不带 --update = 第一次建仓，目标必须是空目录
@@ -1047,6 +1048,66 @@ PYV
     printf "\n${r}✗ 有仓没打上，别当成发完了${o}\n"; exit 1
   fi
   printf "\n${g}✓ %s 三仓齐了${o}\n" "$TAG"
+  ;;
+
+# ------------------------------------------------------------
+# 发 GitHub Release —— 只发**公开仓**
+#
+# ⛔ 发布说明**不另写一份**，逐字取自 CHANGELOG-OSS.md 的同名小节。
+#    分档产品每多一处对外文案，就多一处会漂到「在免费页面上吹付费能力」的地方
+#    （公开仓 description 写「全链同步」就是这么来的）。CHANGELOG-OSS 已经守着分档口径、
+#    而且本来就发在公开仓里，让它当唯一真相源，Release 页只是它的一个镜像。
+# ⛔ 付费仓不发：它是 private，Release 页只有买家看得见，而买家 git pull 就有完整 CHANGELOG。
+#
+# 副标题也从 CHANGELOG-OSS 取：`## [2.4.0] · 副标题` —— 写在那儿而不是当命令行参数传，
+# 是为了让「这一版对外怎么介绍」也留在版本库里，而不是打完命令就没了。
+# ------------------------------------------------------------
+--release)
+  shift
+  RVER="${1:-$(tr -d '[:space:]' < "$SCRIPT_DIR/VERSION" 2>/dev/null)}"
+  if [ -z "$RVER" ]; then
+    printf "${r}✗ 读不到版本号${o}\n"; exit 1
+  fi
+  RTAG="v$RVER"
+  printf "${b}发 Release %s → %s${o}\n" "$RTAG" "$OSS_REPO"
+
+  # ① 远端必须已经有这个 tag。Release 挂在 tag 上，tag 不在就等于凭空造一个引用。
+  if ! gh api "repos/$OSS_REPO/git/ref/tags/$RTAG" >/dev/null 2>&1; then
+    printf "  ${r}✗ 远端没有 %s —— 先跑 ./release.sh --tag${o}\n" "$RTAG"; exit 1
+  fi
+  printf "  ${g}✓${o} 远端 tag 在\n"
+
+  # ② 幂等：已经发过就不动它（别覆盖已经有人读过的发布说明）
+  if gh release view "$RTAG" --repo "$OSS_REPO" >/dev/null 2>&1; then
+    printf "  ${g}✓${o} %s 已经发过了，不覆盖\n" "$RTAG"
+    exit 0
+  fi
+
+  # ③ 从 CHANGELOG-OSS.md 抽正文与副标题；抽不到就拒绝 —— 宁可不发，也别发一个空说明
+  RNOTES="$(mktemp)"; RTITLE=""
+  if ! RTITLE="$(python3 - "$SCRIPT_DIR/CHANGELOG-OSS.md" "$RVER" "$RNOTES" <<'PYREL'
+import re, sys, pathlib
+src = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
+ver = re.escape(sys.argv[2])
+m = re.search(rf"^## \[{ver}\](?:\s*·\s*(.+?))?\s*$\n(.*?)(?=^## \[|\Z)", src, re.S | re.M)
+if not m or not m.group(2).strip():
+    sys.exit(1)
+pathlib.Path(sys.argv[3]).write_text(m.group(2).strip() + "\n", encoding="utf-8")
+print((m.group(1) or "").strip())
+PYREL
+  )"; then
+    printf "  ${r}✗ CHANGELOG-OSS.md 里没有 [%s] 这一节（或它是空的）${o}\n" "$RVER"
+    rm -f "$RNOTES"; exit 1
+  fi
+  [ -n "$RTITLE" ] && RTITLE="$RTAG · $RTITLE" || RTITLE="$RTAG"
+  printf "  ${d}标题：%s（%s 行说明）${o}\n" "$RTITLE" "$(wc -l < "$RNOTES" | tr -d ' ')"
+
+  if gh release create "$RTAG" --repo "$OSS_REPO" --title "$RTITLE" --notes-file "$RNOTES"; then
+    printf "  ${g}✓${o} 已发布\n"
+  else
+    printf "  ${r}✗ 发布失败（上面是 gh 的原始报错）${o}\n"; rm -f "$RNOTES"; exit 1
+  fi
+  rm -f "$RNOTES"
   ;;
 
 # ------------------------------------------------------------
