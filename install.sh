@@ -308,7 +308,9 @@ fi
 
 # ---- 15. 自检 ----
 say M_INSTALL_DOCTOR
-bash "$SCRIPT_DIR/doctor.sh" || true
+# HKW_NO_PROMO：让 doctor 别打「付费档在哪儿」那一行 —— 下面 install 的收尾会打，
+# 两句隔十行出现两遍就成了噪音。见 doctor.sh 汇总段的注释。
+HKW_NO_PROMO=1 bash "$SCRIPT_DIR/doctor.sh" || true
 
 say M_INSTALL_DONE
 dim M_INSTALL_TAIL_LOCAL
@@ -318,3 +320,9 @@ dim M_INSTALL_TAIL_AUTO
 dim M_INSTALL_TAIL_UNDO
 echo ""
 dim M_INSTALL_TAIL_CN
+# 付费档在哪儿 —— 只在付费件缺席时打一行。装完这一刻他刚看见成果，
+# 是除了换肤回执之外第二个不用翻 README 的转化位。买家（付费件在）不打，
+# 免得冲已经付过钱的人推销（同 release.sh 里「付费仓别拿公开版首页」那条）。
+if [ ! -f "$SCRIPT_DIR/config/themes/_apply_pro.sh" ] && [ -n "${HKW_URL_BUY:-}" ]; then
+  dim M_INSTALL_TAIL_BUY "$HKW_URL_BUY"
+fi

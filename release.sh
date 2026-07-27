@@ -222,6 +222,13 @@ PYIMP
     rm -f "$dest/unlock.sh"
     rm -f "$dest/CHANGELOG-OSS.md"   # 付费仓用完整版 CHANGELOG.md
     printf "  ${d}- unlock.sh（zip 渠道专用）${o}\n"
+    # 两样只对**还没买**的人有意义的东西，不进付费仓：
+    #   .github/FUNDING.yml → 仓库页顶部的 Sponsor 按钮，冲已经付过钱的买家弹很怪
+    #   docs/index.html     → 落地页（含收款码和分档表），买家点进来看到有人
+    #                         向他推销他已经买了的东西，跟上面换 README 是同一个道理
+    rm -rf "$dest/.github"
+    rm -f "$dest/docs/index.html"
+    printf "  ${d}- .github/FUNDING.yml、docs/index.html（都是给未购买者看的）${o}\n"
     # 首页换成写给买家看的那份。公开版 README 开头就是免费/付费对比表和 ¥19.9 ——
     # 买家点进来看到有人向他推销他已经买的东西，很怪。
     # ⚠️ 但**不要**为此维护两份 30k 手册：正文只留一份母本（README.md），
@@ -334,6 +341,14 @@ PY
   {
     printf '\n# 付费包内容：不进公开仓（本段由 release.sh 从 PAID_PATHS 生成，别手改）\n'
     for p in "${PAID_PATHS[@]}"; do
+      # ⛔ CHANGELOG.md 必须跳过：母版那份完整流水账确实属付费，但**这个文件名在
+      #    开源树里被复用了** —— 上面刚把 CHANGELOG-OSS.md 改名成 CHANGELOG.md。
+      #    照抄进 .gitignore 等于它自己忽略掉自己刚生成的精简版：文件在磁盘上、
+      #    日志还打「~ CHANGELOG-OSS.md → CHANGELOG.md（精简版）」，看着完全成功，
+      #    但 git 从头到尾没跟踪过它 —— 公开仓从建仓起就没有 CHANGELOG，零报错。
+      #    2026-07-27 才发现。付费那份的真正防线是上面按 PAID_PATHS 逐个 rm 的那一层，
+      #    .gitignore 只是第二道保险，对这个被复用的名字必须让位。
+      [ "$p" = "CHANGELOG.md" ] && continue
       # 目录补尾斜杠，连里面的产物一起挡掉
       if [ -d "$SCRIPT_DIR/$p" ]; then printf '%s/\n' "$p"; else printf '%s\n' "$p"; fi
     done
@@ -342,6 +357,28 @@ PY
     printf '\n# 付费色板生成出来的 iTerm2 Profile（色板不在＝这些也不该在）\n'
     for t in $BRAND_THEMES; do printf 'config/themes/%s.json\n' "$t"; done
   } >> "$dest/.gitignore"
+
+  # ---- 同名碰撞门：.gitignore 不许挡掉开源版真要发的文件 ----
+  # 上面那个 CHANGELOG.md 的坑属于一整类：**付费件和开源件重名**时，
+  # 从 PAID_PATHS 生成的 ignore 行会连开源那份一起挡掉，而且是完全静默的
+  # ——文件躺在磁盘上、导出日志一切正常，只有 git 不认它。
+  # 判据是「开源版必须发的文件，不许在 .gitignore 里有精确匹配行」。
+  # ⚠️ 以后往 PAID_PATHS 加东西，如果名字和这里任何一项撞上，这道门会当场红。
+  local must_ship=(CHANGELOG.md README.md README.zh-CN.md LICENSE.txt SKILL.md
+                   lib/links.sh docs/index.html .github/FUNDING.yml)
+  local ms clash=0
+  for ms in "${must_ship[@]}"; do
+    [ -e "$dest/$ms" ] || continue
+    if grep -qxF "$ms" "$dest/.gitignore" 2>/dev/null; then
+      printf "  ${r}✗ .gitignore 挡掉了开源版要发的 %s${o}\n" "$ms"; clash=1
+    fi
+  done
+  if [ "$clash" = "1" ]; then
+    printf "  ${r}→ 多半是 PAID_PATHS 里有个同名文件。开源树里这个名字是另一份东西，\n"
+    printf "     照抄进 .gitignore 会静默吃掉它（CHANGELOG.md 就这么丢了半年）。${o}\n"
+    return 1
+  fi
+  printf "  ${g}✓ .gitignore 没挡掉该发的文件${o}\n"
 
   # SkillHub 之类的平台拒收无扩展名文件，LICENSE 顺手改名
   [ -f "$dest/LICENSE" ] && mv "$dest/LICENSE" "$dest/LICENSE.txt"
@@ -635,7 +672,12 @@ case "${1:-}" in
     printf "${b}导出%s → %s${o}\n" "$MODE_CN" "$DEST"
   fi
 
-  build_tree "$MODE" "$STAGE"
+  # ⚠️ 本脚本只有 set -u、没有 set -e —— build_tree 的返回值**必须显式接**，
+  #    不接的话它里面的门 return 1 会被静默吞掉，等于那道门根本不存在
+  #    （同 --oss 降级验证曾经被 `| sed` 吃掉退出码那次，见文件末尾注释）。
+  if ! build_tree "$MODE" "$STAGE"; then
+    printf "\n${r}✗ 导出中止：build_tree 有门没过（上面有红字）${o}\n"; exit 1
+  fi
 
   printf "\n${b}验证：%s在它自己那一档下能不能跑${o}\n" "$MODE_CN"
   if verify_tree "$MODE" "$STAGE"; then
@@ -656,7 +698,15 @@ case "${1:-}" in
     # ⚠️ 必须 --exclude=.git，否则 --delete 会连目标仓的 git 历史一起删掉。
     #    也别用 cp -R：cp 不删目标里已经不该存在的文件，
     #    上一版的付费件 / 改名前的旧文件会变成幽灵永久留在仓里。
-    rsync -a --delete --exclude='.git' "$STAGE/" "$DEST/" || {
+    # ⛔ 必须带 -c（按校验和比对），别用默认的 quick-check。
+    #    rsync 默认「size 相同 且 mtime 相同 → 跳过」，而这两个条件在发版时**很容易同时成立**：
+    #      · 版本号升位（2.2.0 → 2.3.0）、改一个字符的 typo —— 都是**等长**改动，size 不变
+    #      · STAGE 是导出当下用 cp 现建的，DEST 若刚被 git reset/checkout 碰过，
+    #        两边 mtime 会落在同一秒（mtime 比对精度就是秒）
+    #    2026-07-27 实测：reset 完紧接着导出，SKILL.md 的 2.2.0→2.3.0 被静默跳过，
+    #    rsync 退出码 0、导出日志全绿、git status 里那个文件干脆不出现 —— 看上去像「没改过」。
+    #    119 个文件算校验和的代价可以忽略，别为省这点时间换一个静默漏发。
+    rsync -ac --delete --exclude='.git' "$STAGE/" "$DEST/" || {
       printf "${r}✗ rsync 同步失败${o}\n"; exit 1; }
     printf "\n${g}═══ 已同步进 %s ═══${o}\n" "$DEST"
     printf "文件数：%s\n\n" "$(find "$DEST" -type f -not -path '*/.git/*' | wc -l | tr -d ' ')"
@@ -867,6 +917,41 @@ PYI18N
     printf "  ${r}✗ 英文词条表里有中文${o}\n"; LINT_BAD=1
   else
     printf "  ${g}✓ 英文词条表无漏翻${o}\n"
+  fi
+
+  # ---- 落地页地址：一处定义、七处引用，别漂 -------------------
+  # lib/links.sh 是唯一真相源。README（中英）、FUNDING.yml、落地页自己都得跟它一致，
+  # 否则会出现「换肤回执把人送到 A、README 送到 B」这种没人会发现的分叉。
+  # ⛔ 判据是「文件里出现的每一个 huiyonghkw.github.io 地址都等于真相源」，
+  #    不是「文件里含有真相源」—— 后者在多出一个旧地址时照样报绿（半扇门）。
+  printf "\n${b}落地页地址一致性（lib/links.sh 是真相源）${o}\n"
+  URL_SRC="$(sed -n 's/^HKW_URL_BUY="\(.*\)"$/\1/p' "$SCRIPT_DIR/lib/links.sh" 2>/dev/null)"
+  if [ -z "$URL_SRC" ]; then
+    printf "  ${r}✗ lib/links.sh 里读不出 HKW_URL_BUY${o}\n"; LINT_BAD=1
+  else
+    printf "  ${d}真相源：%s${o}\n" "$URL_SRC"
+    URL_BAD=0
+    for f in ".github/FUNDING.yml" "docs/index.html" "README.md" "README.zh-CN.md"; do
+      [ -f "$SCRIPT_DIR/$f" ] || { printf "  ${r}✗ %s 不见了${o}\n" "$f"; URL_BAD=1; continue; }
+      # 抓出这个文件里所有指向 Pages 站的地址
+      HITS="$(grep -oE 'https://huiyonghkw\.github\.io[^ )"'"'"'`<]*' "$SCRIPT_DIR/$f" 2>/dev/null | sort -u)"
+      if [ -z "$HITS" ]; then
+        printf "  ${r}✗ %s 里没有落地页地址${o}\n" "$f"; URL_BAD=1; continue
+      fi
+      while IFS= read -r u; do
+        [ -n "$u" ] || continue
+        if [ "$u" != "$URL_SRC" ]; then
+          printf "  ${r}✗ %s 指向 %s${o}\n" "$f" "$u"; URL_BAD=1
+        fi
+      done <<EOF_URLS
+$HITS
+EOF_URLS
+    done
+    if [ "$URL_BAD" -eq 0 ]; then
+      printf "  ${g}✓ 四处引用与真相源一致${o}\n"
+    else
+      printf "  ${r}→ 改 lib/links.sh 之后，上面这些文件要一起改${o}\n"; LINT_BAD=1
+    fi
   fi
 
   printf "\n${b}扫当前工作区（不含 git 历史）${o}\n"

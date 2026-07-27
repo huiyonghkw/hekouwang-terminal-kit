@@ -59,6 +59,9 @@ M_THEME_ECO_PAID_NOTE="One palette driving the whole tool chain is a paid-pack f
 M_THEME_WS_OK="Project workspace variants"
 M_THEME_WS_REBUILT="rebuilt along with it"
 M_THEME_SEE_IT="See what this theme looks like:"
+# Printed only when the paid pack is absent — the receipt above already says those
+# rows were skipped, this is the one line that says where to get them. %s = landing page.
+M_THEME_PAID_WHERE="Make this palette walk out of iTerm2: %s"
 
 M_THEME_NO_LIGHT="✗ No light theme available"
 M_THEME_NO_LIGHT_NOTE1="  The light themes (v2-mibai / v3-caijing-bai) live in the paid pack;"

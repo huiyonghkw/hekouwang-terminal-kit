@@ -95,8 +95,13 @@ M_INSTALL_DOCTOR="跑环境自检..."
 M_INSTALL_DONE="✅ 全部完成！"
 M_INSTALL_TAIL_LOCAL="私有配置（SSH 别名/代理）请编辑 ~/.zshrc.local"
 M_INSTALL_TAIL_OPEN="打开 iTerm2 即生效。"
-M_INSTALL_TAIL_THEME="换肤（连 bat/fzf/git diff 一起换）：./theme.sh"
+# ⛔ 别把「连 bat/fzf/git diff 一起换」写回这一行。那是付费包能力，开源版只同步
+#    iTerm2，而这行文案两档都会打 —— 在这儿吹它，跟当初公开仓 description 里
+#    写「全链同步」是同一个钓鱼错误（见 memory skill-oss-paid-tiering-model）。
+M_INSTALL_TAIL_THEME="换肤：./theme.sh"
 M_INSTALL_TAIL_AUTO="跟随系统深浅色自动切：./theme.sh --auto"
 M_INSTALL_TAIL_UNDO="后悔了：./uninstall.sh（支持 --dry-run）"
 M_INSTALL_TAIL_CN="💡 国内网络若中途报 portable-ruby / 下载失败，改用：CN=1 ./install.sh"
+# 只在付费件缺席时打。%s = 落地页
+M_INSTALL_TAIL_BUY="让这份色板走出 iTerm2 —— 四个终端 + 整条工具链同色，¥19.9：%s"
 M_INSTALL_GUI_FAIL="! GUI 设置没跑完（不影响已装好的部分）—— 稍后手动跑：./setup-gui.sh"

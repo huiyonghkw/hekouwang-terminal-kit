@@ -20,8 +20,18 @@
 #    加新词条时只加 en 也不会崩，翻译可以后补。
 # ============================================================
 
-HKW_I18N_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/i18n"
+HKW_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HKW_I18N_DIR="$HKW_LIB_DIR/i18n"
 HKW_LANG_FILE="${HKW_LANG_FILE:-$HOME/.config/hekouwang-terminal/lang}"
+
+# 对外链接（$HKW_URL_BUY / $HKW_URL_REPO）。搭在 i18n.sh 上是有意的：
+# 每个脚本开头都已经 source 了本文件，链接跟着进来就不用在五个脚本里各加一行。
+# 链接**不是**词条 —— 它不随语言变，中英文页面是同一个地址，所以不放 i18n/ 下面。
+# shellcheck disable=SC1091
+[ -f "$HKW_LIB_DIR/links.sh" ] && . "$HKW_LIB_DIR/links.sh"
+# 万一 links.sh 缺席（有人只拷了半个 lib/），给个空串兜底，别让 set -u 把脚本打死
+HKW_URL_BUY="${HKW_URL_BUY:-}"
+HKW_URL_REPO="${HKW_URL_REPO:-}"
 
 # 各种写法归一成 en / zh；认不出返回空串（好让调用方继续往下一档找）
 hkw_lang_normalize() {

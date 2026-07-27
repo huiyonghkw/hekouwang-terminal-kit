@@ -274,7 +274,17 @@ PY
   render --banner "$theme" || printf "  ${c_bold}%s${c_off}\n" "$(theme_display "$src")"
   r_flush
   echo
-  printf "  ${c_dim}%s${c_off}./theme.sh --preview %s\n\n" "$(t M_THEME_SEE_IT)" "$theme"
+  printf "  ${c_dim}%s${c_off}./theme.sh --preview %s\n" "$(t M_THEME_SEE_IT)" "$theme"
+  # ---- 付费档在哪儿 ------------------------------------------
+  # 上面的回执已经把「多终端 / 工具链」那两行标成跳过了，但它没说去哪儿拿 ——
+  # 用户刚看到换肤生效、正上头的这三秒是全链路最容易掏钱的时刻，也是唯一
+  # 不用他去翻 README 的位置。**只在付费件缺席时打，且只打一行**：
+  # 每次换肤都弹一大段广告，人只会学会无视它（同 release.sh 里指纹表那条教训）。
+  # ⚠️ 这里只陈述本档事实 + 给个地址，别在这儿列付费功能清单 —— 那是落地页的活。
+  if [ ! -f "$THEMES_DIR/_apply_pro.sh" ] && [ -n "${HKW_URL_BUY:-}" ]; then
+    printf "  ${c_dim}%s${c_off}\n" "$(t M_THEME_PAID_WHERE "$HKW_URL_BUY")"
+  fi
+  echo
 }
 
 # ---- 跟随系统深浅色 ----------------------------------------

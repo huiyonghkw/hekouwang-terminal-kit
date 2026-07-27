@@ -379,6 +379,16 @@ else
   printf "${r}%s${o}  ${y}%s${o}\n" "$(t M_DOC_FAIL_N "$FAIL")" "$(t M_DOC_WARN_N "$WARN")"
 fi
 
+# ---- 付费档在哪儿（开源版才打）----
+# 体检跑完是用户主动来确认「我这套是好的」的时刻，顺带告诉他还有一档能力在哪儿。
+# ⚠️ HKW_NO_PROMO：install.sh 里会调一次 doctor，紧接着自己的收尾也打同一句 ——
+#    十行之内出现两次广告，人只会学会无视它。装机路径上让 install.sh 那句说，
+#    这里闭嘴。⛔ 别把这条去掉图省事。
+if [ -z "${HKW_NO_PROMO:-}" ] && [ ! -f "$SCRIPT_DIR/config/themes/_apply_pro.sh" ] \
+   && [ -n "${HKW_URL_BUY:-}" ]; then
+  printf "${d}%s${o}\n" "$(t M_DOC_PAID_HINT "$HKW_URL_BUY")"
+fi
+
 # ---- --fix：逐项问，每项先说清楚要跑什么 ----
 if [ "$FIX" = "1" ] && [ "${#FIXES[@]}" -gt 0 ]; then
   printf "\n${b}%s${o}\n" "$(t M_DOC_FIX_HEAD)"

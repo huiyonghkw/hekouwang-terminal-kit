@@ -100,8 +100,14 @@ M_INSTALL_DOCTOR="Running the environment check..."
 M_INSTALL_DONE="✅ All done!"
 M_INSTALL_TAIL_LOCAL="Put private config (SSH aliases, proxies) in ~/.zshrc.local"
 M_INSTALL_TAIL_OPEN="Open iTerm2 and it is live."
-M_INSTALL_TAIL_THEME="Switch theme (bat/fzf/git diff follow along): ./theme.sh"
+# ⛔ Do not put "bat/fzf/git diff follow along" back into this line. That is a
+#    paid-pack capability; the open-source build syncs iTerm2 only, and this text
+#    is printed by both builds. Advertising it here is the same fishing mistake
+#    that was once in the public repo's GitHub description.
+M_INSTALL_TAIL_THEME="Switch theme: ./theme.sh"
 M_INSTALL_TAIL_AUTO="Follow the system light/dark switch: ./theme.sh --auto"
 M_INSTALL_TAIL_UNDO="Changed your mind: ./uninstall.sh (supports --dry-run)"
 M_INSTALL_TAIL_CN="💡 On a China network, if it dies on portable-ruby / download errors, use: CN=1 ./install.sh"
+# Printed only when the paid pack is absent. %s = landing page.
+M_INSTALL_TAIL_BUY="Make this palette walk out of iTerm2 — four terminals + the whole tool chain, ¥19.9: %s"
 M_INSTALL_GUI_FAIL="! GUI setup did not finish (everything else is installed). Run it later: ./setup-gui.sh"

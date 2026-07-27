@@ -127,6 +127,8 @@ M_DOC_SI_WARN="Shell Integration 未装（没有 imgcat / 命令成败标记）"
 
 M_DOC_RESULT="═══ 结果 ═══"
 M_DOC_ALL_PASS="全部通过，环境健康 🎉"
+# 汇总之后打，只在付费件缺席时。%s = 落地页
+M_DOC_PAID_HINT="当前是开源版，只管 iTerm2。四个终端 + 整条工具链同色：%s"
 M_DOC_WARN_ONLY="%d 项警告（非致命），无致命问题"
 M_DOC_FAIL_N="%d 项致命问题"
 M_DOC_WARN_N="%d 项警告"

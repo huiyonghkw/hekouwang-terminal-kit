@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!--
+  hekouwang-terminal-kit — 落地页（GitHub Pages · 公开仓 main 分支 /docs 目录）
+  线上地址：https://huiyonghkw.github.io/hekouwang-terminal-kit/
+
+  ⭐ 这一页是**唯一的中转点**。换肤回执 / doctor 汇总 / 装完收尾 / README /
+     FUNDING.yml 全部指向这个地址（真相源 lib/links.sh）。收款方式只写在这儿 ——
+     以后加爱发电或 Lemon Squeezy，改这一页就行，已经装到几百台机器上的脚本
+     一行都不用动，也不用逼谁升级。别把二维码或收款链接写回脚本里。
+
+  ⚠️ 页面必须**自包含**：不引外部字体、不引 CDN。GitHub Pages 是给全世界看的，
+     一个墙内加载不出来的 Google Fonts 就能让首屏空半天。
+
+  ⚠️ 文案只许写**本档真有**的能力。免费版只同步 iTerm2 —— 页面上凡是多终端 /
+     工具链同色的说法，必须落在付费那一栏里。这是被真实用户当场挑出来过的坑
+     （见 release.sh 顶部注释与 memory skill-oss-paid-tiering-model）。
+
+  ⚠️ 还缺两张图（我自己放）：images/wechat-qr.png（微信二维码）、
+     images/pay-qr.png（收款码）。没放之前页面会自动降级成一个占位方块 +
+     文字微信号，不会出现裂图。
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hekouwang-terminal-kit — one palette for your whole terminal</title>
+<meta name="description" content="A macOS terminal you can install and also fully uninstall. Open source and complete for iTerm2; the paid build makes the same palette walk out of iTerm2.">
+<style>
+  /* 无外部依赖：字体全走系统栈，等宽用各平台自带的终端字体 */
+  :root{
+    --bg:#0d0e12; --bg2:#14161c; --line:#242833;
+    --fg:#e6e8ee; --fg2:#9aa1b1; --fg3:#6b7280;
+    --accent:#a78bfa; --accent2:#7c6ce8; --ok:#4ade80; --warn:#fbbf24;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
+       font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;height:auto;display:block}
+  code,kbd{font-family:var(--mono);font-size:.9em}
+
+  .wrap{max-width:940px;margin:0 auto;padding:0 24px}
+  section{padding:64px 0;border-top:1px solid var(--line)}
+  section:first-of-type{border-top:0}
+  h1,h2,h3{line-height:1.3;margin:0 0 16px}
+  h1{font-size:clamp(30px,5vw,46px);letter-spacing:-.02em}
+  h2{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.01em}
+  h3{font-size:18px}
+  p{margin:0 0 16px;color:var(--fg2)}
+  .lead{font-size:clamp(17px,2.2vw,20px);color:var(--fg);max-width:70ch}
+  .muted{color:var(--fg3);font-size:14px}
+
+  /* ---- 语言开关：两份文案都在 DOM 里，切 html 上的 class ---- */
+  .zh{display:none}
+  html.lang-zh .en{display:none}
+  html.lang-zh .zh{display:revert}
+  .langbar{position:sticky;top:0;z-index:20;background:rgba(13,14,18,.86);
+           backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .langbar .wrap{display:flex;align-items:center;justify-content:space-between;
+                 gap:16px;padding-top:10px;padding-bottom:10px}
+  .brand{font-family:var(--mono);font-size:13px;color:var(--fg2)}
+  .brand b{color:var(--fg);font-weight:600}
+  .toggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .toggle button{background:none;border:0;color:var(--fg3);font:inherit;font-size:13px;
+                 padding:4px 14px;cursor:pointer}
+  .toggle button[aria-pressed="true"]{background:var(--accent);color:#12101c;font-weight:600}
+
+  /* ---- hero ---- */
+  .hero{padding-top:56px}
+  .tagline{font-family:var(--mono);font-size:13px;color:var(--accent);
+           letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .btns{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0}
+  .btn{display:inline-block;padding:11px 22px;border-radius:8px;font-weight:600;
+       font-size:15px;border:1px solid var(--line);color:var(--fg)}
+  .btn:hover{text-decoration:none;border-color:var(--fg3)}
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#12101c}
+  .btn-primary:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
+
+  .term{background:#000;border:1px solid var(--line);border-radius:10px;
+        padding:16px 18px;font-family:var(--mono);font-size:13.5px;line-height:1.85;
+        overflow-x:auto;margin:20px 0}
+  .term .p{color:var(--accent)}
+  .term .c{color:var(--fg3)}
+
+  /* ---- 对比图 ---- */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:26px 0 8px}
+  @media(max-width:700px){.cmp{grid-template-columns:1fr}}
+  .shot{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg2)}
+  .shot img{width:100%}
+  .shot .cap{padding:9px 13px;font-size:13px;color:var(--fg2);
+             border-top:1px solid var(--line);font-family:var(--mono)}
+  .shot .cap b{color:var(--fg)}
+  .tag{display:inline-block;font-size:11px;font-family:var(--mono);padding:1px 7px;
+       border-radius:4px;vertical-align:1px;margin-left:6px}
+  .tag-free{background:#1c2a1f;color:var(--ok)}
+  .tag-paid{background:#241f38;color:var(--accent)}
+
+  /* ---- 分档表 ---- */
+  .tablewrap{overflow-x:auto;margin:24px 0}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{color:var(--fg);font-size:14px;white-space:nowrap}
+  tbody td:first-child{color:var(--fg2)}
+  td.y{color:var(--ok);font-weight:600}
+  td.n{color:var(--fg3)}
+  .price{font-family:var(--mono);color:var(--accent);font-weight:700}
+
+  /* ---- 卡片（⛔ 不用左侧彩色竖条）---- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:24px 0}
+  .card{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:20px}
+  .card h3{margin-bottom:8px;font-size:16px}
+  .card p{margin:0;font-size:14.5px}
+  .card .num{font-family:var(--mono);font-size:12px;color:var(--accent);
+             letter-spacing:.1em;display:block;margin-bottom:10px}
+
+  /* ---- 买 ---- */
+  .buy{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:28px}
+  .qr{display:flex;flex-wrap:wrap;gap:26px;margin:22px 0 6px}
+  .qrbox{text-align:center}
+  .qrbox img,.qrph{width:164px;height:164px;border-radius:10px;background:#fff;
+                   border:1px solid var(--line);object-fit:contain}
+  .qrph{display:flex;align-items:center;justify-content:center;background:var(--bg);
+        color:var(--fg3);font-family:var(--mono);font-size:12px;text-align:center;
+        padding:12px;border-style:dashed;line-height:1.6}
+  .qrbox .lbl{margin-top:10px;font-size:13.5px;color:var(--fg2)}
+  .qrbox .lbl b{color:var(--fg);font-family:var(--mono)}
+
+  .note{border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+        background:var(--bg2);margin:20px 0;font-size:14.5px;color:var(--fg2)}
+  .note b{color:var(--fg)}
+
+  ul{margin:0 0 16px;padding-left:20px;color:var(--fg2)}
+  li{margin-bottom:7px}
+  li b{color:var(--fg)}
+
+  footer{border-top:1px solid var(--line);padding:34px 0 56px;color:var(--fg3);font-size:14px}
+  footer a{color:var(--fg2)}
+</style>
+</head>
+<body>
+
+<div class="langbar">
+  <div class="wrap">
+    <!-- ⛔ 别在这儿写版本号：它会跟 SKILL.md 的 version 和 CHANGELOG 漂成三份，
+         而且没人会为了看版本号来落地页。要版本去 GitHub 看 releases。 -->
+    <span class="brand"><b>hekouwang-terminal-kit</b></span>
+    <div class="toggle" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true">EN</button>
+      <button id="btn-zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="tagline">macOS · iTerm2 · zsh</div>
+
+  <h1><span class="en">One palette for your whole terminal.</span><span class="zh">一份色板，管住整个终端。</span></h1>
+
+  <p class="lead">
+    <span class="en">Most terminal setups hand you a <code>.zshrc</code> and tell you to overwrite your own.
+      You don't know what it will touch, you don't know what it changed, and you can't get back.
+      I looked for one that was safe to install <em>and</em> safe to remove, didn't find it, and wrote this.</span>
+    <span class="zh">网上的终端配置方案，几乎都是给你一份 <code>.zshrc</code> 让你覆盖掉自己那份。
+      装之前不知道它要动什么，装完不知道它改了什么，不想要了退不回去。
+      我找了很久一个「敢装也敢卸」的，没找到，最后自己写了一个。</span>
+  </p>
+
+  <div class="btns">
+    <a class="btn" href="https://github.com/huiyonghkw/hekouwang-terminal-kit">
+      <span class="en">Open source · free →</span><span class="zh">开源版 · 免费 →</span>
+    </a>
+    <a class="btn btn-primary" href="#buy">
+      <span class="en">Paid build · ¥19.9 →</span><span class="zh">付费版 · ¥19.9 →</span>
+    </a>
+  </div>
+
+  <div class="term">
+    <span class="c"># <span class="en">the whole open-source build, free, MIT</span><span class="zh">整个开源版，免费，MIT</span></span><br>
+    <span class="p">$</span> git clone https://github.com/huiyonghkw/hekouwang-terminal-kit<br>
+    <span class="p">$</span> cd hekouwang-terminal-kit<br>
+    <span class="p">$</span> ./install.sh --dry-run &nbsp;<span class="c"># <span class="en">see exactly what it would touch, first</span><span class="zh">先看清楚它要动什么</span></span><br>
+    <span class="p">$</span> ./install.sh
+  </div>
+  <p class="muted">
+    <span class="en">macOS only. Ships no font files — it detects what you already have installed.</span>
+    <span class="zh">只支持 macOS。不打包分发任何字体文件 —— 它探测你本机已经装了什么。</span>
+  </p>
+</section>
+
+<!-- ============ 对比图 ============ -->
+<section>
+  <h2><span class="en">What the paid build actually buys you</span><span class="zh">付费版到底买到什么</span></h2>
+  <p>
+    <span class="en">Same machine, same three commands. On the left, each tool picks its own colors.
+      On the right, every one of them is generated from a single palette — so switching theme once
+      moves all of them together.</span>
+    <span class="zh">同一台机器、同样三条命令。左边是每个工具各说各的颜色，
+      右边是它们全部由同一份色板生成 —— 所以换一次肤，它们会一起变。</span>
+  </p>
+
+  <div class="cmp">
+    <div class="shot">
+      <img src="images/cmp-iterm2-free.png" alt="iTerm2, open-source build: tools keep their own default colors" loading="lazy">
+      <div class="cap"><b>iTerm2</b> <span class="en">— open source</span><span class="zh">— 开源版</span><span class="tag tag-free">free</span></div>
+    </div>
+    <div class="shot">
+      <img src="images/cmp-iterm2-paid.png" alt="iTerm2, paid build: the whole tool chain in one color family" loading="lazy">
+      <div class="cap"><b>iTerm2</b> <span class="en">— one palette</span><span class="zh">— 一份色板</span><span class="tag tag-paid">paid</span></div>
+    </div>
+    <div class="shot">
+      <img src="images/cmp-ghostty-free.png" alt="Ghostty with its own default colors" loading="lazy">
+      <div class="cap"><b>Ghostty</b> <span class="en">— its own defaults</span><span class="zh">— 各自默认色</span><span class="tag tag-free">free</span></div>
+    </div>
+    <div class="shot">
+      <img src="images/cmp-ghostty-paid.png" alt="Ghostty carrying the same colors as iTerm2" loading="lazy">
+      <div class="cap"><b>Ghostty</b> <span class="en">— same as iTerm2</span><span class="zh">— 与 iTerm2 同色</span><span class="tag tag-paid">paid</span></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <span class="en"><b>Why this is worth paying for rather than doing by hand:</b> doing it by hand drifts,
+      silently. A Warp theme I maintained myself carried a comment saying "identical to the iTerm2 one"
+      while <b>8 of its 16 color slots were actually wrong</b> — and nothing ever reported an error.
+      In the paid build the colors are derived, not copied, so a theme switch recomputes all of them.</span>
+    <span class="zh"><b>为什么这件事值得买、而不是自己手工做：</b>手工做一定会漂，而且是静默地漂。
+      我自己手工维护的一套 Warp 主题，注释上写着「与 iTerm2 那套完全一致」，
+      实际上 <b>16 个色槽错了 8 个</b> —— 全程没有任何报错。
+      付费版里颜色是推导出来的、不是抄过去的，所以换一次肤就重算一遍，永远同色系。</span>
+  </div>
+</section>
+
+<!-- ============ 免费版是完整产品 ============ -->
+<section>
+  <h2><span class="en">The open-source build is a complete product</span><span class="zh">开源版本身就是完整产品</span></h2>
+  <p>
+    <span class="en">It is not a trial and not a crippled demo. Install it, never pay me anything,
+      and keep using it forever. Here is what it does on its own:</span>
+    <span class="zh">它不是试用版，也不是阉割的演示版。装完一分钱不花，可以一直用下去。
+      开源版自己就做到这些：</span>
+  </p>
+  <ul>
+    <li><span class="en"><b>It doesn't overwrite you.</b> Your existing config is moved into another file section by section — three years of aliases, not one line lost. It then really starts a shell to check the syntax, and rolls back if it won't start.</span>
+        <span class="zh"><b>不覆盖你的东西。</b>按段落把你原来的配置搬进另一个文件，三年攒的别名一行不丢；写完真起一个 shell 验语法，起不来自动回滚。</span></li>
+    <li><span class="en"><b>You can rehearse it.</b> <code>--dry-run</code> lists every file and system setting it would touch, and what it will never touch, before you commit.</span>
+        <span class="zh"><b>装之前能预演。</b><code>--dry-run</code> 先把要改哪些文件、写哪些系统设置、什么绝对不碰列成清单给你看。</span></li>
+    <li><span class="en"><b>You can get back.</b> Uninstall <em>restores from a backup</em> rather than deleting things, and returns system settings to the real factory defaults.</span>
+        <span class="zh"><b>不想要了能还原。</b>卸载是从备份还原，不是删了拉倒；系统设置恢复真正的出厂默认。</span></li>
+    <li><span class="en"><b>It checks itself.</b> <code>doctor.sh</code> runs eight checks — tool chain, whether the font actually resolved, config load order, startup time — and tells you how to fix each one.</span>
+        <span class="zh"><b>出问题会自检。</b><code>doctor.sh</code> 八项体检 —— 工具链、字体是否真的上屏、配置加载顺序、启动耗时 —— 哪项不对直接告诉你怎么修。</span></li>
+    <li><span class="en"><b>It doesn't slow you down.</b> One line added to shell startup, not a pile of plugins.</span>
+        <span class="zh"><b>不拖慢终端。</b>只往启动里加一行，不是堆一大摞插件。</span></li>
+    <li><span class="en">3 community color schemes, blur, ERROR/WARN auto-coloring, Shift+Enter for multi-line prompts, and the modern CLI set (eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta).</span>
+        <span class="zh">3 套社区配色、毛玻璃、ERROR/WARN 自动标色、Shift+Enter 写多行 prompt，以及现代 CLI 全家桶（eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta）。</span></li>
+  </ul>
+  <p class="muted">
+    <span class="en">Honest limit: it will <em>not</em> make your terminal faster. It only manages not to slow it down. Anyone promising a one-click beautifier that also speeds things up hasn't measured it.</span>
+    <span class="zh">诚实说边界：它<em>不会</em>让终端变快，只做到不拖慢。谁跟你说一键美化还能提速，那是没量过。</span>
+  </p>
+</section>
+
+<!-- ============ 分档表 ============ -->
+<section>
+  <h2><span class="en">Where the line is</span><span class="zh">线划在哪儿</span></h2>
+  <p>
+    <span class="en">In one sentence: <b>the open-source build makes your iTerm2 look right; the paid build
+      makes that same palette walk out of iTerm2.</b></span>
+    <span class="zh">一句话：<b>开源版让你的 iTerm2 好看；付费版让这份色板走出 iTerm2。</b></span>
+  </p>
+
+  <div class="tablewrap">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th><span class="en">Open source · MIT · free</span><span class="zh">开源版 · MIT · 免费</span></th>
+        <th><span class="en">Paid · <span class="price">¥19.9</span></span><span class="zh">付费版 · <span class="price">¥19.9</span></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="en">A fully configured iTerm2 (3 schemes, blur, triggers, CLI set, doctor, migrate, uninstall)</span><span class="zh">配好的 iTerm2（3 套配色、毛玻璃、Triggers、CLI 全家桶、体检、迁移、卸载）</span></td>
+        <td class="y">✓</td><td class="y">✓</td>
+      </tr>
+      <tr>
+        <td><span class="en">Ghostty / Warp / the built-in macOS Terminal follow the same palette</span><span class="zh">Ghostty / Warp / macOS 自带终端跟着同一份色板</span></td>
+        <td class="n">—</td><td class="y">✓</td>
+      </tr>
+      <tr>
+        <td><span class="en"><code>bat</code> / <code>fzf</code> / <code>eza</code> / <code>git diff</code> / tmux / VS Code in the same colors</span><span class="zh"><code>bat</code> / <code>fzf</code> / <code>eza</code> / <code>git diff</code> / tmux / VS Code 同色</span></td>
+        <td class="n">—</td><td class="y">✓</td>
+      </tr>
+      <tr>
+        <td><span class="en">Project workspaces — <code>cd</code> into a project, the tab recolors and prints its name</span><span class="zh">项目工作区 —— <code>cd</code> 进项目，标签页自动变色 + 印项目名</span></td>
+        <td class="n">—</td><td class="y">✓</td>
+      </tr>
+      <tr>
+        <td><span class="en">Import hundreds of existing themes, plus a palette deriver (one brand color → a whole set)</span><span class="zh">导入几百套现成主题，外加色板推导器（给一个品牌色 → 推出整套）</span></td>
+        <td class="n">—</td><td class="y">✓</td>
+      </tr>
+      <tr>
+        <td><span class="en">4 brand themes, two of them light (contrast actually computed, not eyeballed)</span><span class="zh">4 套品牌主题，含 2 套亮色（对比度是算出来的，不是眼估的）</span></td>
+        <td class="n">—</td><td class="y">✓</td>
+      </tr>
+      <tr>
+        <td><span class="en">Font priority table — picks up commercial fonts you already bought (Operator Mono, …)</span><span class="zh">字体优先级表 —— 自动认出你已购买安装的商业字体（Operator Mono 等）</span></td>
+        <td class="n">—</td><td class="y">✓</td>
+      </tr>
+      <tr>
+        <td><span class="en">A4 cheat sheet · one year of updates · help when it breaks</span><span class="zh">A4 速查卡 · 一年更新 · 装崩了有人管</span></td>
+        <td class="n">—</td><td class="y">✓</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="muted">
+    <span class="en">How the split is enforced is in the open: <code>release.sh</code> in the public repo is the
+      script that produces both builds. No unlock codes, no phone-home. With the paid files absent the
+      generator still produces the complete iTerm2 theme and simply says which parts belong to the paid pack.</span>
+    <span class="zh">分档逻辑摆在明面上：公开仓里的 <code>release.sh</code> 就是导出这两档的那个脚本，
+      不搞解锁码、不回连服务器。付费件缺席时生成器照常出完整的 iTerm2 主题，只会说明哪几样属于付费包。</span>
+  </p>
+</section>
+
+<!-- ============ 怎么买 ============ -->
+<section id="buy">
+  <h2><span class="en">Getting the paid build</span><span class="zh">怎么买</span></h2>
+
+  <div class="buy">
+    <div class="cards">
+      <div class="card">
+        <span class="num">01</span>
+        <h3><span class="en">Pay ¥19.9</span><span class="zh">付款 ¥19.9</span></h3>
+        <p><span class="en">Scan the payment code on the right with WeChat.</span><span class="zh">用微信扫右边那个收款码。</span></p>
+      </div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3><span class="en">Add me, send the receipt</span><span class="zh">加我，发付款截图</span></h3>
+        <p><span class="en">WeChat <b>hekouwang</b>, note "terminal kit".</span><span class="zh">微信 <b>hekouwang</b>，备注「终端套装」。</span></p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3><span class="en">Pick how you want it</span><span class="zh">选一条交付路</span></h3>
+        <p><span class="en">A zip with <code>./unlock.sh</code> (no GitHub account needed), or I add you to the private repo so <code>git pull</code> keeps you updated.</span><span class="zh">一个 zip，<code>./unlock.sh</code> 一键装（不用 GitHub 账号）；或者我把你加进私有仓，以后 <code>git pull</code> 拿更新。</span></p>
+      </div>
+    </div>
+
+    <div class="qr">
+      <div class="qrbox">
+        <img src="images/pay-qr.png" alt="WeChat payment code" onerror="this.outerHTML='&lt;div class=&quot;qrph&quot;&gt;payment code&lt;br&gt;收款码&lt;/div&gt;'">
+        <div class="lbl"><span class="en">Pay ¥19.9 (WeChat)</span><span class="zh">微信支付 ¥19.9</span></div>
+      </div>
+      <div class="qrbox">
+        <img src="images/wechat-qr.png" alt="WeChat contact QR code" onerror="this.outerHTML='&lt;div class=&quot;qrph&quot;&gt;WeChat QR&lt;br&gt;微信二维码&lt;/div&gt;'">
+        <div class="lbl"><span class="en">Add me · <b>hekouwang</b></span><span class="zh">加我 · <b>hekouwang</b></span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="en"><b>Seven-day refund, no questions asked.</b> Installing the open-source build first and
+        deciding two days later is completely fine — it is not a trial, and nothing expires.</span>
+      <span class="zh"><b>七天无理由退款。</b>先装开源版、过两天再决定完全没问题 —— 它不是试用版，也不会到期。</span>
+    </div>
+
+    <div class="note">
+      <span class="en"><b>Outside China / no WeChat Pay?</b> Card payment isn't set up yet — I'd rather say that
+        than pretend. Email <a href="mailto:huiyonghkw@gmail.com">huiyonghkw@gmail.com</a> and we'll sort out
+        a way; you'll get the same zip and the same year of updates.</span>
+      <span class="zh"><b>在海外、用不了微信支付？</b>目前还没接信用卡收款，这点我就直说了。
+        邮件 <a href="mailto:huiyonghkw@gmail.com">huiyonghkw@gmail.com</a>，我们另想办法，
+        拿到的是同一个 zip、同样一年更新。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 边界 ============ -->
+<section>
+  <h2><span class="en">Before you buy, the limits</span><span class="zh">买之前，先看边界</span></h2>
+  <ul>
+    <li><span class="en"><b>macOS only.</b> There is no Linux or Windows build and I'm not planning one.</span>
+        <span class="zh"><b>只支持 macOS。</b>没有 Linux / Windows 版，也没打算做。</span></li>
+    <li><span class="en"><b>No fonts are shipped.</b> The kit detects fonts already installed on your machine. If you own Operator Mono it will use it; if not, it falls back to a free one.</span>
+        <span class="zh"><b>不分发任何字体。</b>它探测你本机已装的字体。你买过 Operator Mono 就自动用上，没有就落到免费字体。</span></li>
+    <li><span class="en"><b>Some paid features need the app installed.</b> Ghostty / Warp / VS Code sync only does something if you actually use them.</span>
+        <span class="zh"><b>部分付费能力要你真的装了那个 App。</b>Ghostty / Warp / VS Code 的同步，你不用它们就没意义。</span></li>
+    <li><span class="en"><b>The paid pack is for your own use.</b> Please don't redistribute it — at ¥19.9 it is priced low enough that passing it around isn't worth anyone's time.</span>
+        <span class="zh"><b>付费包仅供你个人使用</b>，请别二次分发 —— ¥19.9 这个价格本身就低到没必要传。</span></li>
+  </ul>
+</section>
+
+<footer>
+  <div>
+    <span class="en">Built by 会勇禾口王 · Open-source build is MIT ·
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">source on GitHub</a></span>
+    <span class="zh">作者 会勇禾口王 · 开源版 MIT 授权 ·
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub 源码</a></span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+// 语言：默认英文（产品默认也是英文），中文浏览器自动切中文，点了就记住。
+// 不用框架、不发请求 —— 页面得在任何网络环境下都能瞬间出来。
+(function () {
+  var KEY = 'hkw-lang';
+  var btnEn = document.getElementById('btn-en');
+  var btnZh = document.getElementById('btn-zh');
+
+  function set(lang, remember) {
+    var zh = lang === 'zh';
+    document.documentElement.classList.toggle('lang-zh', zh);
+    document.documentElement.lang = zh ? 'zh-CN' : 'en';
+    btnEn.setAttribute('aria-pressed', String(!zh));
+    btnZh.setAttribute('aria-pressed', String(zh));
+    if (remember) { try { localStorage.setItem(KEY, lang); } catch (e) {} }
+  }
+
+  var saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  // 记住的优先；没记过就看浏览器语言
+  set(saved || (/^zh/i.test(navigator.language || '') ? 'zh' : 'en'), false);
+
+  btnEn.addEventListener('click', function () { set('en', true); });
+  btnZh.addEventListener('click', function () { set('zh', true); });
+})();
+</script>
+
+</body>
+</html>

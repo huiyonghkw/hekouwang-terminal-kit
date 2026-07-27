@@ -1,6 +1,6 @@
 ---
 name: hekouwang-iterm2-skill
-version: 2.2.0
+version: 2.3.0
 description: >
   macOS terminal environment as code (iTerm2 first; the same palette also drives Ghostty and Warp).
   iTerm2 (Minimal theme + Dynamic Profile + blur + Triggers) + oh-my-zsh + Starship + the modern CLI

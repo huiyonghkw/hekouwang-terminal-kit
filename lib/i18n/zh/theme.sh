@@ -53,6 +53,8 @@ M_THEME_ECO_PAID_NOTE="一份色板管住整条工具链是付费包能力；开
 M_THEME_WS_OK="项目工作区变体"
 M_THEME_WS_REBUILT="已跟着重建"
 M_THEME_SEE_IT="看这套主题长什么样："
+# 只在付费件缺席时打。上面的回执已经说了那几行被跳过，这一行负责告诉他去哪儿拿。%s = 落地页
+M_THEME_PAID_WHERE="让这份色板走出 iTerm2：%s"
 
 M_THEME_NO_LIGHT="✗ 没有亮色主题可用"
 M_THEME_NO_LIGHT_NOTE1="  亮色主题（v2-mibai / v3-caijing-bai）在付费包里；"

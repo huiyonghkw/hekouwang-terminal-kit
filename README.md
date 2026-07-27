@@ -141,7 +141,9 @@ The open-source build is not a demo: 3 color schemes, blur, automatic log colori
 
 **Why the line sits there**: the 3 community schemes are other people's open-source work, so charging for them would not stand up; blur and Triggers are what make a terminal worth screenshotting, and hiding them would stop the free build from doing its job as an advertisement. **What is sold is the two things I made myself** — four themes derived from brand tokens, and the generator behind "one palette drives the whole tool chain".
 
-**To buy**: WeChat **`hekouwang`** (mention "terminal kit"). ¥19.9, a year of free updates plus group support, **seven-day no-questions refund**. Installing the open-source build first and deciding two days later is perfectly fine — it is not a trial, it is a complete product you can keep using forever without paying.
+**To buy** → **[huiyonghkw.github.io/hekouwang-terminal-kit](https://huiyonghkw.github.io/hekouwang-terminal-kit/)** — ¥19.9, a year of free updates plus support, **seven-day no-questions refund**. Installing the open-source build first and deciding two days later is perfectly fine — it is not a trial, it is a complete product you can keep using forever without paying.
+
+> Payment currently goes through WeChat Pay (WeChat **`hekouwang`**, mention "terminal kit"). **If you are outside China and have no WeChat Pay**, card payment is not set up yet — email **huiyonghkw@gmail.com** and we will sort something out; you get the same zip and the same year of updates.
 
 **How the split is done technically** (out in the open, no unlock codes):
 

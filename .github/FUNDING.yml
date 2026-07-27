@@ -1,0 +1,12 @@
+# GitHub 会拿这个文件在仓库页顶部渲染一个 Sponsor 按钮 —— 一个白送的转化位。
+#
+# ⚠️ URL 必须跟 lib/links.sh 里的 HKW_URL_BUY 一致，release.sh --check 会校验。
+#    改这里之前先改 lib/links.sh，别只改一处。
+#
+# 只填 custom：github / patreon / open_collective 这些都要绑第三方账户，
+# 而现行口径是收款只走微信、不上第三方（2026-07-27 定）。落地页是唯一中转点，
+# 以后真上了爱发电或 Lemon Squeezy，改落地页即可，这里也不用动。
+#
+# ⛔ 这个文件只进公开仓：付费仓的读者已经是买家，冲他们弹「赞助」很怪。
+#    release.sh 的 pro build 会把整个 .github/ 删掉。
+custom: ["https://huiyonghkw.github.io/hekouwang-terminal-kit/"]
