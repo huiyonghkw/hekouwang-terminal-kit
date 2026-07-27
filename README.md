@@ -100,6 +100,7 @@ This setup exists for exactly those. **Anything AI can do, I run for real first 
 2. **The details built for AI workflows** 〔in the free build〕. `Shift+Enter` inserts a newline instead of submitting (multi-line prompts); `ERROR/WARN/SUCCESS` get colored automatically in the output, in colors that follow the theme; a `Password:` prompt pops your password manager; the theme follows the system light/dark switch, so presenting in daylight needs no manual change.
 3. **Safe to install, safe to remove** 〔free build〕. `install.sh --dry-run` tells you which files it will touch, which system settings it will write, and what it will never go near. Already have your own `.zshrc`? `migrate.sh` moves your aliases and PATH into `~/.zshrc.local` and then lays down the template, instead of overwriting you. Changed your mind? `uninstall.sh` restores from the backup and resets the GUI settings to factory defaults.
 4. **A checkup that can fix itself** 〔free build〕. `doctor.sh` does not only report: `--fix` fixes each item after you confirm it, and `--profile` names the plugin making your terminal slow to open (on my own machine it caught `compinit`, 258ms).
+5. **It is a Claude Code Skill** 〔paid〕. Other dotfiles repos hand you a pile of scripts and a README, and the commands are yours to memorise. Drop this into `~/.claude/skills/` and you say "I am presenting in daylight, give me a light theme" or "why is this terminal so slow to open" — the agent picks the script, sets the flags, runs it and explains the result. **You describe the outcome; you do not memorise how it gets there.**
 
 When it is done you get:
 
@@ -113,9 +114,16 @@ When it is done you get:
 
 ## 3. Free build / paid build
 
-In one line: **the free build makes your iTerm2 look right; the paid build makes that palette walk out of iTerm2** — Ghostty, Warp, the built-in Terminal, `cat`, `git diff`, tmux and VS Code all follow.
+Two axes:
+
+1. **How far the palette travels** — the free build makes your iTerm2 look right; the paid build makes that
+   palette **walk out of iTerm2**: Ghostty, Warp, the built-in Terminal, `cat`, `git diff`, tmux and VS Code all follow.
+2. **Who is driving** — in the free build you type `./theme.sh v2-mibai` and `./doctor.sh --fix` yourself;
+   in the paid build you drop the directory into `~/.claude/skills/` and say "switch me to a light theme",
+   "why does my terminal take so long to open" — **the agent picks the script, sets the flags, runs it and reads the result back to you**.
 
 The open-source build is not a demo: 3 color schemes, blur, automatic log coloring, `Shift+Enter`, the modern CLI set, a checkup that can fix things, and an uninstaller that lets you change your mind — all in.
+**Every script is there and every flag is unchanged** — what the second axis buys is not a feature, it is not having to remember the commands.
 
 | | Open source (MIT · free) | Paid ¥19.9 |
 |---|---|---|
@@ -127,6 +135,7 @@ The open-source build is not a demo: 3 color schemes, blur, automatic log colori
 | **`Shift+Enter` newline** (multi-line prompts for AI CLIs) | ✅ | ✅ |
 | Modern CLI set · doctor `--fix`/`--profile` · `.zshrc` migration · one-command uninstall | ✅ | ✅ |
 | Theme generator (write a palette, get a complete iTerm2 theme) | ✅ | ✅ |
+| **Claude Code Skill**: drop it into `~/.claude/skills/` and an agent drives the whole kit — "switch me to a light theme", "why does my terminal take so long to open" | — | ✅ |
 | **Brand themes** | — | V2 Warm Dark · V1 Tech Dark · **V2 Warm Light** · **V3 Finance Light** |
 | **Light themes** (daylight / presenting / recording / outdoors) | — | ✅ two of them |
 | **Multi-terminal sync**: Ghostty · Warp · the built-in Terminal | — | ✅ one command, four terminals |
@@ -134,13 +143,12 @@ The open-source build is not a demo: 3 color schemes, blur, automatic log colori
 | **Font priority table**: picks up commercial fonts you already own, e.g. Operator Mono | uses the recommended default | ✅ |
 | **Follows the system light/dark switch** (`./theme.sh --auto`) | — | ✅ |
 | **Project workspaces**: `cd` into a project and the tab recolors and prints its name | — | ✅ |
-| **Claude Code Skill**: drop it into `~/.claude/skills/` and an agent drives the whole kit — "switch me to a light theme", "why does my terminal take so long to open" | — | ✅ |
 | **Palette deriver**: give it one brand color, get a whole theme | — | ✅ unlimited themes |
 | **Import existing themes**: Ghostty's 463 / iTerm2-Color-Schemes' 450+, one command | — | ✅ imported ones cover the whole tool chain too |
 | **Printable A4 cheat sheet** (PDF) | — | ✅ |
 | Updates and support | GitHub Issues | ✅ a year of updates + group support |
 
-**Why the line sits there**: the 3 community schemes are other people's open-source work, so charging for them would not stand up; blur and Triggers are what make a terminal worth screenshotting, and hiding them would stop the free build from doing its job as an advertisement. **What is sold is the two things I made myself** — four themes derived from brand tokens, and the generator behind "one palette drives the whole tool chain".
+**Why the line sits there**: the 3 community schemes are other people's open-source work, so charging for them would not stand up; blur and Triggers are what make a terminal worth screenshotting, and hiding them would stop the free build from doing its job as an advertisement. **What is sold is the three things I made myself** — four themes derived from brand tokens, the generator behind "one palette drives the whole tool chain", and **the Skill that teaches an agent to use all of it** (every workflow, every pitfall, every judgement call written out, so it knows which script to run with which flags and how to read the output without you explaining). Colors can be swapped and code can be rewritten; all three of those were paid for in time.
 
 **To buy** → **[huiyonghkw.github.io/hekouwang-terminal-kit](https://huiyonghkw.github.io/hekouwang-terminal-kit/)** — ¥19.9, a year of free updates plus support, **seven-day no-questions refund**. Installing the open-source build first and deciding two days later is perfectly fine — it is not a trial, it is a complete product you can keep using forever without paying.
 
