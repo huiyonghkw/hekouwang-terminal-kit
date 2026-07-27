@@ -260,7 +260,14 @@ td.n{color:var(--text3);font-family:var(--mono)}
 /* ---- 购买区 ---- */
 .buy{background:var(--surface);border:1px solid var(--border2);border-radius:14px;
      padding:30px;box-shadow:var(--shadow2)}
-.qr{display:flex;flex-wrap:wrap;gap:24px;margin:26px 0 4px;align-items:flex-start}
+/* 付款 / 加我 分两组，各带一个序号抬头，跟上面 01·02 两步对上 */
+.qrgrp{margin:26px 0 0}
+.ghd{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;
+     letter-spacing:.14em;text-transform:uppercase;color:var(--text3)}
+.ghd .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+        border-radius:6px;background:rgba(106,69,224,.09);color:var(--accent2);
+        border:1px solid rgba(106,69,224,.24);font-weight:700;font-size:11px;letter-spacing:0}
+.qr{display:flex;flex-wrap:wrap;gap:24px;margin:14px 0 4px;align-items:flex-start}
 .qrbox{text-align:center}
 /* 200px 不是随便定的：收款码要能被手机从屏幕上一次扫中，再小就得让人放大。
    ⚠️ 高度也钉死 + object-fit:contain —— 两张码是从不同海报裁的，比例不一样，
@@ -541,19 +548,33 @@ footer{border-top:1px solid var(--border);padding:34px 0 60px;
           <span class="zh">一个 zip，<code>./unlock.sh</code> 一键装（不用 GitHub 账号）；或者我把你加进私有仓，以后 <code>git pull</code> 拿更新。</span></div></div></div>
     </div>
 
-    <div class="qr">
-      <div class="qrbox">
-        <img src="images/pay-wechat.png" alt="WeChat Pay code">
-        <div class="lbl"><span class="en"><b>WeChat Pay</b> · ¥19.9</span><span class="zh"><b>微信支付</b> · ¥19.9</span></div>
+    <!-- 两组，对着上面 01 / 02 两步：先付款，再加我。三个码挤一排会看不出先后。 -->
+    <div class="qrgrp">
+      <div class="ghd"><span class="n">01</span><span class="en">Pay — either one</span><span class="zh">付款 · 二选一</span></div>
+      <div class="qr">
+        <div class="qrbox">
+          <img src="images/pay-wechat.png" alt="WeChat Pay code">
+          <div class="lbl"><span class="en"><b>WeChat Pay</b> · ¥19.9</span><span class="zh"><b>微信支付</b> · ¥19.9</span></div>
+        </div>
+        <div class="qrbox">
+          <img src="images/pay-alipay.png" alt="Alipay payment code">
+          <div class="lbl"><span class="en"><b>Alipay</b> · ¥19.9</span><span class="zh"><b>支付宝</b> · ¥19.9</span></div>
+        </div>
       </div>
-      <div class="qrbox">
-        <img src="images/pay-alipay.png" alt="Alipay payment code">
-        <div class="lbl"><span class="en"><b>Alipay</b> · ¥19.9</span><span class="zh"><b>支付宝</b> · ¥19.9</span></div>
-      </div>
-      <div class="wxid">
-        <div class="k"><span class="en">then add me on wechat</span><span class="zh">付完加我微信</span></div>
-        <div class="id">hekouwang</div>
-        <div class="n"><span class="en">Send the payment screenshot and note "terminal kit". I'll ask which delivery route you want and send it over.</span><span class="zh">把付款截图发我，备注「终端套装」。我会问你走哪条交付路，然后发给你。</span></div>
+    </div>
+
+    <div class="qrgrp">
+      <div class="ghd"><span class="n">02</span><span class="en">Then add me</span><span class="zh">然后加我</span></div>
+      <div class="qr">
+        <div class="qrbox">
+          <img src="images/wechat-qr.png" alt="Add me on WeChat">
+          <div class="lbl"><span class="en"><b>Scan to add me</b></span><span class="zh"><b>扫码加我</b></span></div>
+        </div>
+        <div class="wxid">
+          <div class="k"><span class="en">or search this id</span><span class="zh">或者直接搜微信号</span></div>
+          <div class="id">hekouwang</div>
+          <div class="n"><span class="en">Send the payment screenshot and note "terminal kit". I'll ask which delivery route you want and send it over.</span><span class="zh">把付款截图发我，备注「终端套装」。我会问你走哪条交付路，然后发给你。</span></div>
+        </div>
       </div>
     </div>
 
