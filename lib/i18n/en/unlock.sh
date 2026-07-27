@@ -64,3 +64,6 @@ M_UL_DONE_4="  derive your own theme from one brand color: ./palette.sh --from '
 M_UL_DONE_5="  cheat sheet: docs/cheatsheet.pdf (A4, ready to print)"
 M_UL_DONE_6="  something off: ./doctor.sh"
 M_UL_APPLY_FAIL="deploying the theme failed — run ./doctor.sh to see which step"
+# 版本比对：老免费仓 + 新付费包 = 树里两个版本号不一致
+M_UL_VER_SKEW="your open-source tree is %s, this paid pack is %s"
+M_UL_VER_SKEW_FIX="run 'git pull' first, then unlock — otherwise the free-tier scripts stay one version behind the paid parts"

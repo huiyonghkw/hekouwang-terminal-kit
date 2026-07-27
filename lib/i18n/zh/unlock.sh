@@ -64,3 +64,6 @@ M_UL_DONE_4="  从一个品牌色推自己的主题：./palette.sh --from '#e08a
 M_UL_DONE_5="  速查卡：docs/速查卡.pdf（A4，可直接打印）"
 M_UL_DONE_6="  有哪里不对：./doctor.sh"
 M_UL_APPLY_FAIL="主题部署失败 —— 跑 ./doctor.sh 看是哪一步"
+# 版本比对：老免费仓 + 新付费包 = 树里两个版本号不一致
+M_UL_VER_SKEW="你的开源版是 %s，这个付费包是 %s"
+M_UL_VER_SKEW_FIX="建议先 git pull 再解压 —— 否则免费档那半边会比付费件旧一个版本"

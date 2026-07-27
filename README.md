@@ -14,8 +14,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/4%20terminals-iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20Terminal.app-e08a5f">
-  <img src="https://img.shields.io/badge/one%20palette-terminal%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-89b4fa">
+  <img src="https://img.shields.io/badge/paid%20tier-4%20terminals%3A%20iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20Terminal.app-6a45e0">
+  <img src="https://img.shields.io/badge/paid%20tier-one%20palette%3A%20terminal%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-6a45e0">
+  <img src="https://img.shields.io/badge/open%20source-a%20properly%20configured%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
 </p>
 
@@ -263,13 +264,19 @@ CN=1 ./install.sh
 
 ### 4.5 What is it doing while it runs?
 
-> Homebrew → iTerm2 + fonts → CLI tools → oh-my-zsh → theme and **whole-ecosystem colors** → bat themes → wire into git/tmux → editor theme → `.zshrc` → Shell Integration → system settings → import history → **write the three GUI settings** → checkup report
+> Homebrew → iTerm2 + fonts → CLI tools → oh-my-zsh → theme and colors (**whole-ecosystem color is paid-tier**) → bat themes → wire into git/tmux → editor theme → `.zshrc` → Shell Integration → system settings → import history → **write the three GUI settings** → checkup report
 
 When you see `✅ All done!` it worked. It finishes by running `doctor.sh`, and **all green means you are installed**:
 
 <p align="center">
   <img src="docs/images/10-doctor.png" width="62%" alt="doctor.sh: everything passes">
 </p>
+
+> ⚠️ This shot was taken on a **paid-tier** machine, which is why the eight lines under
+> section 5 ("whole ecosystem in one color") are green. **On the open-source build that
+> section will not be all green, and nothing is broken** — multi-terminal and whole-ecosystem
+> color belong to the paid pack, and `doctor.sh` deliberately does not treat them as faults.
+> For the open-source build, sections 1–4 and 6–8 green is what "installed" looks like.
 
 **Close the built-in Terminal and open iTerm2** to see the new setup.
 

@@ -106,6 +106,23 @@ if [ -f "$MARKER" ]; then
   printf "  ${y}!${o} %s\n" "$(t M_UL_ALREADY)"
 fi
 
+# ⚠️ 版本比对：买家手里的免费仓可能停在旧版，而付费包是新的。
+#    两边不一致时树里会同时存在两个版本号（VERSION 与包内 SKILL.md），
+#    功能不会崩，但更新提示和 VS Code 扩展的版本号会对不上 —— 提醒一句，不拦。
+ZIP_VER="$(python3 - "$ZIP" 2>/dev/null <<'PYVER'
+import sys, zipfile
+try:
+    print(zipfile.ZipFile(sys.argv[1]).read("VERSION").decode().strip())
+except Exception:
+    pass
+PYVER
+)"
+LOCAL_VER="$(tr -d '[:space:]' < "$SCRIPT_DIR/VERSION" 2>/dev/null)"
+if [ -n "$ZIP_VER" ] && [ -n "$LOCAL_VER" ] && [ "$ZIP_VER" != "$LOCAL_VER" ]; then
+  printf "  ${y}!${o} %s\n" "$(t M_UL_VER_SKEW "$LOCAL_VER" "$ZIP_VER")"
+  printf "    ${d}%s${o}\n" "$(t M_UL_VER_SKEW_FIX)"
+fi
+
 # ---- 3. 预演 / 执行 ------------------------------------------
 FILES="$(zip_names "$ZIP" 2>/dev/null | wc -l | tr -d ' ')"
 say M_UL_S3 "$FILES"

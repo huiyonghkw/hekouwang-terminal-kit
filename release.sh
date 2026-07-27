@@ -919,6 +919,12 @@ for p in paid:
     else:
         files.append(p)
 files += [f'config/themes/{t}.json' for t in themes]
+# ⛔ VERSION 也要进包，但**绝不能加进 PAID_PATHS** —— 那个数组同时驱动「从公开仓剔除」，
+#    而 VERSION 是两档都必须有的版本号真相源。这里显式补进出货清单。
+#    实测过的坑：买家手里是 2.3.0 的免费仓（那一版还没有 VERSION 文件），解压 2.4.0 的包，
+#    整棵树没有 VERSION → update.sh 静默打「版本未知」；就算有，也会 VERSION=2.3.0
+#    而包内 SKILL.md 写 2.4.0，两个版本号当场打架。
+files.append('VERSION')
 
 # ⛔ 剔掉本机 ./import.sh 导进来的主题 —— 那是我个人试色，不随产品分发。
 #    build_tree 已经为两个 git 子仓做过这件事，但 --pack 是**第三条**出货路径，
@@ -966,7 +972,7 @@ PY
   #    买家解压后也不报错，只是功能悄悄少一半。没门就永远发现不了。
   if ! python3 - "$OUT" "${PAID_PATHS[@]}" <<'PYV'
 import os, sys, zipfile
-out, paid = sys.argv[1], sys.argv[2:]
+out, paid = sys.argv[1], sys.argv[2:] + ["VERSION"]   # VERSION 随包出货，见上面 files.append
 names = set(zipfile.ZipFile(out).namelist())
 miss = []
 for q in paid:

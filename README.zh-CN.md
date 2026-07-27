@@ -14,8 +14,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/%E5%9B%9B%E4%B8%AA%E7%BB%88%E7%AB%AF-iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20%E8%87%AA%E5%B8%A6%E7%BB%88%E7%AB%AF-e08a5f">
-  <img src="https://img.shields.io/badge/%E4%B8%80%E4%BB%BD%E8%89%B2%E6%9D%BF-%E7%BB%88%E7%AB%AF%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-89b4fa">
+  <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E5%9B%9B%E4%B8%AA%E7%BB%88%E7%AB%AF-iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20%E8%87%AA%E5%B8%A6%E7%BB%88%E7%AB%AF-6a45e0">
+  <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E4%B8%80%E4%BB%BD%E8%89%B2%E6%9D%BF-%E7%BB%88%E7%AB%AF%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-6a45e0">
+  <img src="https://img.shields.io/badge/%E5%BC%80%E6%BA%90%E7%89%88-%E9%85%8D%E5%A5%BD%E7%9A%84%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
 </p>
 
@@ -278,13 +279,17 @@ CN=1 ./install.sh
 
 ### 五、跑的时候它在干嘛？
 
-> Homebrew → iTerm2 + 字体 → CLI 工具 → oh-my-zsh → 主题与**全生态配色** → bat 主题 → 挂进 git/tmux → 编辑器主题 → `.zshrc` → Shell Integration → 系统设置 → 导入历史 → **自动写好 GUI 三项设置** → 自检报告
+> Homebrew → iTerm2 + 字体 → CLI 工具 → oh-my-zsh → 主题与配色（**全生态同色属付费档**） → bat 主题 → 挂进 git/tmux → 编辑器主题 → `.zshrc` → Shell Integration → 系统设置 → 导入历史 → **自动写好 GUI 三项设置** → 自检报告
 
 跑完看到 `✅ 全部完成！` 就成了。最后会自动跑一遍 `doctor.sh`，**全绿就代表装好了**：
 
 <p align="center">
   <img src="docs/images/10-doctor.png" width="62%" alt="doctor.sh 体检全部通过">
 </p>
+
+> ⚠️ 这张图拍的是**付费档**的机器，所以第 5 节「全生态同色」那八行是绿的。
+> **开源版这一节不会全绿，也不是装坏了**——多终端与全生态同色属付费包，
+> `doctor.sh` 明确不把它当故障（缺了不报警）。开源版的判据是第 1～4、6～8 节绿。
 
 **关掉自带终端，打开 iTerm2**，新界面就生效了。
 
