@@ -7,6 +7,7 @@
 #   ./release.sh --pro  <目录> [--update]   导出付费版 → private 仓（全量，商业授权）
 #   ./release.sh --pack [文件.zip]          打付费包 zip（给不用 git 的买家）
 #   ./release.sh --meta [oss|pro]           把仓库 description / topics 推上 GitHub
+#   ./release.sh --tag  [子仓目录...]        按 VERSION 给母版+子仓打 tag 并推（幂等）
 #   ./release.sh --check                    只检查：有没有夹带不该带出去的东西
 #
 #   不带 --update = 第一次建仓，目标必须是空目录
@@ -985,6 +986,67 @@ PYV
   printf "  ${g}✓${o} 验包：PAID_PATHS 每一项都在\n"
   printf "${g}✓ 付费包已打好${o}\n"
   printf "${d}买家拿到后：解压进开源版目录 → 重跑 _generate.py → ./theme.sh${o}\n"
+  ;;
+
+# ------------------------------------------------------------
+# 打 tag —— 发版流程的最后一步
+#
+# ⚠️ 为什么要收进这个脚本：tag 以前是**手打的**，结果 2.3.0、2.4.0 三个仓一个都没打，
+#    线上最后一个 tag 停在 07-23 的 v2.2.0，而 CHANGELOG 已经走到 2.4.0。
+#    跟 description / topics 当初手点是同一个病：**只要有一样东西活在自动流程之外，
+#    它就一定会漂**。版本号从 VERSION 取（唯一真相源），三仓一条命令打齐。
+#
+# ⛔ 绝不移动已存在的 tag。tag 指向别处时直接拒绝、让人自己判断 ——
+#    `git tag -f` 会让已经 clone 过的人拿到跟你不一样的 v2.4.0，而且毫无提示。
+# ------------------------------------------------------------
+--tag)
+  shift
+  VER="$(tr -d '[:space:]' < "$SCRIPT_DIR/VERSION" 2>/dev/null)"
+  if [ -z "$VER" ]; then
+    printf "${r}✗ 读不到 VERSION${o}\n"; exit 1
+  fi
+  TAG="v$VER"
+  printf "${b}打 tag %s（母版 + %s 个子仓）${o}\n" "$TAG" "$#"
+  TAG_BAD=0
+  for tdir in "$SCRIPT_DIR" "$@"; do
+    tname="$(basename "$tdir")"
+    if [ ! -d "$tdir/.git" ]; then
+      printf "  ${r}✗ %s 不是 git 仓${o}\n" "$tname"; TAG_BAD=1; continue
+    fi
+    # ⛔ 脏树不许打：tag 指向的是**已提交的内容**，工作区里还躺着改动的话，
+    #    这个 tag 代表的东西跟你以为的不是一回事。
+    if [ -n "$(git -C "$tdir" status --porcelain 2>/dev/null)" ]; then
+      printf "  ${r}✗ %s 工作区不干净，先提交再打 tag${o}\n" "$tname"; TAG_BAD=1; continue
+    fi
+    thead="$(git -C "$tdir" rev-parse HEAD)"
+    if git -C "$tdir" rev-parse -q --verify "refs/tags/$TAG" >/dev/null 2>&1; then
+      # ⚠️ 比的是 tag **解引用之后**指向的提交（附注 tag 自己是个对象，直接比会永远不等）
+      tat="$(git -C "$tdir" rev-list -n1 "$TAG")"
+      if [ "$tat" = "$thead" ]; then
+        printf "  ${g}✓${o} %s 已有 %s 且指向 HEAD\n" "$tname" "$TAG"
+      else
+        printf "  ${r}✗ %s 的 %s 指向 %s，而 HEAD 是 %s${o}\n" \
+               "$tname" "$TAG" "${tat:0:7}" "${thead:0:7}"
+        printf "  ${d}  已发布的 tag 不移动。要么这版内容该重打个新版本号，要么这个 tag 打错了地方。${o}\n"
+        TAG_BAD=1; continue
+      fi
+    else
+      git -C "$tdir" tag -a "$TAG" -m "$TAG" || { printf "  ${r}✗ %s 打 tag 失败${o}\n" "$tname"; TAG_BAD=1; continue; }
+      printf "  ${g}✓${o} %s 打上 %s（%s）\n" "$tname" "$TAG" "${thead:0:7}"
+    fi
+    # 推：已经在远端就静默通过（幂等）
+    if git -C "$tdir" push -q origin "refs/tags/$TAG" 2>/dev/null; then
+      printf "    ${d}→ 已推到 origin${o}\n"
+    elif git -C "$tdir" ls-remote --tags origin "$TAG" 2>/dev/null | grep -q .; then
+      printf "    ${d}→ 远端已有${o}\n"
+    else
+      printf "    ${r}✗ 推不上去（远端没有这个 tag）${o}\n"; TAG_BAD=1
+    fi
+  done
+  if [ "$TAG_BAD" = "1" ]; then
+    printf "\n${r}✗ 有仓没打上，别当成发完了${o}\n"; exit 1
+  fi
+  printf "\n${g}✓ %s 三仓齐了${o}\n" "$TAG"
   ;;
 
 # ------------------------------------------------------------
