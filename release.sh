@@ -82,6 +82,15 @@ SITE_ONLY_PATHS=(
   "docs/images/wechat-qr.png"
 )
 
+# 上面那条的**镜像**：只服务**付费仓首页**的东西，公开仓一律不带。
+# 起因（2026-07-27 体检）：40-workspace.png 展示的是付费的项目工作区，
+# 只有 README-PRO 引用它 —— 却一直跟着发进公开仓，在那儿是一张没人引用的图。
+# ⚠️ 我一度以为它是孤儿直接 `git rm`，结果付费仓导出当场红（图裂门抓到了）。
+#    **判「孤儿」必须两个仓都扫**：公开仓没引用 ≠ 没人用。
+PRO_ONLY_PATHS=(
+  "docs/images/40-workspace.png"  # 付费首页的项目工作区截图
+)
+
 # ⚠️ GitHub 的 description 上限是 **350 字符**，超一个字符整次调用报 HTTP 422、
 #    什么都不改。原来这两条是 529 / 418 字符 —— 也就是说 2026-07-23 改成英文之后，
 #    `--meta` 一次都没成功过，线上一直是更早的中文版，而错误被 `>/dev/null 2>&1` 藏住了。
@@ -362,6 +371,15 @@ PYLINK
   done
   # 付费仓专用的授权条款与首页不进公开仓
   rm -f "$dest/LICENSE-PRO.txt" "$dest/README-PRO.md" "$dest/README-PRO.en.md"
+  # 只服务付费仓首页的素材同理 —— 删完逐项验，别只删不验
+  local po poleak=0
+  for po in "${PRO_ONLY_PATHS[@]}"; do
+    [ -e "$dest/$po" ] && rm -rf "$dest/$po" && printf "  ${d}- %s（付费首页专用）${o}\n" "$po"
+  done
+  for po in "${PRO_ONLY_PATHS[@]}"; do
+    [ -e "$dest/$po" ] && { printf "  ${r}✗ 付费首页专用件没删掉：%s${o}\n" "$po"; poleak=1; }
+  done
+  [ "$poleak" = "1" ] && return 1
   # 公开仓的更新日志用精简版（只写用户看得见的变化，不写实现怎么调出来的）
   if [ -f "$dest/CHANGELOG-OSS.md" ]; then
     mv "$dest/CHANGELOG-OSS.md" "$dest/CHANGELOG.md"
