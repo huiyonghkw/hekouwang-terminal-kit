@@ -162,16 +162,44 @@ command -v atuin >/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
 # iTerm2 Shell Integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# ---- Window title: show the current directory name only ----
+# ---- Tab title: project name plus one colored dot ----------
 # The iTerm2 / Ghostty shell integration writes `user@host:/full/path` into the
 # title by default — which means screenshots, screen shares and recorded lessons
 # broadcast your username, machine name and whole directory tree.
 # It has to be APPENDED to precmd_functions (i.e. after the shell integration is
 # sourced), otherwise the integration writes the title back on every prompt.
 # Printing the escape sequence directly does not work; this was tested.
+#
+# Project identity lives in ONE dot in front of the title; the tab bar itself
+# keeps the window background (the Minimal theme's "one canvas" look).
+# ⛔ Do not go back to OSC 6 tab tinting (`\033]6;1;bg;…`): it floods the whole
+#    top bar with a saturated block that clearly does not belong to the window.
+#    Same reasoning as TAB_TINT = 0.0 in config/themes/_generate.py.
+# ⚠️ The reset is sent on EVERY prompt on purpose — the tab color is per-session
+#    state in iTerm2, so a session that was tinted before keeps its old color
+#    until something clears it. Deleting the tinting code is not enough.
+typeset -A HKW_TAB_DOT
+# Pin a dot for the projects you live in (key = absolute path of the repo root):
+# HKW_TAB_DOT[$HOME/work/my-project]=🟠
+
 _hkw_title() {
-  local d="${PWD:t}"
-  [[ "$PWD" == "$HOME" ]] && d="~"          # the basename of $HOME is your username — do not leak it
-  printf '\033]0;%s\007' "$d"
+  local root name dot
+  printf '\033]6;1;bg;*;default\a'           # reset tab color → top bar follows the window
+  root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -z $root ]]; then                    # outside any git repo: directory name, no dot
+    name=${PWD:t}; [[ $PWD == $HOME ]] && name='~'   # the basename of $HOME is your username — do not leak it
+    printf '\033]0;%s\007' "$name"
+    return
+  fi
+  name=${root:t}                             # inside a repo: title = repo name
+  dot=${HKW_TAB_DOT[$root]}                  # a pinned dot wins
+  if [[ -z $dot ]]; then                     # otherwise hash the path → same repo, same dot forever
+    local pal=(🟢 🟣 🟡 🔴 🟤 ⚪)
+    local h=$(print -n $root | md5 -q 2>/dev/null)
+    dot=${h:+$pal[$(( 0x${h[1,6]} % $#pal + 1 ))]}
+  fi
+  printf '\033]0;%s\007' "$name"             # OSC 0 fallback: terminals without OSC 1 still get a title
+  printf '\033]1;%s %s\a' "$dot" "$name"     # OSC 1 = tab title only (with the dot)
+  printf '\033]2;%s\a' "$name"               # OSC 2 = window title stays plain — cleaner on a projector
 }
 autoload -Uz add-zsh-hook 2>/dev/null && add-zsh-hook precmd _hkw_title

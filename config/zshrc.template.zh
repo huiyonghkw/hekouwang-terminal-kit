@@ -155,15 +155,41 @@ command -v atuin >/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
 # iTerm2 Shell Integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# ---- 窗口标题：只显示当前目录名 ----------------------------
+# ---- 标签标题：项目名 + 一个彩色圆点 -----------------------
 # iTerm2 / Ghostty 的 shell integration 默认把标题写成 `user@host:完整路径`——
 # 截图、投屏、录课时等于把你的用户名、机器名、整个目录结构一起播出去。
 # ⚠️ 必须**追加在 precmd_functions 末尾**（也就是 source shell integration 之后），
 #    否则每次画提示符它又被写回去 —— 直接 printf 转义序列是没用的，实测过。
+#
+# 项目识别只落在标题前的**一个圆点**上，顶栏底色永远跟窗口走（Minimal 主题
+# 「整窗一块画布」）。
+# ⛔ 别改回 OSC 6 标签染色（`\033]6;1;bg;…`）：那会把一整条顶栏刷成高饱和色块，
+#    跟窗体明显不是一家。同 config/themes/_generate.py 里 TAB_TINT = 0.0 的口径。
+# ⚠️ 复位序列**每次画提示符都发**是有意的 —— iTerm2 的标签色是「会话级状态」，
+#    以前染过色的会话不复位就一直挂着旧颜色，光把染色代码删掉是不够的。
+typeset -A HKW_TAB_DOT
+# 你常驻的那几个项目，在这里钉死圆点（键=项目根绝对路径）：
+# HKW_TAB_DOT[$HOME/work/my-project]=🟠
+
 _hkw_title() {
-  local d="${PWD:t}"
-  [[ "$PWD" == "$HOME" ]] && d="~"          # 家目录的 basename 是用户名，别露
-  printf '\033]0;%s\007' "$d"
+  local root name dot
+  printf '\033]6;1;bg;*;default\a'           # 标签色复位＝顶栏跟窗口底色走
+  root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -z $root ]]; then                    # 不在任何 git 项目里：标题=目录名，不挂圆点
+    name=${PWD:t}; [[ $PWD == $HOME ]] && name='~'   # 家目录的 basename 是用户名，别露
+    printf '\033]0;%s\007' "$name"
+    return
+  fi
+  name=${root:t}                             # 在项目里：标题=项目（仓库）名
+  dot=${HKW_TAB_DOT[$root]}                  # 手动指定的优先
+  if [[ -z $dot ]]; then                     # 没指定 → 按路径哈希挑稳定圆点（同项目永远同点）
+    local pal=(🟢 🟣 🟡 🔴 🟤 ⚪)
+    local h=$(print -n $root | md5 -q 2>/dev/null)
+    dot=${h:+$pal[$(( 0x${h[1,6]} % $#pal + 1 ))]}
+  fi
+  printf '\033]0;%s\007' "$name"             # OSC 0 兜底：不认 OSC 1 的终端也有纯标题
+  printf '\033]1;%s %s\a' "$dot" "$name"     # OSC 1 = 只写标签页标题（带圆点）
+  printf '\033]2;%s\a' "$name"               # OSC 2 = 窗口标题保持纯文字，投屏更干净
 }
 autoload -Uz add-zsh-hook 2>/dev/null && add-zsh-hook precmd _hkw_title
 
