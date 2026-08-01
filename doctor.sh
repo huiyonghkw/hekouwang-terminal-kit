@@ -114,6 +114,20 @@ if [ -f "$SCRIPT_DIR/config/typography/_engine.py" ]; then
 elif [ -f "$SCRIPT_DIR/config/font.conf" ]; then
   [ "$QUIET" = "1" ] || printf "  ${d}·${o} ${d}%s${o}\n" "$(t M_DOC_OPTICAL_MISSING)"
 fi
+# 场景美学引擎：当前钉的场景
+if [ -f "$SCRIPT_DIR/config/scenes/_engine.py" ]; then
+  SCN_JSON="$(python3 "$SCRIPT_DIR/config/scenes/_engine.py" resolve 2>/dev/null || true)"
+  if [ -n "$SCN_JSON" ]; then
+    SCN_ID="$(printf '%s' "$SCN_JSON" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("id",""))' 2>/dev/null || true)"
+    SCN_SRC="$(printf '%s' "$SCN_JSON" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("source",""))' 2>/dev/null || true)"
+    SCN_PRIV="$(printf '%s' "$SCN_JSON" | python3 -c 'import sys,json;d=json.load(sys.stdin);print("privacy" if d.get("privacy") else "—")' 2>/dev/null || true)"
+    ok "$(t M_DOC_SCENE_OK "$SCN_ID" "$SCN_SRC" "$SCN_PRIV")"
+  else
+    warn "$(t M_DOC_SCENE_WARN)" "$(t M_DOC_SCENE_FIX)"
+  fi
+elif [ -f "$SCRIPT_DIR/config/font.conf" ]; then
+  [ "$QUIET" = "1" ] || printf "  ${d}·${o} ${d}%s${o}\n" "$(t M_DOC_SCENE_MISSING)"
+fi
 # ⚠️ 装了 ≠ 上屏。Profile 里写的 PostScript 名如果和字体文件对不上，
 #    iTerm2 会静默回退到系统字体 —— 所以这里比对 Profile 写的名字和实际字体。
 ACTIVE="$DP_DIR/hekouwang-active-theme.json"

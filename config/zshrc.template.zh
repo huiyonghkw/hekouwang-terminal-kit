@@ -83,6 +83,9 @@ alias gco="git checkout "
 alias gr="git merge "
 
 # ---- 8. Starship Prompt -------------------------------------
+# 场景美学引擎：scene.env 可能设置 STARSHIP_CONFIG（投屏/录屏藏路径）。
+# 必须在 starship init 之前 source，否则隐私路径不会生效。
+[ -f ~/.config/hekouwang-terminal/scene.env ] && . ~/.config/hekouwang-terminal/scene.env
 eval "$(starship init zsh)"
 
 # ============================================================

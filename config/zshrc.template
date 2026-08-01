@@ -83,6 +83,9 @@ alias gco="git checkout "
 alias gr="git merge "
 
 # ---- 8. Starship prompt -------------------------------------
+# Scene Aesthetics Engine: scene.env may set STARSHIP_CONFIG for privacy paths.
+# Must load BEFORE starship init, otherwise present/record still show the full home path.
+[ -f ~/.config/hekouwang-terminal/scene.env ] && . ~/.config/hekouwang-terminal/scene.env
 eval "$(starship init zsh)"
 
 # ============================================================

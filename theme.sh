@@ -217,7 +217,7 @@ apply() {
   #    · 单字体      给 macOS 自带终端 —— 它**只有一个字体字段**，没有兜底层，
   #                  必须选自带 Nerd 图标的那套，否则 ls 的图标全变 ? 豆腐块（实测踩过）
   local FONT_PS FONT_FAM FONT_STYLE SOLO_PS SOLO_FAM SOLO_NF FONT_POLICY
-  local ECO_STATE="missing" ECO_TMUX="" WS_OK="" OPTICAL_NOTE=""
+  local ECO_STATE="missing" ECO_TMUX="" WS_OK="" OPTICAL_NOTE="" SCENE_NOTE=""
   RECEIPT=()
   # 终端光学校准引擎：若用户 ./font.sh apply 钉过字体，且本机装了，换肤时优先用它
   # （否则 font.conf 优先级会把 Operator 盖过刚钉住的 maple，光学档与字体错位）
@@ -278,14 +278,34 @@ PY
         | python3 -c 'import sys,json;d=json.load(sys.stdin);print("%s@%s"% (d["id"],d["density"]))' 2>/dev/null || true)"
     fi
   fi
+  # ⭐ 场景美学引擎：透明度/毛玻璃/窗尺寸/徽章/隐私（付费）
+  #    若场景要求 optical_density=present，再叠一次光学档（不改钉住，只覆盖本次部署）。
+  if [ -f "$SCRIPT_DIR/config/scenes/_engine.py" ]; then
+    if python3 "$SCRIPT_DIR/config/scenes/_engine.py" apply-iterm "$ACTIVE" >/dev/null; then
+      SCENE_NOTE="$(python3 "$SCRIPT_DIR/config/scenes/_engine.py" resolve 2>/dev/null \
+        | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("id",""))' 2>/dev/null || true)"
+      _scene_dens="$(python3 "$SCRIPT_DIR/config/scenes/_engine.py" resolve 2>/dev/null \
+        | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("optical_density") or "")' 2>/dev/null || true)"
+      if [ -n "$_scene_dens" ] && [ -f "$SCRIPT_DIR/config/typography/_engine.py" ]; then
+        if python3 "$SCRIPT_DIR/config/typography/_engine.py" apply-iterm "$ACTIVE" --ps "$FONT_PS" --density "$_scene_dens" >/dev/null; then
+          OPTICAL_NOTE="$(python3 "$SCRIPT_DIR/config/typography/_engine.py" resolve --ps "$FONT_PS" --density "$_scene_dens" 2>/dev/null \
+            | python3 -c 'import sys,json;d=json.load(sys.stdin);print("%s@%s"% (d["id"],d["density"]))' 2>/dev/null || true)"
+        fi
+      fi
+    fi
+  fi
   # 记下「当前是哪套」。⚠️ 这一行必须在生态层的 if 之外 —— 它以前埋在
   # 「付费生态件在不在」那个分支里，开源版换完肤 current_theme() 就问不出答案了。
   mkdir -p "$RUNTIME"
   printf '%s\n' "$theme" > "$RUNTIME/theme"
 
   r_sec "$(t M_THEME_SEC_TERMINAL)"
-  if [ -n "$OPTICAL_NOTE" ]; then
+  if [ -n "$OPTICAL_NOTE" ] && [ -n "$SCENE_NOTE" ]; then
+    r_ok "iTerm2" "$(t M_THEME_ITERM_FONT "$FONT_FAM") · $OPTICAL_NOTE · scene=$SCENE_NOTE"
+  elif [ -n "$OPTICAL_NOTE" ]; then
     r_ok "iTerm2" "$(t M_THEME_ITERM_FONT "$FONT_FAM") · $OPTICAL_NOTE"
+  elif [ -n "$SCENE_NOTE" ]; then
+    r_ok "iTerm2" "$(t M_THEME_ITERM_FONT "$FONT_FAM") · scene=$SCENE_NOTE"
   else
     r_ok "iTerm2" "$(t M_THEME_ITERM_FONT "$FONT_FAM")"
   fi

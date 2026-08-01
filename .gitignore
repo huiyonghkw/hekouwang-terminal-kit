@@ -16,6 +16,7 @@ config/themes/palettes/brand.py
 config/themes/generators/pro.py
 config/font.conf
 config/typography/
+config/scenes/
 config/themes/palettes/_derive.py
 config/themes/palettes/_import.py
 config/themes/_apply_pro.sh
@@ -24,6 +25,7 @@ import.sh
 palette.sh
 workspace.sh
 font.sh
+scene.sh
 SKILL.md
 SKILL.zh-CN.md
 references/terminals.md

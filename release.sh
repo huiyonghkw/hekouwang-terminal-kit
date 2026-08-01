@@ -115,6 +115,7 @@ PAID_PATHS=(
   "config/themes/generators/pro.py"
   "config/font.conf"
   "config/typography"                    # ⭐ 终端光学校准引擎（光学档 + _engine.py）
+  "config/scenes"                        # ⭐ 场景美学引擎（场景档 + _engine.py）
   "config/themes/palettes/_derive.py"
   "config/themes/palettes/_import.py"
   # ⭐ 2026-07-23 收紧分档：以前「脚本全部开源、只门控配置内容」，结果免费仓里
@@ -130,6 +131,7 @@ PAID_PATHS=(
   "palette.sh"
   "workspace.sh"
   "font.sh"                              # ⭐ 终端光学校准引擎入口
+  "scene.sh"                             # ⭐ 场景美学引擎入口
   # ⭐ 2026-07-27 三次收紧：**Claude Code Skill 整个归付费档**。
   #    这套目录本身就是一个 Agent Skill —— 装进 ~/.claude/skills/ 之后，「换个亮色主题」
   #    「我的终端为什么开得慢」这类话 AI 能直接驱动整套脚本跑完。那是这个产品最贵的
@@ -503,9 +505,17 @@ verify_tree() {  # verify_tree <oss|pro> <目录> → 不通过返回 1
     # 两份 SKILL 同理（2.4.0 起 Claude Code Skill 归付费档）：判据是**文件不存在**。
     # ⚠️ 判据是「文件不存在」，不是「跑起来会打印广告」—— 后者在文件被误发时同样是绿的。
     local gone=1 f
-    for f in import.sh palette.sh workspace.sh font.sh SKILL.md SKILL.zh-CN.md; do
+    for f in import.sh palette.sh workspace.sh font.sh scene.sh SKILL.md SKILL.zh-CN.md; do
       if [ -e "$V_DEST/$f" ]; then
         printf "  ${r}✗ %s 不该出现在开源版${o}\n" "$f"; gone=0; V_BAD=1
+      fi
+    done
+    # 光学 / 场景引擎目录也不该跟出去
+    # ⚠️ 循环变量别用 d —— release.sh 顶部的 ${d} 是 dim 色码，盖掉会把「付费 know-how 指纹」印成「config/scenes付费…」
+    local paid_dir
+    for paid_dir in config/typography config/scenes; do
+      if [ -e "$V_DEST/$paid_dir" ]; then
+        printf "  ${r}✗ %s 不该出现在开源版${o}\n" "$paid_dir"; gone=0; V_BAD=1
       fi
     done
     [ "$gone" = "1" ] && printf "  ${g}✓${o} 付费入口脚本与两份 SKILL 都没跟出去\n"
