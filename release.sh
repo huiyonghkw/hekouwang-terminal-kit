@@ -296,53 +296,39 @@ PYIMP
     printf "  ${g}✓ 落地页专用件已全部剔除（%s 项）${o}\n" "${#SITE_ONLY_PATHS[@]}"
     # 首页换成写给买家看的那份。公开版 README 开头就是免费/付费对比表和 ¥19.9 ——
     # 买家点进来看到有人向他推销他已经买的东西，很怪。
-    # ⚠️ 但**不要**为此维护两份 30k 手册：正文只留一份母本（README.md），
-    #    在这里改名进 docs/ 即可，双份必然漂移。
+    #
+    # 文档布局（2026-08 起）：
+    #   仓根 README*.md = 瘦落地页（给 GitHub 路人）
+    #   docs/manual*.md = 完整手册（原长 README）
+    #   README-PRO*.md  = 付费仓首页
+    # ⚠️ 若 docs/manual 已存在，绝不能再用瘦 README 去覆盖它（会把手册写成 150 行落地页）。
+    #    旧布局兼容：manual 还不存在时，才把长 README 挪进 docs/ 并改相对路径。
     if [ -f "$dest/README-PRO.md" ]; then
       mkdir -p "$dest/docs"
-      mv "$dest/README.md" "$dest/docs/manual.md"
-      # ⚠️ 中文版 README 也得跟着搬：它开头同样是免费/付费对比表 + ¥19.9。
-      #    只搬英文那份的话，买家在首页旁边就看到一份向他推销他已经买了的东西的文档。
-      [ -f "$dest/README.zh-CN.md" ] && mv "$dest/README.zh-CN.md" "$dest/docs/manual.zh-CN.md"
-      # 付费首页也做成双语（跟免费仓一致）：英文那份当主 README.md、中文当 .zh-CN.md。
-      # ⚠️ 顺序要紧——上面刚把免费版的 README.md / README.zh-CN.md 搬进 docs/manual*，
-      #    这里的两个 mv 目标名才空出来，能安全落位。
-      if [ -f "$dest/README-PRO.en.md" ]; then
-        mv "$dest/README-PRO.en.md" "$dest/README.md"
-        mv "$dest/README-PRO.md" "$dest/README.zh-CN.md"
+      if [ -f "$dest/docs/manual.md" ]; then
+        # 新布局：手册已就位；扔掉公开仓落地页，给 README-PRO 腾出文件名
+        rm -f "$dest/README.md" "$dest/README.zh-CN.md"
+        printf "  ${d}~ 已有 docs/manual*，丢弃公开仓瘦 README，首页换成付费版${o}\n"
       else
-        mv "$dest/README-PRO.md" "$dest/README.md"   # 没英文版就退回单中文首页
-      fi
-      # ⛔ 手册原来在仓根，图片写的是 `src="docs/images/x.png"`。搬进 docs/ 之后
-      #    这个相对路径会去找 `docs/docs/images/`，**12 张图全裂**（2026-07-23 实测踩到，
-      #    买家先看到的就是一片碎图标）。挪文件必须同时改它内部的相对路径。
-      #    只做这一处字面替换，不用正则改结构 —— 改结构容易顺手吃掉别的东西。
-      # ⛔ 手册从仓根搬进 docs/ 之后，**所有相对路径都深了一层**，不只是图片。
-      #    老代码只 sed 了 `src="docs/images/`，于是 12 张图修好了，而
-      #    `](references/…)`、`](config/…)`、`](SKILL.md)`、`](LICENSE)` 这一二十条
-      #    markdown 链接全指向不存在的位置 —— 点一条 404 一条，从来没人发现。
-      #    这里统一改：图片走 images/（已在 docs/ 里），其余相对链接前面补 ../。
-      for _m in "$dest/docs/manual.md" "$dest/docs/manual.zh-CN.md"; do
-        [ -f "$_m" ] || continue
-        python3 - "$_m" <<'PYLINK'
+        # 旧布局回退：正文还在仓根 README，搬进 docs/ 当手册
+        mv "$dest/README.md" "$dest/docs/manual.md"
+        [ -f "$dest/README.zh-CN.md" ] && mv "$dest/README.zh-CN.md" "$dest/docs/manual.zh-CN.md"
+        for _m in "$dest/docs/manual.md" "$dest/docs/manual.zh-CN.md"; do
+          [ -f "$_m" ] || continue
+          python3 - "$_m" <<'PYLINK'
 import re, sys
 p = sys.argv[1]
 src = open(p, encoding="utf-8").read()
-
-# 图片：docs/images/x → images/x（手册自己已经在 docs/ 里了）
 src = src.replace('src="docs/images/', 'src="images/')
 
 
 def fix(m):
     label, target = m.group(1), m.group(2)
-    # 外链 / 纯锚点 / 已经相对上级的，不动
     if re.match(r'^(https?:|mailto:|#|\.\./)', target):
         return m.group(0)
-    # 两份手册互指：它们是 docs/ 里的邻居，改名不改层级
     if target in ("README.md", "README.zh-CN.md"):
         return f'[{label}]({{}})'.format(
             "manual.md" if target == "README.md" else "manual.zh-CN.md")
-    # images/ 已经在 docs/ 里，别再往上跳
     if target.startswith("images/"):
         return m.group(0)
     return f'[{label}](../{target})'
@@ -351,11 +337,22 @@ def fix(m):
 src = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', fix, src)
 open(p, "w", encoding="utf-8").write(src)
 PYLINK
-        # 付费仓的 MIT LICENSE 已被换成 LICENSE.txt（付费授权条款），
-        # 手册里那句「代码：MIT，见 LICENSE」的链接得跟着改，否则指向一个不存在的文件。
+          sed -i '' 's|(\.\./LICENSE)|(../LICENSE.txt)|g' "$_m"
+        done
+        printf "  ${d}~ README.md → docs/manual.md（旧布局回退，相对路径已改），首页换成付费版${o}\n"
+      fi
+      # 付费首页双语：英文主 README.md、中文 .zh-CN.md
+      if [ -f "$dest/README-PRO.en.md" ]; then
+        mv "$dest/README-PRO.en.md" "$dest/README.md"
+        mv "$dest/README-PRO.md" "$dest/README.zh-CN.md"
+      else
+        mv "$dest/README-PRO.md" "$dest/README.md"
+      fi
+      # 付费仓 LICENSE 已非 MIT；手册里若仍链 ../LICENSE，改成 ../LICENSE.txt
+      for _m in "$dest/docs/manual.md" "$dest/docs/manual.zh-CN.md"; do
+        [ -f "$_m" ] || continue
         sed -i '' 's|(\.\./LICENSE)|(../LICENSE.txt)|g' "$_m"
       done
-      printf "  ${d}~ README.md → docs/manual.md（中英两份，图片相对路径已跟着改），首页换成付费版${o}\n"
     fi
     return 0
   fi
@@ -651,7 +648,8 @@ PYLNKOSS
     #    买家点进来被推销自己已买的东西 —— 这条用「有没有那张对比表」来判，能红。
     # ⚠️ 判据必须两种语言都认：README 主文件已改成英文，只认中文那句
     #    等于这道守卫永远不会响 —— 比没有守卫更糟（它还在装作有人看门）。
-    if grep -qE "开源版（MIT · 免费）|Open source \(MIT · free\)" "$V_DEST/README.md" 2>/dev/null; then
+    # 判据认新旧两种公开仓措辞（2026-08 瘦 README 改成了「免费 · MIT」语序）
+    if grep -qE "开源版（MIT · 免费）|开源版（免费 · MIT）|Open source \(MIT · free\)|Open source \(free · MIT\)" "$V_DEST/README.md" 2>/dev/null; then
       printf "  ${r}✗ 付费仓的 README 还是公开版（含免费/付费对比表）${o}\n"; V_BAD=1
     elif [ ! -f "$V_DEST/docs/manual.md" ]; then
       printf "  ${r}✗ 付费仓缺 docs/manual.md —— 正文被换掉后没有落脚点${o}\n"; V_BAD=1
