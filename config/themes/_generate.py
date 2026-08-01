@@ -233,7 +233,7 @@ def build(p):
         "Use Cursor Guide": False,
         "Background Color": col(p["bg"]),
         "Foreground Color": col(p["fg"]),
-        "Bold Color": col(p["fg"]),
+        "Bold Color": col(p.get("bold", p["fg"])),
         "Cursor Color": col(p["cursor"]),
         "Cursor Text Color": col(p["bg"]),
         "Cursor Guide Color": col(p["fg"], 0.07),
@@ -254,14 +254,15 @@ def build(p):
         "Badge Color": col(p["cursor"], 0.30),       # 项目徽章：品牌色的淡水印，不抢正文
         # 查找命中：用主题自己的黄，兑到底色里 —— 兑过之后暗底不会亮到吃掉浅色字，
         # 亮底也不会浅到看不出命中，一个配方两头都成立。
-        "Match Background Color": col(mix(p["ansi"][3], p["bg"], 0.45)),
+        "Match Background Color": col(
+            p.get("matchbg", mix(p["ansi"][3], p["bg"], 0.45))),
         "Minimum Contrast": 0,      # 别让 iTerm2 替我们"修"颜色
         "Cursor Boost": 0,          # 非零会把除光标外的一切压暗
         "Smart Cursor Color": False,  # 我们已经显式给了 Cursor Text Color
         "Brighten Bold Text": True,   # 粗体走 bright 行（ls 的目录、git diff 的强调靠它）
         # SGR 2（暗字）的不透明度。theme.sh / starship 的右栏大量用暗字，
         # 出厂 0.5 在暗底上偏糊，抬到 0.55 刚好还是"余光信息"但读得清。
-        "Faint Text Alpha": 0.55,
+        "Faint Text Alpha": p.get("faint_text_alpha", 0.55),
         "Use Tab Color": True,
         "Tab Color": col(mix(p["cursor"], p["bg"], TAB_TINT) if TAB_TINT else p["bg"]),
         "Triggers": triggers(p),
