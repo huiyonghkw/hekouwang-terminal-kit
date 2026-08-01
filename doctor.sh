@@ -100,6 +100,20 @@ elif true; then
   done < "$SCRIPT_DIR/config/font.conf"
   [ -z "$PICKED" ] && warn "$(t M_DOC_FONT_NONE)" "$(t M_DOC_FONT_NONE_FIX)"
 fi
+# 终端光学校准引擎：光学档是否在、当前钉的是哪一档
+if [ -f "$SCRIPT_DIR/config/typography/_engine.py" ]; then
+  OPT_JSON="$(python3 "$SCRIPT_DIR/config/typography/_engine.py" resolve 2>/dev/null || true)"
+  if [ -n "$OPT_JSON" ]; then
+    OPT_ID="$(printf '%s' "$OPT_JSON" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("id",""))' 2>/dev/null || true)"
+    OPT_D="$(printf '%s' "$OPT_JSON" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("density",""))' 2>/dev/null || true)"
+    OPT_SRC="$(printf '%s' "$OPT_JSON" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("source",""))' 2>/dev/null || true)"
+    ok "$(t M_DOC_OPTICAL_OK "$OPT_ID" "$OPT_D" "$OPT_SRC")"
+  else
+    warn "$(t M_DOC_OPTICAL_WARN)" "$(t M_DOC_OPTICAL_FIX)"
+  fi
+elif [ -f "$SCRIPT_DIR/config/font.conf" ]; then
+  [ "$QUIET" = "1" ] || printf "  ${d}·${o} ${d}%s${o}\n" "$(t M_DOC_OPTICAL_MISSING)"
+fi
 # ⚠️ 装了 ≠ 上屏。Profile 里写的 PostScript 名如果和字体文件对不上，
 #    iTerm2 会静默回退到系统字体 —— 所以这里比对 Profile 写的名字和实际字体。
 ACTIVE="$DP_DIR/hekouwang-active-theme.json"

@@ -86,8 +86,9 @@ is_light() {   # 主题是不是亮底：读生态文件里的标记，不猜
 # 没有的人自动落到免费字体。顺带还挡掉「字体名写错→静默回退系统字体」这个坑。
 # 输出：PostScript名|family名|Ghostty的font-style
 # $1 = "nf" 时只认自带 Nerd 图标的字体（给单字体终端用），留空则第一个装了的就行
+# $2 = 可选，强制指定 PostScript 名（./theme.sh <主题> --font 或 ./font.sh apply）
 resolve_font() {
-  local need_nf="${1:-}" conf="$SCRIPT_DIR/config/font.conf" ps fam style nf _note d ext
+  local need_nf="${1:-}" force_ps="${2:-}" conf="$SCRIPT_DIR/config/font.conf" ps fam style nf _note d ext
   if [ -f "$conf" ]; then
     while IFS='|' read -r ps fam style nf _note; do
       ps="${ps#"${ps%%[![:space:]]*}"}"; ps="${ps%"${ps##*[![:space:]]}"}"
@@ -95,6 +96,10 @@ resolve_font() {
       fam="${fam#"${fam%%[![:space:]]*}"}"; fam="${fam%"${fam##*[![:space:]]}"}"
       style="${style#"${style%%[![:space:]]*}"}"; style="${style%"${style##*[![:space:]]}"}"
       nf="$(printf '%s' "${nf:-}" | tr -d '[:space:]')"
+      # 强制指定时：命中 PostScript 名就返回（仍要求文件真的在）
+      if [ -n "$force_ps" ] && [ "$ps" != "$force_ps" ]; then
+        continue
+      fi
       # 要求自带图标时，跳过没标 nf 的
       [ "$need_nf" = "nf" ] && [ "$nf" != "nf" ] && continue
       for d in "$HOME/Library/Fonts" "/Library/Fonts" "/System/Library/Fonts"; do
@@ -104,12 +109,21 @@ resolve_font() {
           fi
         done
       done
+      # 强制指定但文件不在：继续找，别静默成功
+      if [ -n "$force_ps" ]; then
+        continue
+      fi
     done < "$conf"
   fi
   # font.conf 不在（开源版）或一套都没装：用推荐默认字体。
   # Maple Mono NF CN 是安全默认 —— SIL OFL 免费可商用、自带 Nerd 图标、中文等宽，
   # 单字体/双字体两种终端都能用。想按优先级自动认出自购的商业字体（Operator Mono 等），
   # 那张表在付费包里。
+  if [ -n "$force_ps" ]; then
+    # 强制名不在表里 / 没装上：仍按名写出去，family 退化成 PostScript 名（总比悄悄换字体好）
+    printf '%s|%s|\n' "$force_ps" "$force_ps"
+    return 0
+  fi
   printf '%s|%s|\n' "MapleMono-NF-CN-Regular" "Maple Mono NF CN"
 }
 
@@ -187,6 +201,9 @@ gallery_all() {   # 七套连着渲染，一次截完整套图
 }
 
 # ---- 真正的切换动作 ----------------------------------------
+# FORCE_FONT：可选，由 ./theme.sh <主题> --font <PostScript名> 或 ./font.sh apply 传入
+FORCE_FONT="${FORCE_FONT:-}"
+
 apply() {
   local theme="$1" src="$THEMES_DIR/$1.json"
   # 非主题的 .json（names/minimal）当成「没有这套主题」，别真去 apply
@@ -200,9 +217,27 @@ apply() {
   #    · 单字体      给 macOS 自带终端 —— 它**只有一个字体字段**，没有兜底层，
   #                  必须选自带 Nerd 图标的那套，否则 ls 的图标全变 ? 豆腐块（实测踩过）
   local FONT_PS FONT_FAM FONT_STYLE SOLO_PS SOLO_FAM SOLO_NF FONT_POLICY
-  local ECO_STATE="missing" ECO_TMUX="" WS_OK=""
+  local ECO_STATE="missing" ECO_TMUX="" WS_OK="" OPTICAL_NOTE=""
   RECEIPT=()
-  IFS='|' read -r FONT_PS FONT_FAM FONT_STYLE <<<"$(resolve_font)"
+  # 终端光学校准引擎：若用户 ./font.sh apply 钉过字体，且本机装了，换肤时优先用它
+  # （否则 font.conf 优先级会把 Operator 盖过刚钉住的 maple，光学档与字体错位）
+  if [ -z "${FORCE_FONT:-}" ] && [ -f "$SCRIPT_DIR/config/typography/_engine.py" ] \
+     && [ -f "$HOME/.config/hekouwang-terminal/typography" ]; then
+    _pin_id="$(grep -m1 '^FONT_ID=' "$HOME/.config/hekouwang-terminal/typography" 2>/dev/null | cut -d= -f2 | tr -d '[:space:]')"
+    if [ -n "$_pin_id" ]; then
+      _pin_ps="$(python3 "$SCRIPT_DIR/config/typography/_engine.py" ps-for "$_pin_id" 2>/dev/null || true)"
+      if [ -n "$_pin_ps" ]; then
+        _hit=""
+        for _d in "$HOME/Library/Fonts" "/Library/Fonts" "/System/Library/Fonts"; do
+          for _e in otf ttf ttc; do
+            [ -f "$_d/$_pin_ps.$_e" ] && _hit=1 && break 2
+          done
+        done
+        [ -n "$_hit" ] && FORCE_FONT="$_pin_ps"
+      fi
+    fi
+  fi
+  IFS='|' read -r FONT_PS FONT_FAM FONT_STYLE <<<"$(resolve_font "" "${FORCE_FONT:-}")"
   IFS='|' read -r SOLO_PS SOLO_FAM _ <<<"$(resolve_font nf)"
   SOLO_NF=1
   # 策略见 config/font.conf 的 APPLE_TERMINAL_FONT
@@ -235,13 +270,25 @@ except (OSError, ValueError):
     pass
 json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
 PY
+  # ⭐ 终端光学校准引擎：字号/行距/Thin Strokes 按光学档覆写（付费）
+  #    仓库 JSON 仍保持生成器默认；只动部署出去的激活 Profile。
+  if [ -f "$SCRIPT_DIR/config/typography/_engine.py" ]; then
+    if python3 "$SCRIPT_DIR/config/typography/_engine.py" apply-iterm "$ACTIVE" --ps "$FONT_PS" >/dev/null; then
+      OPTICAL_NOTE="$(python3 "$SCRIPT_DIR/config/typography/_engine.py" resolve --ps "$FONT_PS" 2>/dev/null \
+        | python3 -c 'import sys,json;d=json.load(sys.stdin);print("%s@%s"% (d["id"],d["density"]))' 2>/dev/null || true)"
+    fi
+  fi
   # 记下「当前是哪套」。⚠️ 这一行必须在生态层的 if 之外 —— 它以前埋在
   # 「付费生态件在不在」那个分支里，开源版换完肤 current_theme() 就问不出答案了。
   mkdir -p "$RUNTIME"
   printf '%s\n' "$theme" > "$RUNTIME/theme"
 
   r_sec "$(t M_THEME_SEC_TERMINAL)"
-  r_ok "iTerm2" "$(t M_THEME_ITERM_FONT "$FONT_FAM")"
+  if [ -n "$OPTICAL_NOTE" ]; then
+    r_ok "iTerm2" "$(t M_THEME_ITERM_FONT "$FONT_FAM") · $OPTICAL_NOTE"
+  else
+    r_ok "iTerm2" "$(t M_THEME_ITERM_FONT "$FONT_FAM")"
+  fi
   r_note "$(t M_THEME_ITERM_NOTE)"
 
   # ---- 2–5：多终端 + 全生态 ----------------------------------
@@ -392,5 +439,18 @@ case "${1:-}" in
       *)         auto_setup "${2:-}" "${3:-}" ;;
     esac ;;
   -h|--help)     blk_theme_help ;;
-  *)             apply "$1" ;;
+  *)
+    # ./theme.sh <主题> [--font PostScript名]
+    # --font 给终端光学校准引擎 / font.sh 用：钉住某一套字体再换肤。
+    _theme_arg="$1"; shift || true
+    FORCE_FONT="${FORCE_FONT:-}"
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        --font) FORCE_FONT="${2:-}"; shift; [ $# -gt 0 ] && shift ;;
+        --font=*) FORCE_FONT="${1#--font=}"; shift ;;
+        *) shift ;;
+      esac
+    done
+    apply "$_theme_arg"
+    ;;
 esac
