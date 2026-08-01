@@ -29,7 +29,8 @@
 
 ---
 
-> **Full manual** (former README body). For a quick start see [`README.md`](../README.md) at the repo root.
+> **Full manual** (advanced topics, FAQ, design principles, file-level tier split).
+> **Start at the repo-root [`README.md`](../README.md)** — pain, differences, tiers, install, and daily commands live there.
 
 
 ## Same machine, same command — the only difference is the tier
