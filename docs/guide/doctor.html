@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doctor & uninstall · hekouwang-terminal-kit</title>
+<meta name="description" content="Self-check and a restore-based uninstall.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+<div class="masthead">
+  <div class="wrap">
+    <a class="mh-l" href="../index.html" style="text-decoration:none"><b>hekouwang-terminal-kit</b></a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../guide/index.html" aria-current="page"><span class="en">Docs</span><span class="zh">文档</span></a>
+      <a href="../tools/index.html"><span class="en">Tools</span><span class="zh">工具</span></a>
+      <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
+      <a href="../pricing.html"><span class="en">Pricing</span><span class="zh">购买</span></a>
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub</a>
+    </nav>
+    <div class="toggle" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true">EN</button>
+      <button id="btn-zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+<div class="docgrid">
+<aside class="side">
+  <div class="st"><span class="en">Documentation</span><span class="zh">文档</span></div>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a><a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/theme.html"><span class="en">Themes &amp; auto</span><span class="zh">换肤与跟随</span></a><a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a><a href="../guide/doctor.html" aria-current="page"><span class="en">Doctor &amp; uninstall</span><span class="zh">体检与卸载</span></a><a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a><a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a><a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a><a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
+  <div class="grp">
+    <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
+  </div>
+</aside>
+<article class="doc">
+<div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">Doctor & uninstall</span><span class="zh">体检与卸载</span></div>
+<h1><span class="en">Doctor & uninstall</span><span class="zh">体检与卸载</span></h1>
+<p class="lead"><span class="en">Self-check and a restore-based uninstall.</span><span class="zh">自检，以及从备份还原的卸载。</span></p>
+
+<div class="h2sub">./doctor.sh · ./uninstall.sh</div>
+<h2><span class="en">Self-check</span><span class="zh">自检</span></h2>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>doctor</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./doctor.sh</span>
+<span class="p">$</span> <span class="o">./doctor.sh</span> --fix
+<span class="p">$</span> <span class="o">./doctor.sh</span> --profile</pre></div>
+<p><span class="en">Checks CLI tools, fonts, Dynamic Profile, ecosystem colors, .zshrc order, Node conflicts, and shell startup time.</span><span class="zh">检查 CLI、字体、Dynamic Profile、生态配色、.zshrc 顺序、Node 冲突、启动耗时。</span></p>
+<h2><span class="en">Uninstall</span><span class="zh">卸载</span></h2>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>uninstall</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./uninstall.sh</span> --dry-run
+<span class="p">$</span> <span class="o">./uninstall.sh</span></pre></div>
+<p><span class="en">Restores <code>~/.zshrc</code> from the latest file under <code>~/.hekouwang-terminal-backups/</code> (also finds legacy home-root backups). GUI settings go back to real factory defaults via <code>defaults delete</code>.</span><span class="zh">从 <code>~/.hekouwang-terminal-backups/</code> 最新备份还原 <code>~/.zshrc</code>（也兼容家目录根旧备份）。GUI 用 <code>defaults delete</code> 回到真正出厂默认。</span></p>
+
+<div class="pager"><a href="../guide/node.html">← <span class="en">Node</span><span class="zh">Node</span></a><a href="../tools/index.html"><span class="en">Tools</span><span class="zh">工具</span> →</a></div>
+</article>
+</div>
+</div>
+<div class="wrap"><footer>
+  <span class="brand">会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

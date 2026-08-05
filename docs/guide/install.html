@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install · hekouwang-terminal-kit</title>
+<meta name="description" content="Clone, dry-run, install — or migrate an existing .zshrc.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+<div class="masthead">
+  <div class="wrap">
+    <a class="mh-l" href="../index.html" style="text-decoration:none"><b>hekouwang-terminal-kit</b></a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../guide/index.html" aria-current="page"><span class="en">Docs</span><span class="zh">文档</span></a>
+      <a href="../tools/index.html"><span class="en">Tools</span><span class="zh">工具</span></a>
+      <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
+      <a href="../pricing.html"><span class="en">Pricing</span><span class="zh">购买</span></a>
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub</a>
+    </nav>
+    <div class="toggle" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true">EN</button>
+      <button id="btn-zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+<div class="docgrid">
+<aside class="side">
+  <div class="st"><span class="en">Documentation</span><span class="zh">文档</span></div>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a><a href="../guide/install.html" aria-current="page"><span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/theme.html"><span class="en">Themes &amp; auto</span><span class="zh">换肤与跟随</span></a><a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a><a href="../guide/doctor.html"><span class="en">Doctor &amp; uninstall</span><span class="zh">体检与卸载</span></a><a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a><a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a><a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a><a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
+  <div class="grp">
+    <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
+  </div>
+</aside>
+<article class="doc">
+<div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">Install</span><span class="zh">安装</span></div>
+<h1><span class="en">Install</span><span class="zh">安装</span></h1>
+<p class="lead"><span class="en">Clone, dry-run, install — or migrate an existing .zshrc.</span><span class="zh">克隆、预演、安装 —— 或迁移已有 .zshrc。</span></p>
+
+<div class="h2sub">./install.sh · ./migrate.sh · CN=1</div>
+<h2><span class="en">Quick start</span><span class="zh">快速上手</span></h2>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>install</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">git clone</span> https://github.com/huiyonghkw/hekouwang-terminal-kit
+<span class="p">$</span> <span class="o">cd</span> hekouwang-terminal-kit
+<span class="p">$</span> <span class="o">./install.sh</span> --dry-run
+<span class="p">$</span> <span class="o">./install.sh</span>
+<span class="cm"># <span class="en">China network:</span><span class="zh">国内网络：</span> CN=1 ./install.sh</span></pre></div>
+<ul>
+<li><span class="en"><code>--dry-run</code> lists every file and defaults it would touch — nothing written yet.</span><span class="zh"><code>--dry-run</code> 先列出要动的文件与系统设置，此时一个字节都没改。</span></li>
+<li><span class="en">Already have a carefully built <code>~/.zshrc</code>? Run <code>./migrate.sh</code> first (then <code>--apply</code>). It moves your aliases into <code>~/.zshrc.local</code> instead of overwriting.</span><span class="zh">已有多年攒的 <code>~/.zshrc</code>？先跑 <code>./migrate.sh</code>（再 <code>--apply</code>）。它把别名搬进 <code>~/.zshrc.local</code>，不是覆盖。</span></li>
+<li><span class="en">Node manager: interactive pick, or <code>./install.sh --node fnm|nvm|brew|vfox</code> (remembered).</span><span class="zh">Node 管理器：交互选择，或 <code>./install.sh --node fnm|nvm|brew|vfox</code>（会记住）。</span></li>
+<li><span class="en">Language: <code>--lang zh</code> or answer once; stored under <code>~/.config/hekouwang-terminal/lang</code>.</span><span class="zh">语言：<code>--lang zh</code> 或首次问答；记在 <code>~/.config/hekouwang-terminal/lang</code>。</span></li>
+</ul>
+<div class="ask"><span class="lb">backups</span>
+<span class="en">Before replacing <code>~/.zshrc</code>, a copy goes to <code>~/.hekouwang-terminal-backups/</code> — not scattered in your home root. Legacy <code>~/.zshrc.bak.*</code> files are swept into that folder on install/migrate.</span><span class="zh">覆盖 <code>~/.zshrc</code> 前会备份进 <code>~/.hekouwang-terminal-backups/</code>，不再散落家目录根。旧的 <code>~/.zshrc.bak.*</code> 会在装机/迁移时收进去。</span>
+</div>
+
+<div class="pager"><a href="../guide/index.html">← <span class="en">Intro</span><span class="zh">简介</span></a><a href="../guide/theme.html"><span class="en">Themes</span><span class="zh">换肤</span> →</a></div>
+</article>
+</div>
+</div>
+<div class="wrap"><footer>
+  <span class="brand">会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLI & scripts · hekouwang-terminal-kit</title>
+<meta name="description" content="Every entrypoint at a glance.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+<div class="masthead">
+  <div class="wrap">
+    <a class="mh-l" href="../index.html" style="text-decoration:none"><b>hekouwang-terminal-kit</b></a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a>
+      <a href="../tools/index.html" aria-current="page"><span class="en">Tools</span><span class="zh">工具</span></a>
+      <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
+      <a href="../pricing.html"><span class="en">Pricing</span><span class="zh">购买</span></a>
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub</a>
+    </nav>
+    <div class="toggle" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true">EN</button>
+      <button id="btn-zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+<div class="docgrid">
+<aside class="side">
+  <div class="st"><span class="en">Documentation</span><span class="zh">文档</span></div>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a><a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/theme.html"><span class="en">Themes &amp; auto</span><span class="zh">换肤与跟随</span></a><a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a><a href="../guide/doctor.html"><span class="en">Doctor &amp; uninstall</span><span class="zh">体检与卸载</span></a><a href="../tools/index.html" aria-current="page"><span class="en">CLI index</span><span class="zh">脚本索引</span></a><a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a><a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a><a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
+  <div class="grp">
+    <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
+  </div>
+</aside>
+<article class="doc">
+<div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">CLI & scripts</span><span class="zh">CLI 与脚本</span></div>
+<h1><span class="en">CLI & scripts</span><span class="zh">CLI 与脚本</span></h1>
+<p class="lead"><span class="en">Every entrypoint at a glance.</span><span class="zh">所有入口一览。</span></p>
+
+<div class="tablewrap"><table>
+<thead><tr><th><span class="en">Script</span><span class="zh">脚本</span></th><th><span class="en">Role</span><span class="zh">作用</span></th><th><span class="en">Tier</span><span class="zh">分档</span></th></tr></thead>
+<tbody>
+<tr><td><code>install.sh</code></td><td><span class="en">One-shot install</span><span class="zh">一键安装</span></td><td><span class="tag tag-free">free</span></td></tr>
+<tr><td><code>migrate.sh</code></td><td><span class="en">Adopt existing .zshrc</span><span class="zh">接管已有 .zshrc</span></td><td><span class="tag tag-free">free</span></td></tr>
+<tr><td><code>theme.sh</code></td><td><span class="en">Switch theme / gallery / --auto</span><span class="zh">换肤 / 画廊 / 跟随</span></td><td><span class="tag tag-free">free</span></td></tr>
+<tr><td><code>node-mgr.sh</code></td><td><span class="en">Pick Node manager</span><span class="zh">选 Node 管理器</span></td><td><span class="tag tag-free">free</span></td></tr>
+<tr><td><code>doctor.sh</code></td><td><span class="en">Self-check</span><span class="zh">自检</span></td><td><span class="tag tag-free">free</span></td></tr>
+<tr><td><code>uninstall.sh</code></td><td><span class="en">Restore & remove</span><span class="zh">还原与卸载</span></td><td><span class="tag tag-free">free</span></td></tr>
+<tr><td><code>update.sh</code> / <code>sync.sh</code></td><td><span class="en">Update / drift</span><span class="zh">更新 / 漂移</span></td><td><span class="tag tag-free">free</span></td></tr>
+<tr><td><code>font.sh</code> / <code>scene.sh</code></td><td><span class="en">Optical calibration / scene aesthetics</span><span class="zh">光学校准 / 场景美学</span></td><td><span class="tag tag-paid">paid</span></td></tr>
+<tr><td><code>workspace.sh</code> / <code>palette.sh</code> / <code>import.sh</code></td><td><span class="en">Workspaces / deriver / import</span><span class="zh">工作区 / 推导 / 导入</span></td><td><span class="tag tag-paid">paid</span></td></tr>
+</tbody></table></div>
+<p class="muted"><span class="en">Paid scripts ship as stubs in the open-source tree: they explain what is missing and where to buy — they do not unlock paid engines.</span><span class="zh">付费脚本在开源树里是广告位桩：说明缺什么、去哪儿买 —— 不会解锁付费引擎。</span></p>
+
+<div class="pager"><a href="../guide/doctor.html">← <span class="en">Doctor</span><span class="zh">体检</span></a><a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span> →</a></div>
+</article>
+</div>
+</div>
+<div class="wrap"><footer>
+  <span class="brand">会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

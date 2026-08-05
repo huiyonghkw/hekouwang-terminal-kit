@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Themes & auto · hekouwang-terminal-kit</title>
+<meta name="description" content="Switch palettes; follow-system is opt-in and pinning turns it off.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+<div class="masthead">
+  <div class="wrap">
+    <a class="mh-l" href="../index.html" style="text-decoration:none"><b>hekouwang-terminal-kit</b></a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../guide/index.html" aria-current="page"><span class="en">Docs</span><span class="zh">文档</span></a>
+      <a href="../tools/index.html"><span class="en">Tools</span><span class="zh">工具</span></a>
+      <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
+      <a href="../pricing.html"><span class="en">Pricing</span><span class="zh">购买</span></a>
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub</a>
+    </nav>
+    <div class="toggle" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true">EN</button>
+      <button id="btn-zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+<div class="docgrid">
+<aside class="side">
+  <div class="st"><span class="en">Documentation</span><span class="zh">文档</span></div>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a><a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/theme.html" aria-current="page"><span class="en">Themes &amp; auto</span><span class="zh">换肤与跟随</span></a><a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a><a href="../guide/doctor.html"><span class="en">Doctor &amp; uninstall</span><span class="zh">体检与卸载</span></a><a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a><a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a><a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a><a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
+  <div class="grp">
+    <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
+  </div>
+</aside>
+<article class="doc">
+<div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">Themes & auto</span><span class="zh">换肤与跟随系统</span></div>
+<h1><span class="en">Themes & auto</span><span class="zh">换肤与跟随系统</span></h1>
+<p class="lead"><span class="en">Switch palettes; follow-system is opt-in and pinning turns it off.</span><span class="zh">换肤；跟随系统是可选的，钉住主题会关掉它。</span></p>
+
+<div class="h2sub">./theme.sh · --auto off by default</div>
+<h2><span class="en">Switch theme</span><span class="zh">换肤</span></h2>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>theme</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./theme.sh</span>                 <span class="cm"># <span class="en">gallery + current</span><span class="zh">画廊 + 当前</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> tokyo-night
+<span class="p">$</span> <span class="o">./theme.sh</span> --preview tokyo-night</pre></div>
+<p><span class="en">Open-source build ships three community schemes: <code>catppuccin-mocha</code>, <code>tokyo-night</code>, <code>gruvbox-dark</code>. Brand themes (V2 warm dark/light, …) are in the paid pack.</span><span class="zh">开源版自带三套社区主题：<code>catppuccin-mocha</code>、<code>tokyo-night</code>、<code>gruvbox-dark</code>。品牌主题（V2 米黑/米白等）在付费包。</span></p>
+<h2><span class="en">Follow system appearance</span><span class="zh">跟随系统深浅色</span></h2>
+<p><span class="en"><b>Off by default.</b> Turn on only when you want it:</span><span class="zh"><b>默认关闭。</b>想开时再跑：</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>auto</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./theme.sh</span> --auto
+<span class="p">$</span> <span class="o">./theme.sh</span> --auto tokyo-night catppuccin-mocha   <span class="cm"># <span class="en">custom dark/light pair</span><span class="zh">自定暗/亮配对</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --auto off</pre></div>
+<div class="ask"><span class="lb">pin</span>
+<span class="en">A manual <code>./theme.sh &lt;name&gt;</code> <b>pins</b> that theme. If follow-system was on, it turns following off — so a dark pick is not overwritten when macOS is in light mode.</span><span class="zh">手动 <code>./theme.sh &lt;名字&gt;</code> 会<strong>钉住</strong>该主题。若当时开着跟随，会自动关掉 —— 避免配了黑色却被系统浅色顶回白色。</span>
+</div>
+
+<div class="pager"><a href="../guide/install.html">← <span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/node.html"><span class="en">Node</span><span class="zh">Node</span> →</a></div>
+</article>
+</div>
+</div>
+<div class="wrap"><footer>
+  <span class="brand">会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

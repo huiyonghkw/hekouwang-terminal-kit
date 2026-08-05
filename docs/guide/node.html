@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Node manager · hekouwang-terminal-kit</title>
+<meta name="description" content="fnm / nvm / brew / vfox — keep exactly one.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+<div class="masthead">
+  <div class="wrap">
+    <a class="mh-l" href="../index.html" style="text-decoration:none"><b>hekouwang-terminal-kit</b></a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../guide/index.html" aria-current="page"><span class="en">Docs</span><span class="zh">文档</span></a>
+      <a href="../tools/index.html"><span class="en">Tools</span><span class="zh">工具</span></a>
+      <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
+      <a href="../pricing.html"><span class="en">Pricing</span><span class="zh">购买</span></a>
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub</a>
+    </nav>
+    <div class="toggle" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true">EN</button>
+      <button id="btn-zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+<div class="docgrid">
+<aside class="side">
+  <div class="st"><span class="en">Documentation</span><span class="zh">文档</span></div>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a><a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/theme.html"><span class="en">Themes &amp; auto</span><span class="zh">换肤与跟随</span></a><a href="../guide/node.html" aria-current="page"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a><a href="../guide/doctor.html"><span class="en">Doctor &amp; uninstall</span><span class="zh">体检与卸载</span></a><a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a><a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a><a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a><a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
+  <div class="grp">
+    <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
+  </div>
+</aside>
+<article class="doc">
+<div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">Node manager</span><span class="zh">Node 管理器</span></div>
+<h1><span class="en">Node manager</span><span class="zh">Node 管理器</span></h1>
+<p class="lead"><span class="en">fnm / nvm / brew / vfox — keep exactly one.</span><span class="zh">fnm / nvm / brew / vfox —— 只留一套。</span></p>
+
+<div class="h2sub">./node-mgr.sh · exactly one</div>
+<p><span class="en">Pick one Node version manager. Mixing fnm / nvm / brew node / vfox makes PATH fight itself.</span><span class="zh">只选一套 Node 版本管理器。混用 fnm / nvm / brew node / vfox 会让 PATH 打架。</span></p>
+<div class="tablewrap"><table>
+<thead><tr><th><span class="en">Choice</span><span class="zh">选项</span></th><th><span class="en">What it is</span><span class="zh">是什么</span></th><th>brew</th></tr></thead>
+<tbody>
+<tr><td><code>fnm</code></td><td><span class="en">Fast Node Manager (default) — switches on cd</span><span class="zh">Fast Node Manager（默认）—— 进目录自动切</span></td><td><code>fnm</code></td></tr>
+<tr><td><code>nvm</code></td><td><span class="en">Classic nvm (~/.nvm or brew formula)</span><span class="zh">经典 nvm</span></td><td><code>nvm</code></td></tr>
+<tr><td><code>brew</code></td><td><span class="en">Homebrew single-version node (not a version manager)</span><span class="zh">Homebrew 单版本 node（不是版本管理器）</span></td><td><code>node</code></td></tr>
+<tr><td><code>vfox</code></td><td><span class="en">version-fox — multi-language SDKs</span><span class="zh">version-fox —— 多语言 SDK</span></td><td><code>vfox</code></td></tr>
+</tbody></table></div>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>node-mgr</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./install.sh</span> --node vfox
+<span class="p">$</span> <span class="o">./node-mgr.sh</span>              <span class="cm"># <span class="en">show current</span><span class="zh">看当前</span></span>
+<span class="p">$</span> <span class="o">./node-mgr.sh</span> fnm
+<span class="cm"># <span class="en">snippet:</span><span class="zh">片段：</span> ~/.config/hekouwang-terminal/node.sh</span></pre></div>
+<p><span class="en"><code>~/.zshrc</code> only sources that snippet — switching managers does not rewrite your whole rc file.</span><span class="zh"><code>~/.zshrc</code> 只 source 那一份片段 —— 换管理器不用改整份 rc。</span></p>
+
+<div class="pager"><a href="../guide/theme.html">← <span class="en">Themes</span><span class="zh">换肤</span></a><a href="../guide/doctor.html"><span class="en">Doctor</span><span class="zh">体检</span> →</a></div>
+</article>
+</div>
+</div>
+<div class="wrap"><footer>
+  <span class="brand">会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

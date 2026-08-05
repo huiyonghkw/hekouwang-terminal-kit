@@ -77,6 +77,12 @@ SITE_ONLY_PATHS=(
   ".github"                       # Sponsor 按钮，冲已付过钱的买家弹很怪
   "docs/index.html"               # 落地页正文
   "docs/fonts"                    # 落地页专用中文字体子集
+  "docs/assets"                   # 官网/文档站共享 CSS/JS（公开仓宣传站）
+  "docs/guide"                    # 用法文档树
+  "docs/tools"                    # CLI 索引页
+  "docs/themes"                   # 主题画廊（公开宣传）
+  "docs/pricing.html"             # 付费说明深链页
+  "docs/changelog.html"           # 公开更新日志页
   "docs/images/pay-wechat.png"
   "docs/images/pay-alipay.png"
   "docs/images/wechat-qr.png"

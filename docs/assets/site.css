@@ -1,0 +1,298 @@
+/* ============ 中文字体：自托管子集，不走 CDN ============
+   ⛔ 别把中文交给 PingFang SC 去扛粗体 —— 它最粗只到 Semibold(600)，
+      font-weight:800/900 在它上面要么被合成、要么直接落回 600，标题就是发虚的。
+      这是「字重不够先查字体栈顺序」那条坑（memory xhs-cover-vf-font-and-2x）。
+   本文件 = Noto Sans SC 可变字体子集：只留本页真正用到的 425 个字形
+   （7.6 MB → 102 KB），wght 100–900 轴完整保留，所以 900 是真字重不是合成的。
+   ⚠️ 页面文案改动较大时要重新子集化，否则新字会掉回系统字体（粗细对不上就是这个原因）。
+   授权：原字体 SIL OFL 1.1；子集属修改版，按 OFL 要求已改族名（不沿用保留字体名），
+        版权与全文见 docs/fonts/OFL.txt。 */
+@font-face{
+  font-family:'HKW Sans SC';
+  src:url('../fonts/hkw-sans-sc-subset.woff2') format('woff2-variations'),
+      url('../fonts/hkw-sans-sc-subset.woff2') format('woff2');
+  font-weight:100 900;   /* 可变轴范围，一个文件供全部字重 */
+  font-style:normal;
+  font-display:swap;
+}
+
+/* ============ V1科技白 token（v1-base.md 第16.1节）============ */
+:root{
+  --bg:#f4f6f9;          /* 冷调亮灰白，⛔ 别用纯白 */
+  --surface:#ffffff;
+  --surface2:#eef1f5;
+  --border:rgba(15,20,30,.08);
+  --border2:rgba(15,20,30,.14);
+  --text:#0f1320;        /* 冷近黑，⛔ 别纯黑 */
+  --text2:#535b6b;
+  --text3:#8a92a3;
+  --accent:#06a88c;      /* 绿 · 核心概念 → 开源版 */
+  --accent2:#6a45e0;     /* 紫 · 扩展能力 → 付费档 */
+  --accent3:#bf7d1a;     /* 琥珀 · 类比/提醒 → 诚实边界 */
+  --danger:#d23f4d;
+  --shadow:0 8px 28px rgba(20,30,50,.06);
+  --shadow2:0 16px 44px rgba(20,30,50,.10);
+  /* 顺序有讲究：拉丁交给系统 SF Pro（自带 Heavy），中文交给自托管的可变子集。
+     PingFang SC 只当兜底 —— 子集没覆盖到的字会落到它身上（那时粗细会对不上，是信号）。 */
+  --font:-apple-system,BlinkMacSystemFont,'Inter','HKW Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',SFMono-Regular,Menlo,Consolas,ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:var(--font);
+  font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;
+  /* 极淡点阵蓝图底（第16.2节）：亮底的质感来源，替代暗版的光球+噪点 */
+  background-image:radial-gradient(circle,rgba(15,20,30,.05) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;height:auto;display:block}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface2);
+     padding:1px 6px;border-radius:5px;border:1px solid var(--border)}
+
+.wrap{max-width:980px;margin:0 auto;padding:0 26px}
+
+/* ---- 顶部滚动进度条（绿→紫）---- */
+.prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:60;
+      background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* ---- 四角取景框（第4.4节）---- */
+.frame{position:fixed;inset:14px;pointer-events:none;z-index:5}
+.frame i{position:absolute;width:22px;height:22px;border:2px solid var(--accent2);opacity:.28}
+.frame i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.frame i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.frame i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.frame i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+@media(max-width:760px){.frame{display:none}}
+
+/* ---- 粘顶报头 masthead ---- */
+.masthead{position:sticky;top:0;z-index:40;background:rgba(244,246,249,.88);
+          backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.masthead .wrap{display:flex;align-items:center;justify-content:space-between;
+                gap:16px;padding-top:11px;padding-bottom:11px}
+.mh-l{font-family:var(--mono);font-size:12.5px;color:var(--text2);letter-spacing:.04em}
+.mh-l b{color:var(--text);font-weight:600}
+.mh-l s{text-decoration:none;color:var(--text3);margin:0 7px}
+.toggle{display:flex;border:1px solid var(--border2);border-radius:999px;overflow:hidden;background:var(--surface)}
+.toggle button{background:none;border:0;color:var(--text3);font:inherit;font-size:12.5px;
+               padding:4px 15px;cursor:pointer;font-family:var(--mono)}
+.toggle button[aria-pressed="true"]{background:var(--accent2);color:#fff;font-weight:600}
+
+/* ---- 语言层：两份文案都在 DOM 里，切 html 上的 class ---- */
+.zh{display:none}
+html.lang-zh .en{display:none}
+html.lang-zh .zh{display:revert}
+
+/* ---- 章节 ---- */
+main{counter-reset:sec}
+section{padding:70px 0;border-top:1px solid var(--border);position:relative}
+section:first-child{border-top:0;padding-top:52px}
+h1,h2,h3{line-height:1.28;margin:0 0 16px;letter-spacing:-.01em}
+h1{font-size:clamp(32px,5.2vw,50px);font-weight:900;letter-spacing:-.025em}
+/* 标题关键词绿→紫渐字（第16.2节 第3条）：亮底上很出彩 */
+h1 .hl{background:linear-gradient(100deg,var(--accent),var(--accent2));
+       -webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(23px,3.3vw,31px);font-weight:800;position:relative;z-index:1}
+/* 每节背后的巨型幽灵序号（counter 自动递增，不用手填） */
+h2::after{counter-increment:sec;content:counter(sec,decimal-leading-zero);
+          position:absolute;right:-6px;top:50%;transform:translateY(-52%);
+          font-family:var(--mono);font-size:118px;font-weight:700;
+          color:var(--text);opacity:.06;z-index:-1;pointer-events:none;line-height:1}
+h3{font-size:16.5px;font-weight:700}
+p{margin:0 0 16px;color:var(--text2)}
+.dek{font-size:clamp(17px,2.1vw,20.5px);color:var(--text);max-width:70ch;line-height:1.7}
+.dek b{font-weight:800}
+.muted{color:var(--text3);font-size:14px;line-height:1.7}
+
+/* ---- mono 眉标 + 渐变短横 ---- */
+.eyebrow{display:flex;align-items:center;gap:12px;font-family:var(--mono);
+         font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+         color:var(--accent2);margin-bottom:16px}
+.eyebrow span{flex:0 0 54px;height:2px;border-radius:2px;
+              background:linear-gradient(90deg,var(--accent2),transparent)}
+/* h2 下的 mono 副标题 */
+.h2sub{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;
+       color:var(--accent);margin:-8px 0 22px}
+.h2sub.w{color:var(--accent3)}
+
+/* ---- 按钮 ---- */
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 0}
+.btn{display:inline-block;padding:12px 24px;border-radius:9px;font-weight:600;
+     font-size:15px;border:1px solid var(--border2);color:var(--text);
+     background:var(--surface);box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.btn:hover{text-decoration:none;transform:translateY(-2px);box-shadow:var(--shadow2)}
+.btn-primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.btn-primary:hover{background:#5a37c8;border-color:#5a37c8}
+
+/* ---- readout 三槽数据台（发光方点）---- */
+.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:34px 0 0;
+         background:var(--border);border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.readout div{background:var(--surface);padding:16px 18px}
+.readout .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+            text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:7px}
+.readout .k::before{content:'';width:7px;height:7px;border-radius:2px;background:var(--accent);
+                    box-shadow:0 0 0 3px rgba(6,168,140,.14)}
+.readout div:nth-child(2) .k::before{background:var(--accent2);box-shadow:0 0 0 3px rgba(106,69,224,.14)}
+.readout div:nth-child(3) .k::before{background:var(--accent3);box-shadow:0 0 0 3px rgba(191,125,26,.14)}
+.readout .v{font-size:18px;font-weight:700;margin-top:5px;line-height:1.4}
+.readout .v em{font-style:normal;font-family:var(--mono);color:var(--accent2)}
+@media(max-width:700px){.readout{grid-template-columns:1fr}}
+
+/* ---- mock 终端窗口：终端题的视觉锚点（memory xhs-v1-baseline-and-terminal-anchor）---- */
+.term{border:1px solid var(--border2);border-radius:11px;overflow:hidden;
+      box-shadow:var(--shadow2);margin:26px 0;background:#0f1320}
+.term .bar{display:flex;align-items:center;gap:7px;padding:9px 13px;
+           background:#181d2e;border-bottom:1px solid rgba(255,255,255,.06)}
+.term .bar i{width:11px;height:11px;border-radius:50%;display:block}
+.term .bar i:nth-child(1){background:#ff5f57}
+.term .bar i:nth-child(2){background:#febc2e}
+.term .bar i:nth-child(3){background:#28c840}
+.term .bar span{margin-left:9px;font-family:var(--mono);font-size:11.5px;color:#7b8499}
+/* ⚠️ white-space:pre 是必须的，否则多行提示符会挤成一坨 */
+.term .sc{margin:0;padding:16px 18px;font-family:var(--mono);font-size:13px;
+          line-height:1.95;color:#d7dbe6;white-space:pre;overflow-x:auto}
+.term .p{color:#06d3ae}    /* 提示符 */
+.term .o{color:#f0a050}    /* 命令 */
+.term .cm{color:#6b7488}   /* 注释 */
+.term .ok{color:#28c840}
+
+/* ---- FIG 图表框 ---- */
+.fig{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+     overflow:hidden;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.fig:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
+.fig .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;
+         padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.fig .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--text3)}
+.fig .cap{padding:11px 14px;font-size:13.5px;color:var(--text2);border-top:1px solid var(--border)}
+.fig .cap b{color:var(--text)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0 10px}
+@media(max-width:760px){.cmp{grid-template-columns:1fr}}
+.tag{display:inline-block;font-size:10.5px;font-family:var(--mono);padding:2px 8px;
+     border-radius:5px;letter-spacing:.06em;text-transform:uppercase}
+.tag-free{background:rgba(6,168,140,.10);color:var(--accent);border:1px solid rgba(6,168,140,.28)}
+.tag-paid{background:rgba(106,69,224,.10);color:var(--accent2);border:1px solid rgba(106,69,224,.28)}
+
+/* ---- pull 渐变顶杠金句 ---- */
+.pull{margin:34px 0;padding:24px 0 0;border-top:3px solid transparent;
+      border-image:linear-gradient(90deg,var(--accent),var(--accent2)) 1;
+      font-size:clamp(19px,2.5vw,25px);font-weight:900;line-height:1.55;color:var(--text)}
+.pull em{font-style:normal;color:var(--accent2)}
+
+/* ---- rows 方徽卡（⛔ 不用左侧彩色竖条）---- */
+.rows{display:grid;gap:13px;margin:26px 0}
+.row{display:grid;grid-template-columns:38px 1fr;gap:15px;background:var(--surface);
+     border:1px solid var(--border);border-radius:11px;padding:17px 19px;
+     box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.row:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
+.row .sq{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;
+         justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;
+         background:rgba(6,168,140,.09);color:var(--accent);border:1px solid rgba(6,168,140,.24)}
+.row.v .sq{background:rgba(106,69,224,.09);color:var(--accent2);border-color:rgba(106,69,224,.24)}
+.row .tt{font-weight:700;margin-bottom:3px}
+.row .ds{font-size:14.5px;color:var(--text2);line-height:1.7}
+.row .ds code{font-size:.88em}
+
+/* ---- 分档表 ---- */
+.tablewrap{overflow-x:auto;margin:26px 0;border:1px solid var(--border);
+           border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+thead th{background:var(--surface2);font-size:13.5px;white-space:nowrap;font-weight:700}
+thead th:nth-child(2){color:var(--accent)}
+thead th:nth-child(3){color:var(--accent2)}
+tbody td:first-child{color:var(--text2);font-size:14.5px}
+td.y{color:var(--accent);font-weight:700;font-family:var(--mono)}
+td.v{color:var(--accent2);font-weight:700;font-family:var(--mono)}
+td.n{color:var(--text3);font-family:var(--mono)}
+.price{font-family:var(--mono);font-weight:700}
+
+/* ---- 琥珀提醒框（第4.3节 .ask · 用于诚实边界）---- */
+.ask{background:rgba(191,125,26,.06);border:1px solid rgba(191,125,26,.26);
+     border-radius:11px;padding:17px 20px;margin:22px 0;font-size:14.8px;color:var(--text2);line-height:1.75}
+.ask b{color:var(--text)}
+.ask .lb{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+         color:var(--accent3);display:block;margin-bottom:7px}
+
+/* ---- 购买区 ---- */
+.buy{background:var(--surface);border:1px solid var(--border2);border-radius:14px;
+     padding:30px;box-shadow:var(--shadow2)}
+/* 付款 / 加我 分两组，各带一个序号抬头，跟上面 01·02 两步对上 */
+.qrgrp{margin:26px 0 0}
+.ghd{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;
+     letter-spacing:.14em;text-transform:uppercase;color:var(--text3)}
+.ghd .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+        border-radius:6px;background:rgba(106,69,224,.09);color:var(--accent2);
+        border:1px solid rgba(106,69,224,.24);font-weight:700;font-size:11px;letter-spacing:0}
+.qr{display:flex;flex-wrap:wrap;gap:24px;margin:14px 0 4px;align-items:flex-start}
+.qrbox{text-align:center}
+/* 200px 不是随便定的：收款码要能被手机从屏幕上一次扫中，再小就得让人放大。
+   ⚠️ 高度也钉死 + object-fit:contain —— 两张码是从不同海报裁的，比例不一样，
+   只钉宽度会让两张卡一高一矮、下面的标签跟着错位。留白是白底对白底，看不出来。 */
+.qrbox img{width:200px;height:200px;object-fit:contain;border-radius:11px;background:#fff;
+           border:1px solid var(--border2);padding:6px}
+.qrbox .lbl{margin-top:10px;font-size:13.5px;color:var(--text2)}
+.qrbox .lbl b{color:var(--text)}
+/* 微信号卡：联系二维码还没给，先用大字号顶上 —— 线上留一个虚线占位框比没有更难看 */
+.wxid{flex:1;min-width:224px;align-self:stretch;display:flex;flex-direction:column;
+      justify-content:center;background:var(--surface2);border:1px solid var(--border);
+      border-radius:11px;padding:20px 22px}
+.wxid .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+         text-transform:uppercase;color:var(--text3)}
+.wxid .id{font-family:var(--mono);font-size:27px;font-weight:700;color:var(--accent2);
+          margin:7px 0 8px;letter-spacing:-.01em}
+.wxid .n{font-size:13.5px;color:var(--text2);line-height:1.7}
+
+ul{margin:0 0 16px;padding-left:21px;color:var(--text2)}
+li{margin-bottom:8px;line-height:1.75}
+li b{color:var(--text)}
+
+footer{border-top:1px solid var(--border);padding:34px 0 60px;
+       display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline}
+.brand{font-weight:700;color:var(--text)}
+.handle{font-family:var(--mono);font-size:13px;color:var(--text3)}
+
+/* ---- 滚动入场 ---- */
+/* ⛔ 只做位移，绝不动 opacity —— 观察器没跑起来时控 opacity 会让整页后半永远看不见 */
+.pre{transform:translateY(16px);transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+.in{transform:none}
+@media(prefers-reduced-motion:reduce){.pre{transform:none;transition:none}}
+
+
+/* ---- Site nav (multi-page docs) ---- */
+.mh-nav{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;flex:1;justify-content:flex-end;margin:0 12px}
+.mh-nav a{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--text2);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+.mh-nav a:hover{color:var(--text);text-decoration:none}
+.mh-nav a[aria-current="page"]{color:var(--accent2);border-bottom-color:var(--accent2);font-weight:600}
+@media(max-width:820px){
+  .masthead .wrap{flex-wrap:wrap}
+  .mh-nav{order:3;width:100%;justify-content:flex-start;margin:4px 0 0;gap:4px 12px}
+}
+
+/* ---- Docs layout ---- */
+.docgrid{display:grid;grid-template-columns:220px 1fr;gap:36px;padding:36px 0 70px;align-items:start}
+@media(max-width:860px){.docgrid{grid-template-columns:1fr}}
+.side{position:sticky;top:64px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;box-shadow:var(--shadow)}
+@media(max-width:860px){.side{position:static}}
+.side .st{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin:0 0 10px}
+.side a{display:block;padding:7px 10px;border-radius:8px;font-size:13.5px;color:var(--text2);text-decoration:none;margin-bottom:2px}
+.side a:hover{background:var(--surface2);color:var(--text);text-decoration:none}
+.side a[aria-current="page"]{background:rgba(106,69,224,.09);color:var(--accent2);font-weight:600}
+.side .grp{margin-top:14px}
+.doc h1{font-size:clamp(26px,4vw,36px);margin-bottom:10px}
+.doc .lead{font-size:17.5px;color:var(--text);max-width:68ch;margin-bottom:22px;line-height:1.65}
+.doc h2{font-size:22px;margin:32px 0 12px}
+.doc h2::after{display:none} /* no giant counters on doc pages */
+.doc section{padding:0;border:0}
+.doc .term{margin:18px 0}
+.doc .pager{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:40px;padding-top:22px;border-top:1px solid var(--border)}
+.doc .pager a{font-size:14px}
+.crumb{font-family:var(--mono);font-size:12px;color:var(--text3);margin-bottom:18px}
+.crumb a{color:var(--text2)}
+.pillgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:20px 0}
+.pill{display:block;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:16px;box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s}
+.pill:hover{transform:translateY(-2px);box-shadow:var(--shadow2);text-decoration:none}
+.pill .t{font-weight:700;margin-bottom:4px}
+.pill .d{font-size:13.5px;color:var(--text2);line-height:1.55}
