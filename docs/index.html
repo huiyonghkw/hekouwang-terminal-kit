@@ -34,8 +34,9 @@
 -->
 <html lang="en">
 <head>
+<meta charset="utf-8">
 <script>
-/* 首屏前同步语言：避免点侧栏先闪英文（?lang → localStorage → navigator） */
+/* Sync lang before paint: ?lang -> localStorage -> navigator */
 (function(){try{var K='hkw-lang',q=null;try{q=new URLSearchParams(location.search).get('lang')}catch(e){}
 if(q!=='zh'&&q!=='en')q=null;var s=q;if(!s)try{s=localStorage.getItem(K)}catch(e){}
 if(s!=='zh'&&s!=='en')s=/^zh/i.test(navigator.language||'')?'zh':'en';
@@ -43,7 +44,6 @@ if(s==='zh')document.documentElement.classList.add('lang-zh');
 document.documentElement.lang=s==='zh'?'zh-CN':'en';
 if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 </script>
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OneLook — turn same colors into the same look</title>
 <meta name="description" content="OneLook: optical, scene, and semantic layers on one palette. Open source configures iTerm2; the paid build makes that palette walk out of iTerm2. Safe to install and fully uninstall.">
