@@ -300,3 +300,47 @@ footer{border-top:1px solid var(--border);padding:34px 0 60px;
 .pill:hover{transform:translateY(-2px);box-shadow:var(--shadow2);text-decoration:none}
 .pill .t{font-weight:700;margin-bottom:4px}
 .pill .d{font-size:13.5px;color:var(--text2);line-height:1.55}
+
+/* ---- Landing · vfox-style hero + feature grid（仍用 V1 科技白 token）---- */
+.wrap-wide{max-width:1080px}
+.landing-hero{padding:48px 0 28px;border-top:0}
+.landing-hero h2::after{display:none}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:28px}}
+.hero-copy .eyebrow{margin-bottom:14px}
+.hero-copy h1{font-size:clamp(30px,4.6vw,46px);margin-bottom:14px}
+.hero-copy .dek{font-size:clamp(16px,1.9vw,18.5px);max-width:42ch;margin-bottom:8px}
+.hero-copy .dek .soft{color:var(--text2);font-weight:400}
+.hero-copy .btns{margin-top:22px}
+.hero-copy .readout{margin-top:26px}
+.hero-viz{position:relative;min-height:280px}
+.hero-viz .glow{position:absolute;inset:8% 6% 12% 10%;border-radius:40%;
+  background:radial-gradient(circle at 40% 40%,rgba(6,168,140,.16),transparent 55%),
+             radial-gradient(circle at 70% 60%,rgba(106,69,224,.14),transparent 50%);
+  filter:blur(8px);pointer-events:none;z-index:0}
+.hero-card{position:relative;z-index:1;background:var(--surface);border:1px solid var(--border2);
+  border-radius:16px;box-shadow:var(--shadow2);overflow:hidden;padding:0}
+.hero-card .term{margin:0;border:0;border-radius:0;box-shadow:none}
+.hero-card .palette{display:flex;gap:5px;padding:12px 14px;border-top:1px solid var(--border);background:var(--surface2)}
+.hero-card .palette i{flex:1;height:10px;border-radius:3px;display:block}
+.hero-card .apps{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 14px;background:var(--surface2)}
+.hero-card .apps span{font-family:var(--mono);font-size:11px;padding:4px 8px;border-radius:6px;
+  background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.hero-card .apps span.paid{color:var(--accent2);border-color:rgba(106,69,224,.28);background:rgba(106,69,224,.06)}
+.hero-badge{position:absolute;z-index:2;right:14px;top:14px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;padding:6px 10px;border-radius:999px;background:var(--surface);
+  border:1px solid var(--border2);box-shadow:var(--shadow);color:var(--text);font-weight:600}
+
+.featgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0 6px}
+@media(max-width:900px){.featgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.featgrid{grid-template-columns:1fr}}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 20px;
+  box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s;min-height:148px}
+.feat:hover{transform:translateY(-3px);box-shadow:var(--shadow2)}
+.feat .ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:14px;background:rgba(6,168,140,.09);border:1px solid rgba(6,168,140,.22)}
+.feat.paid .ic{background:rgba(106,69,224,.09);border-color:rgba(106,69,224,.24)}
+.feat .tt{font-weight:800;font-size:17px;margin:0 0 8px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.feat .ds{font-size:14px;color:var(--text2);line-height:1.65;margin:0}
+section.noseq h2::after{display:none}
+.landing-hero + section{border-top:0;padding-top:36px}

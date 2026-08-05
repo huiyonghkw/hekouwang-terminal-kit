@@ -47,7 +47,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OneLook — turn same colors into the same look</title>
 <meta name="description" content="OneLook: optical, scene, and semantic layers on one palette. Open source configures iTerm2; the paid build makes that palette walk out of iTerm2. Safe to install and fully uninstall.">
-<link rel="stylesheet" href="assets/site.css?v=2.10.2">
+<link rel="stylesheet" href="assets/site.css?v=2.10.4">
 </head>
 <body>
 
@@ -72,67 +72,126 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   </div>
 </div>
 
-<div class="wrap"><main>
+<div class="wrap wrap-wide"><main>
 
-<!-- ============ HERO ============ -->
-<section>
-  <div class="eyebrow"><span></span>OneLook · macOS · iTerm2 · zsh</div>
+<!-- ============ HERO · 左文案 + 右视觉（参考 vfox 结构，OneLook 叙事）============ -->
+<section class="landing-hero">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow"><span></span>OneLook · macOS · iTerm2 · zsh</div>
+      <h1>
+        <span class="en">Same colors,<br><span class="hl">same look</span>.</span>
+        <span class="zh">把「同色」做成<br><span class="hl">同观感</span>。</span>
+      </h1>
+      <p class="dek">
+        <span class="en"><b>OneLook</b> — one palette, three layers: optical · scene · semantic.
+          <span class="soft">Free configures iTerm2. Paid makes that palette walk out.</span></span>
+        <span class="zh"><b>OneLook</b> —— 一份色板，三层观感：光学 · 场景 · 语义。
+          <span class="soft">免费版配好 iTerm2；付费版让这份色板走出去。</span></span>
+      </p>
+      <div class="btns">
+        <a class="btn btn-primary" href="guide/install.html">
+          <span class="en">Quick start →</span><span class="zh">👋 快速上手 →</span>
+        </a>
+        <a class="btn" href="guide/index.html">
+          <span class="en">Why OneLook?</span><span class="zh">为什么是 OneLook?</span>
+        </a>
+        <a class="btn" href="https://github.com/huiyonghkw/hekouwang-terminal-kit">
+          <span class="en">GitHub</span><span class="zh">查看 GitHub</span>
+        </a>
+      </div>
+      <div class="readout">
+        <div>
+          <div class="k"><span class="en">open source</span><span class="zh">开源版</span></div>
+          <div class="v"><span class="en">Complete iTerm2</span><span class="zh">完整 iTerm2</span></div>
+        </div>
+        <div>
+          <div class="k"><span class="en">paid</span><span class="zh">付费档</span></div>
+          <div class="v"><em>¥19.9</em></div>
+        </div>
+        <div>
+          <div class="k"><span class="en">refund</span><span class="zh">退款</span></div>
+          <div class="v"><span class="en">7 days</span><span class="zh">七天无理由</span></div>
+        </div>
+      </div>
+    </div>
 
-  <h1>
-    <span class="en">Same colors, <span class="hl">same look</span>.</span>
-    <span class="zh">把「同色」做成<span class="hl">同观感</span>。</span>
-  </h1>
-
-  <p class="dek">
-    <span class="en"><b>OneLook</b> is one palette with three layers — optical (contrast that holds), scene (theme follows your day), semantic (Cmd-click path / SHA / port).
-      Free configures iTerm2; paid makes that palette walk out to Ghostty, Warp, Terminal.app and the CLI chain.
-      And yes: dry-run first, backups, <code>./uninstall.sh</code> restores — <b>I looked for a kit that was safe to install and remove, didn't find it, and wrote this.</b></span>
-    <span class="zh"><b>OneLook</b>：一份色板，三层观感——光学（对比站得住）、场景（主题跟白天走）、语义（Cmd-点击路径 / SHA / 端口）。
-      免费版配好 iTerm2；付费版让这份色板走出 iTerm2，到 Ghostty、Warp、自带终端和整条命令行工具链。
-      并且：先 dry-run、有备份、<code>./uninstall.sh</code> 能还原——<b>我找了很久「敢装也敢卸」的，没找到，就自己写了。</b></span>
-  </p>
-
-  <div class="btns">
-    <a class="btn" href="https://github.com/huiyonghkw/hekouwang-terminal-kit">
-      <span class="en">Open source · free →</span><span class="zh">开源版 · 免费 →</span>
-    </a>
-    <a class="btn" href="guide/install.html">
-      <span class="en">Read the docs →</span><span class="zh">读文档 →</span>
-    </a>
-    <a class="btn btn-primary" href="#buy">
-      <span class="en">Paid build · ¥19.9 →</span><span class="zh">付费版 · ¥19.9 →</span>
-    </a>
+    <div class="hero-viz" aria-hidden="true">
+      <div class="glow"></div>
+      <div class="hero-badge">1 palette</div>
+      <div class="hero-card">
+        <div class="term">
+          <div class="bar"><i></i><i></i><i></i><span>theme.sh · preview</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./theme.sh</span> v2-mihei
+<span class="ok">✓</span> iTerm2 · Ghostty · Warp · Terminal
+<span class="cm"># bat / fzf / eza / delta · same family</span></pre>
+        </div>
+        <div class="palette">
+          <i style="background:#1a1b26"></i><i style="background:#f7768e"></i>
+          <i style="background:#9ece6a"></i><i style="background:#e0af68"></i>
+          <i style="background:#7aa2f7"></i><i style="background:#bb9af7"></i>
+          <i style="background:#7dcfff"></i><i style="background:#c0caf5"></i>
+        </div>
+        <div class="apps">
+          <span>iTerm2</span>
+          <span class="paid">Ghostty</span>
+          <span class="paid">Warp</span>
+          <span class="paid">Terminal.app</span>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="readout">
-    <div>
-      <div class="k"><span class="en">open source</span><span class="zh">开源版</span></div>
-      <div class="v"><span class="en">A complete iTerm2, free</span><span class="zh">一台配好的 iTerm2，免费</span></div>
-    </div>
-    <div>
-      <div class="k"><span class="en">paid build</span><span class="zh">付费档</span></div>
-      <div class="v"><em>¥19.9</em> <span class="en">· one year of updates</span><span class="zh">· 一年更新</span></div>
-    </div>
-    <div>
-      <div class="k"><span class="en">refund</span><span class="zh">退款</span></div>
-      <div class="v"><span class="en">7 days, no questions</span><span class="zh">七天无理由</span></div>
-    </div>
-  </div>
-
-  <div class="term">
+  <div class="term" style="margin-top:36px">
     <div class="bar"><i></i><i></i><i></i><span>hekouwang-terminal-kit</span></div>
-<pre class="sc"><span class="cm"># <span class="en">the whole open-source build, free, MIT</span><span class="zh">整个开源版，免费，MIT</span></span>
+<pre class="sc"><span class="cm"># <span class="en">open-source build · free · MIT</span><span class="zh">开源版 · 免费 · MIT</span></span>
 <span class="p">$</span> <span class="o">git clone</span> https://github.com/huiyonghkw/hekouwang-terminal-kit
-<span class="p">$</span> <span class="o">cd</span> hekouwang-terminal-kit
-<span class="p">$</span> <span class="o">./install.sh</span> --dry-run
-    <span class="cm"># <span class="en">lists what it would touch. nothing changed yet.</span><span class="zh">先列出它要动什么，此时一个字节都没改</span></span>
+<span class="p">$</span> <span class="o">cd</span> hekouwang-terminal-kit && <span class="o">./install.sh</span> --dry-run
 <span class="p">$</span> <span class="o">./install.sh</span>
-<span class="ok">✓</span> <span class="cm"><span class="en">done. changed your mind? ./uninstall.sh restores from backup.</span><span class="zh">装好了。后悔了？./uninstall.sh 从备份还原</span></span></pre>
+<span class="ok">✓</span> <span class="cm"><span class="en">changed your mind? ./uninstall.sh restores from backup</span><span class="zh">后悔了？./uninstall.sh 从备份还原</span></span></pre>
   </div>
-  <p class="muted">
-    <span class="en">macOS only. Ships no font files — it detects what you already have installed.</span>
-    <span class="zh">只支持 macOS。不打包分发任何字体文件 —— 它探测你本机已经装了什么。</span>
+  <p class="muted" style="margin-top:12px">
+    <span class="en">macOS only. Ships no font files — detects what you already have. <a href="#buy">Paid build →</a></span>
+    <span class="zh">只支持 macOS。不分发字体 —— 探测本机已装字体。<a href="#buy">付费版 →</a></span>
   </p>
+</section>
+
+<!-- ============ 功能卡网格 ============ -->
+<section class="pre noseq">
+  <h2><span class="en">Why OneLook</span><span class="zh">为什么选 OneLook</span></h2>
+  <div class="h2sub">safe to install · one palette · honest limits</div>
+  <div class="featgrid">
+    <div class="feat">
+      <div class="ic" aria-hidden="true">🛟</div>
+      <div class="tt"><span class="en">Safe in, safe out</span><span class="zh">敢装敢卸</span></div>
+      <p class="ds"><span class="en"><code>--dry-run</code>, migrate your <code>.zshrc</code>, uninstall restores from backup — not delete-and-pray.</span><span class="zh"><code>--dry-run</code>、迁移已有 <code>.zshrc</code>、卸载从备份还原 —— 不是删了拉倒。</span></p>
+    </div>
+    <div class="feat">
+      <div class="ic" aria-hidden="true">🎨</div>
+      <div class="tt"><span class="en">One palette</span><span class="zh">一份色板</span></div>
+      <p class="ds"><span class="en">Colors are derived, not copied. Hand-maintained Warp themes drift silently — I measured 8/16 slots wrong.</span><span class="zh">颜色是推出来的，不是抄的。手工维护的 Warp 主题会静默漂 —— 我量过 16 槽错 8 个。</span></p>
+    </div>
+    <div class="feat paid">
+      <div class="ic" aria-hidden="true">🖥️</div>
+      <div class="tt"><span class="en">Four terminals</span><span class="zh">四终端</span> <span class="tag tag-paid">paid</span></div>
+      <p class="ds"><span class="en">iTerm2 · Ghostty · Warp · Terminal.app follow the same palette in one <code>./theme.sh</code>. <a href="guide/terminals.html">Docs →</a></span><span class="zh">iTerm2 · Ghostty · Warp · 自带终端，一条 <code>./theme.sh</code> 同色。<a href="guide/terminals.html">说明 →</a></span></p>
+    </div>
+    <div class="feat">
+      <div class="ic" aria-hidden="true">👆</div>
+      <div class="tt"><span class="en">Semantic clicks</span><span class="zh">语义点开</span></div>
+      <p class="ds"><span class="en">Cmd-click <code>path:line</code> / Git SHA / <code>localhost:port</code> — ships with every profile.</span><span class="zh">Cmd-click <code>路径:行号</code> / Git SHA / <code>localhost:端口</code> —— 随 Profile 交付。</span></p>
+    </div>
+    <div class="feat">
+      <div class="ic" aria-hidden="true">🩺</div>
+      <div class="tt"><span class="en">Self-checking</span><span class="zh">会自检</span></div>
+      <p class="ds"><span class="en"><code>doctor.sh --status</code> dashboard, then details; <code>--fix</code> after you confirm.</span><span class="zh"><code>doctor.sh --status</code> 仪表盘再明细；<code>--fix</code> 逐项确认后修。</span></p>
+    </div>
+    <div class="feat paid">
+      <div class="ic" aria-hidden="true">🤖</div>
+      <div class="tt"><span class="en">Agent-driven</span><span class="zh">AI 可驱动</span> <span class="tag tag-paid">paid</span></div>
+      <p class="ds"><span class="en">Claude Code Skill: say “light theme” / “why slow” — the agent picks the script.</span><span class="zh">Claude Code Skill：说「换亮色」「怎么这么慢」—— AI 自己挑脚本跑。</span></p>
+    </div>
+  </div>
 </section>
 
 <!-- ============ 01 对比 ============ -->
@@ -183,51 +242,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   </p>
 </section>
 
-<!-- ============ 02 开源版是完整产品 ============ -->
-<section class="pre">
-  <h2><span class="en">The open-source build is a complete product</span><span class="zh">开源版本身就是完整产品</span></h2>
-  <div class="h2sub">not a trial · nothing expires · MIT</div>
-  <p>
-    <span class="en">Install it, never pay me anything, and keep using it forever. Here is what it does on its own:</span>
-    <span class="zh">装完一分钱不花，可以一直用下去。开源版自己就做到这些：</span>
-  </p>
-
-  <div class="rows">
-    <div class="row"><div class="sq">01</div><div>
-      <div class="tt"><span class="en">It doesn't overwrite you</span><span class="zh">不覆盖你的东西</span></div>
-      <div class="ds"><span class="en">Your existing config is moved into another file section by section — three years of aliases, not one line lost. It then really starts a shell to check the syntax, and rolls back if it won't start.</span>
-        <span class="zh">按段落把你原来的配置搬进另一个文件，三年攒的别名一行不丢；写完真起一个 shell 验语法，起不来自动回滚。</span></div></div></div>
-    <div class="row"><div class="sq">02</div><div>
-      <div class="tt"><span class="en">You can rehearse it</span><span class="zh">装之前能预演</span></div>
-      <div class="ds"><span class="en"><code>--dry-run</code> lists every file and system setting it would touch, and what it will never touch, before you commit.</span>
-        <span class="zh"><code>--dry-run</code> 先把要改哪些文件、写哪些系统设置、什么绝对不碰列成清单给你看。</span></div></div></div>
-    <div class="row"><div class="sq">03</div><div>
-      <div class="tt"><span class="en">You can get back</span><span class="zh">不想要了能还原</span></div>
-      <div class="ds"><span class="en">Uninstall <b>restores from a backup</b> rather than deleting things, and returns system settings to the real factory defaults.</span>
-        <span class="zh">卸载是<b>从备份还原</b>，不是删了拉倒；系统设置恢复真正的出厂默认。</span></div></div></div>
-    <div class="row"><div class="sq">04</div><div>
-      <div class="tt"><span class="en">It checks itself</span><span class="zh">出问题会自检</span></div>
-      <div class="ds"><span class="en"><code>doctor.sh</code> opens with a state dashboard (theme / auto / node / semantic / Ghostty reload), then eight detail checks — and tells you how to fix each one.</span>
-        <span class="zh"><code>doctor.sh</code> 开头就是状态机仪表盘（主题 / 跟随 / Node / 语义 / Ghostty 重载），再跑八项明细 —— 哪项不对直接告诉你怎么修。</span></div></div></div>
-    <div class="row"><div class="sq">05</div><div>
-      <div class="tt"><span class="en">It doesn't slow you down</span><span class="zh">不拖慢终端</span></div>
-      <div class="ds"><span class="en">One line added to shell startup, not a pile of plugins.</span>
-        <span class="zh">只往启动里加一行，不是堆一大摞插件。</span></div></div></div>
-    <div class="row"><div class="sq">06</div><div>
-      <div class="tt"><span class="en">Everything else you'd expect</span><span class="zh">该有的都有</span></div>
-      <div class="ds"><span class="en">3 community color schemes, blur, ERROR/WARN auto-coloring, <b>Cmd-click</b> path:line / Git SHA / localhost:port, Shift+Enter for multi-line prompts, and the modern CLI set (eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta).</span>
-        <span class="zh">3 套社区配色、毛玻璃、ERROR/WARN 自动标色、<b>Cmd-click</b> 路径:行号 / Git SHA / localhost:端口、Shift+Enter 写多行 prompt，以及现代 CLI 全家桶（eza / bat / fzf / fd / zoxide / ripgrep / atuin / delta）。</span></div></div></div>
-  </div>
-
-  <div class="ask">
-    <span class="lb">honest limit</span>
-    <span class="en">It will <b>not</b> make your terminal faster. It only manages not to slow it down.
-      Anyone promising a one-click beautifier that also speeds things up hasn't measured it.</span>
-    <span class="zh">它<b>不会</b>让终端变快，只做到不拖慢。谁跟你说一键美化还能提速，那是没量过。</span>
-  </div>
-</section>
-
-<!-- ============ 03 分档 ============ -->
+<!-- ============ 分档 ============ -->
 <section class="pre">
   <h2><span class="en">Where the line is</span><span class="zh">线划在哪儿</span></h2>
   <div class="h2sub">free = a good-looking iTerm2 · paid = that palette walks out of it</div>
@@ -377,14 +392,14 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 
 </main></div>
 
-<div class="wrap">
+<div class="wrap wrap-wide">
 <footer>
   <span class="brand">OneLook · 会勇禾口王的AI笔记</span>
   <span class="handle">@huiyonghkw · <span class="en">open-source build is MIT · </span><span class="zh">开源版 MIT 授权 · </span><a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
 </footer>
 </div>
 
-<script src="assets/site.js?v=2.10.2"></script>
+<script src="assets/site.js?v=2.10.4"></script>
 
 </body>
 </html>
