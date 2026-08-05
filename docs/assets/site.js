@@ -1,27 +1,90 @@
 /* hekouwang-terminal-kit site — lang / progress / reveal
-   Self-contained: no CDN. Pages set data-base on <html> for relative links if needed. */
+   Self-contained: no CDN.
+   Lang truth order: ?lang= → localStorage → navigator.
+   A sync boot snippet in <head> (see pages) applies lang-zh before paint;
+   this file syncs URL, buttons, and rewrites same-site links so nav keeps lang. */
 (function () {
   var KEY = 'hkw-lang';
-  var btnEn = document.getElementById('btn-en');
-  var btnZh = document.getElementById('btn-zh');
-  if (!btnEn || !btnZh) return;
+
+  function readQuery() {
+    try {
+      var q = new URLSearchParams(location.search).get('lang');
+      return q === 'zh' || q === 'en' ? q : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function readStored() {
+    try {
+      var s = localStorage.getItem(KEY);
+      return s === 'zh' || s === 'en' ? s : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function detect() {
+    var q = readQuery();
+    if (q) return q;
+    var s = readStored();
+    if (s) return s;
+    return /^zh/i.test(navigator.language || '') ? 'zh' : 'en';
+  }
+
+  function patchLinks(lang) {
+    document.querySelectorAll('a[href]').forEach(function (a) {
+      var raw = a.getAttribute('href');
+      if (!raw || raw.charAt(0) === '#' || /^(https?:|mailto:|javascript:)/i.test(raw)) return;
+      if (raw.slice(0, 2) === '//') return;
+      try {
+        var u = new URL(raw, location.href);
+        if (u.origin !== location.origin) return;
+        var path = raw.split('#')[0].split('?')[0];
+        var hash = u.hash || '';
+        a.setAttribute('href', path + '?lang=' + lang + hash);
+      } catch (e) {}
+    });
+  }
+
+  function syncUrl(lang) {
+    try {
+      var u = new URL(location.href);
+      if (u.searchParams.get('lang') === lang) return;
+      u.searchParams.set('lang', lang);
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+    } catch (e) {}
+  }
 
   function set(lang, remember) {
     var zh = lang === 'zh';
     document.documentElement.classList.toggle('lang-zh', zh);
     document.documentElement.lang = zh ? 'zh-CN' : 'en';
-    btnEn.setAttribute('aria-pressed', String(!zh));
-    btnZh.setAttribute('aria-pressed', String(zh));
+    var btnEn = document.getElementById('btn-en');
+    var btnZh = document.getElementById('btn-zh');
+    if (btnEn) btnEn.setAttribute('aria-pressed', String(!zh));
+    if (btnZh) btnZh.setAttribute('aria-pressed', String(zh));
     if (remember) {
       try { localStorage.setItem(KEY, lang); } catch (e) {}
+      syncUrl(lang);
     }
+    patchLinks(lang);
   }
 
-  var saved = null;
-  try { saved = localStorage.getItem(KEY); } catch (e) {}
-  set(saved || (/^zh/i.test(navigator.language || '') ? 'zh' : 'en'), false);
-  btnEn.addEventListener('click', function () { set('en', true); });
-  btnZh.addEventListener('click', function () { set('zh', true); });
+  var lang = detect();
+  // Re-apply in case head boot missed (or file opened oddly)
+  set(lang, false);
+  // Persist query into storage; keep URL shareable
+  try {
+    if (readQuery()) localStorage.setItem(KEY, lang);
+  } catch (e) {}
+  syncUrl(lang);
+  patchLinks(lang);
+
+  var btnEn = document.getElementById('btn-en');
+  var btnZh = document.getElementById('btn-zh');
+  if (btnEn) btnEn.addEventListener('click', function () { set('en', true); });
+  if (btnZh) btnZh.addEventListener('click', function () { set('zh', true); });
 })();
 
 (function () {

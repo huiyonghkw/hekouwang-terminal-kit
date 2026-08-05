@@ -78,12 +78,16 @@ code{font-family:var(--mono);font-size:.9em;background:var(--surface2);
 .toggle{display:flex;border:1px solid var(--border2);border-radius:999px;overflow:hidden;background:var(--surface)}
 .toggle button{background:none;border:0;color:var(--text3);font:inherit;font-size:12.5px;
                padding:4px 15px;cursor:pointer;font-family:var(--mono)}
-.toggle button[aria-pressed="true"]{background:var(--accent2);color:#fff;font-weight:600}
+/* 选中态跟 html.lang-zh 走（head 里同步 boot 就能在首屏对），不单靠 JS 改 aria */
+.toggle #btn-en{background:var(--accent2);color:#fff;font-weight:600}
+html.lang-zh .toggle #btn-en{background:none;color:var(--text3);font-weight:400}
+html.lang-zh .toggle #btn-zh{background:var(--accent2);color:#fff;font-weight:600}
 
-/* ---- 语言层：两份文案都在 DOM 里，切 html 上的 class ---- */
-.zh{display:none}
-html.lang-zh .en{display:none}
-html.lang-zh .zh{display:revert}
+/* ---- 语言层：两份文案都在 DOM 里，切 html 上的 class ----
+   ⭐ head 内联 boot 必须在首屏前加上/去掉 lang-zh，否则每点一次侧栏都会先闪英文 */
+.zh{display:none!important}
+html.lang-zh .en{display:none!important}
+html.lang-zh .zh{display:inline!important}
 
 /* ---- 章节 ---- */
 main{counter-reset:sec}

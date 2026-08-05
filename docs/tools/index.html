@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+/* 首屏前同步语言：避免点侧栏先闪英文（?lang → localStorage → navigator） */
+(function(){try{var K='hkw-lang',q=null;try{q=new URLSearchParams(location.search).get('lang')}catch(e){}
+if(q!=='zh'&&q!=='en')q=null;var s=q;if(!s)try{s=localStorage.getItem(K)}catch(e){}
+if(s!=='zh'&&s!=='en')s=/^zh/i.test(navigator.language||'')?'zh':'en';
+if(s==='zh')document.documentElement.classList.add('lang-zh');
+document.documentElement.lang=s==='zh'?'zh-CN':'en';
+if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CLI & scripts · OneLook</title>
 <meta name="description" content="Every entrypoint at a glance.">
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=2.9.3">
 </head>
 <body>
 <div class="prog" id="prog"></div>
@@ -74,6 +83,6 @@
   <span class="brand">OneLook · 会勇禾口王的AI笔记</span>
   <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
 </footer></div>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=2.9.3"></script>
 </body>
 </html>

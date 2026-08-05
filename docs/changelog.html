@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+/* 首屏前同步语言：避免点侧栏先闪英文（?lang → localStorage → navigator） */
+(function(){try{var K='hkw-lang',q=null;try{q=new URLSearchParams(location.search).get('lang')}catch(e){}
+if(q!=='zh'&&q!=='en')q=null;var s=q;if(!s)try{s=localStorage.getItem(K)}catch(e){}
+if(s!=='zh'&&s!=='en')s=/^zh/i.test(navigator.language||'')?'zh':'en';
+if(s==='zh')document.documentElement.classList.add('lang-zh');
+document.documentElement.lang=s==='zh'?'zh-CN':'en';
+if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog · OneLook</title>
 <meta name="description" content="What changed in recent public releases.">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/site.css?v=2.9.3">
 </head>
 <body>
 <div class="prog" id="prog"></div>
@@ -52,6 +61,10 @@
 <p class="lead"><span class="en">What changed in recent public releases.</span><span class="zh">近期公开版改了什么。</span></p>
 
 <p class="muted"><span class="en">Public changelog highlights. Full history lives in the repo CHANGELOG.</span><span class="zh">公开版要点。完整历史见仓库 CHANGELOG。</span></p>
+<h2>2.9.3 · <span class="en">Lang follows navigation</span><span class="zh">语言跟链跳转</span></h2>
+<ul>
+<li><span class="en">Head boot + <code>?lang=</code> on in-site links — Chinese no longer flashes back to English on every click.</span><span class="zh">首屏 boot + 站内链带 <code>?lang=</code> —— 点中文后再点菜单不会闪回英文。</span></li>
+</ul>
 <h2>2.9.2 · <span class="en">Docs nav shell fix</span><span class="zh">文档站导航壳修复</span></h2>
 <ul>
 <li><span class="en">Top bar is short again; guide links live in the sidebar; EN/中文 works on doc pages.</span><span class="zh">顶栏恢复短导航；指南链回侧栏；文档页中英文切换可用。</span></li>
@@ -86,6 +99,6 @@
   <span class="brand">OneLook · 会勇禾口王的AI笔记</span>
   <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
 </footer></div>
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2.9.3"></script>
 </body>
 </html>
