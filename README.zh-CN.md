@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E5%9B%9B%E4%B8%AA%E7%BB%88%E7%AB%AF-iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20%E8%87%AA%E5%B8%A6%E7%BB%88%E7%AB%AF-6a45e0">
+  <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E5%85%AD%E4%B8%AA%E7%BB%88%E7%AB%AF-iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20cmux%20%C2%B7%20Tabby%20%C2%B7%20%E8%87%AA%E5%B8%A6%E7%BB%88%E7%AB%AF-6a45e0">
   <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E4%B8%80%E4%BB%BD%E8%89%B2%E6%9D%BF-%E7%BB%88%E7%AB%AF%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-6a45e0">
   <img src="https://img.shields.io/badge/%E5%BC%80%E6%BA%90%E7%89%88-%E9%85%8D%E5%A5%BD%E7%9A%84%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
@@ -34,15 +34,15 @@
 |---|---|
 | [安装](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/install.html?lang=zh) | 安装、迁移、预演、国内镜像 |
 | [换肤与跟随](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/theme.html?lang=zh) | `theme.sh`、钉住与跟随系统、fzf + ANSI 预览 |
-| [四终端](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=zh) | iTerm2 · Ghostty · Warp · 自带终端 |
+| [六终端](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=zh) | iTerm2 · Ghostty · Warp · cmux · Tabby · 自带终端 |
 | [Node 管理器](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/node.html?lang=zh) | fnm / nvm / brew / vfox —— 四选一 |
 | [语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html?lang=zh) | Cmd-click 路径:行号 / SHA / 端口 |
 | [体检与卸载](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/doctor.html?lang=zh) | `--status` 仪表盘、卸载、备份 |
 | [CLI 索引](https://huiyonghkw.github.io/hekouwang-terminal-kit/tools/index.html?lang=zh) · [主题画廊](https://huiyonghkw.github.io/hekouwang-terminal-kit/themes/index.html?lang=zh) · [更新日志](https://huiyonghkw.github.io/hekouwang-terminal-kit/changelog.html?lang=zh) | |
 
 > **开源版**＝配好的 iTerm2（3 套社区配色、毛玻璃、Triggers、语义 Cmd-click、CLI、体检）。
-> **付费版**＝让这份色板走到 **Ghostty · Warp · 自带终端** + 工具链 + Skill。
-> 文档站把免费用法写全；付费只写「是什么 / 为什么买」。见[四终端](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=zh)。
+> **付费版**＝让这份色板走到 **Ghostty · Warp · cmux · Tabby · 自带终端** + 工具链 + Skill。
+> 文档站把免费用法写全；付费只写「是什么 / 为什么买」。见[六终端](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=zh)。
 
 <p align="center">
   <img src="docs/images/01-cover.png" width="88%" alt="把又黑又丑的终端调成顺手的工作台">
@@ -71,7 +71,7 @@
 我交过学费：手工维护的 Warp 主题，注释写着「与 iTerm2 完全一致」，实际 **16 个色槽错了 8 个**。
 
 只用 iTerm2 → 免费版就够用（好看 + AI 细节 + 敢卸）。
-还用 Ghostty / Warp / 自带终端，或想让 `cat`/`ls`/`git diff` 跟终端同色 → 付费档解决的是「一份色板走出去」。
+还用 Ghostty / Warp / cmux / Tabby / 自带终端，或想让 `cat`/`ls`/`git diff` 跟终端同色 → 付费档解决的是「一份色板走出去」。
 
 ---
 
@@ -93,7 +93,7 @@
 
 ## 二、跟网上那些 dotfiles 有什么不一样
 
-1. **一份色板，管到四个终端**〔付费〕。别家换主题只换一个终端的底色。这里 `./theme.sh` 一条命令，iTerm2、Ghostty、Warp、**macOS 自带终端**四个一起换，连 `cat`（bat）、`Ctrl+T`（fzf）、`ls`（eza）、`git diff`（delta）、tmux、VS Code 全部同色——因为它们的配色是**同一份色板生成的**，不是各写一遍。
+1. **一份色板，管到六个终端**〔付费〕。别家换主题只换一个终端的底色。这里 `./theme.sh` 一条命令，iTerm2、Ghostty、Warp、**cmux**、**Tabby**、**macOS 自带终端**一起换，连 `cat`（bat）、`Ctrl+T`（fzf）、`ls`（eza）、`git diff`（delta）、tmux、VS Code 全部同色——因为它们的配色是**同一份色板生成的**，不是各写一遍。
 2. **为 AI 工作流准备的那几处细节**〔开源版就有〕。`Shift+Enter` 换行不提交；`ERROR/WARN/SUCCESS` 自动标色；**Cmd-click** `path:line` / Git SHA / `localhost:port`；`Password:` 提示弹密码管理器；跟随系统深浅色自动换肤〔付费〕。
 3. **敢装，也敢卸**〔开源版就有〕。`install.sh --dry-run` 先列清要改什么；已有 `.zshrc` 用 `migrate.sh` 搬进 `~/.zshrc.local` 再套模板；后悔了 `uninstall.sh` 从备份还原。
 4. **体检能自己修**〔开源版就有〕。`doctor.sh --status` 一眼看钉住状态；`--fix` 逐项确认后自动修；`--profile` 点名拖慢启动的插件（我机器上揪出过 `compinit`，258ms）。
@@ -125,7 +125,7 @@
 | 现代 CLI 全家桶 · `doctor.sh --status/--fix/--profile` · `.zshrc` 迁移 | ✅ | ✅ |
 | **配色主题** | 3 套社区 | + 4 套品牌（含 **2 套亮色**） |
 | **Claude Code Skill** | — | ✅ |
-| **多终端同步**（Ghostty · Warp · 自带终端）+ **全生态同色**（bat/fzf/eza/git diff/tmux/VS Code） | — | ✅ |
+| **多终端同步**（Ghostty · Warp · cmux · Tabby · 自带终端）+ **全生态同色**（bat/fzf/eza/git diff/tmux/VS Code） | — | ✅ |
 | 跟随系统深浅色 · 项目 tab 变色 · 色板推导 / 导入 · A4 速查卡 | — | ✅ |
 | 更新与答疑 | GitHub Issues | 一年内更新 + 群内答疑 |
 
@@ -266,7 +266,7 @@ CN=1 ./install.sh
 ```
 
 开源版切的是 **iTerm2**（Dynamic Profile，保存即生效）。
-付费版同一条命令还会带走 Ghostty / Warp / 自带终端，以及 bat / fzf / eza / git diff / tmux / VS Code——**同一份色板生成，不是各写一遍**。
+付费版同一条命令还会带走 Ghostty / Warp / cmux / Tabby / 自带终端，以及 bat / fzf / eza / git diff / tmux / VS Code——**同一份色板生成，不是各写一遍**。
 
 付费另有：`./theme.sh --auto` 跟随系统深浅色；项目工作区（`cd` 进项目 tab 变色）；色板推导 / 导入现成主题。用法见付费包买家首页与 [`docs/manual.zh-CN.md`](docs/manual.zh-CN.md) 第七、八节。
 

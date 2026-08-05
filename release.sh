@@ -27,7 +27,7 @@
 # 真实的分界线是**能力**，不是文件类型：
 #   免费 = 一个配好看的 iTerm2 —— 3 套社区配色 + 毛玻璃 + Triggers + Shift+Enter
 #          + CLI 全家桶 + 体检 / 迁移 / 卸载 + 生成器核心 _generate.py
-#   付费 = 让这份色板走出 iTerm2 —— Ghostty / Warp / 自带终端 / bat / fzf / eza /
+#   付费 = 让这份色板走出 iTerm2 —— Ghostty / Warp / cmux / Tabby / 自带终端 / bat / fzf / eza /
 #          git diff / tmux / VS Code + 4 套品牌主题 + 色板推导器 + 字体表 + 速查卡 + 服务
 #
 # 付费件缺席时全部脚本优雅降级、不报错：生成器只出 iTerm2 并打印「以下属付费包」；
@@ -105,7 +105,7 @@ OSS_DESC="OneLook (hekouwang-terminal-kit): same colors → same look. Open-sour
 # 公开仓**不打** ghostty / warp —— 那两个是付费能力，打了会把搜这两个词的人骗进来
 OSS_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh,onelook"
 
-PRO_DESC="OneLook paid: 4 brand themes (incl. light) + one palette across iTerm2 / Ghostty / Warp / Terminal.app, with bat / fzf / eza / git diff / tmux / VS Code. Optical / scene / semantic pillars, palette deriver, font table, cheat sheet, Claude Code Skill. Manual: docs/manual.md."
+PRO_DESC="OneLook paid: 4 brand themes (incl. light) + one palette across iTerm2 / Ghostty / Warp / cmux / Tabby / Terminal.app, with bat / fzf / eza / git diff / tmux / VS Code. Optical / scene / semantic pillars, palette deriver, font table, cheat sheet, Claude Code Skill. Manual: docs/manual.md."
 # claude-code / agent-skill 只打在付费仓：Skill 是付费能力，公开仓打上就是钓鱼
 PRO_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh,ghostty,warp,tmux,claude-code,agent-skill"
 

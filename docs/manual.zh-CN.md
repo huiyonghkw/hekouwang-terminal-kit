@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>AI 时代的终端，值得重新配一次。</b><br>
-  免费版让你的 iTerm2 好看。<br>付费版让这份色板走出 iTerm2——四个终端和整条命令行工具链一起变。
+  免费版让你的 iTerm2 好看。<br>付费版让这份色板走出 iTerm2——六个终端和整条命令行工具链一起变。
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E5%9B%9B%E4%B8%AA%E7%BB%88%E7%AB%AF-iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20%E8%87%AA%E5%B8%A6%E7%BB%88%E7%AB%AF-6a45e0">
+  <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E5%85%AD%E4%B8%AA%E7%BB%88%E7%AB%AF-iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20cmux%20%C2%B7%20Tabby%20%C2%B7%20%E8%87%AA%E5%B8%A6%E7%BB%88%E7%AB%AF-6a45e0">
   <img src="https://img.shields.io/badge/%E4%BB%98%E8%B4%B9%E6%A1%A3%C2%B7%E4%B8%80%E4%BB%BD%E8%89%B2%E6%9D%BF-%E7%BB%88%E7%AB%AF%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-6a45e0">
   <img src="https://img.shields.io/badge/%E5%BC%80%E6%BA%90%E7%89%88-%E9%85%8D%E5%A5%BD%E7%9A%84%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
@@ -56,7 +56,7 @@
 这个差别很微妙，微妙到**缺了才难受，有了反而无感**。上面那张图就是为你拍的：
 不用懂配色，看左边哪里扎眼就知道了。一天在终端里泡八小时，这点差别是会累积的。
 
-**② 用 Ghostty / Warp / macOS 自带终端的人 —— 你买的是「它们跟 iTerm2 说同一种话」**
+**② 用 Ghostty / Warp / cmux / Tabby / macOS 自带终端的人 —— 你买的是「它们跟 iTerm2 说同一种话」**
 
 先把话说清楚：**Ghostty 自己就带 463 套主题**（catppuccin、gruvbox、nord、dracula 都在里面），
 一行 `theme = catppuccin-mocha` 就能用，免费。所以这里卖的**不是**「让 Ghostty 有主题」。
@@ -64,7 +64,7 @@
 卖的是那 463 套解决不了的事：**它们只管 Ghostty**。Ghostty 不知道你 iTerm2 用的是哪套，
 更不管 `cat`、`ls`、`git diff`、`tmux`。你换一套配色，得挨个去改。
 
-`./theme.sh v2-mihei` 一条命令：**四个终端 + 整条工具链，同一份色板，一起换。**
+`./theme.sh v2-mihei` 一条命令：**六个终端 + 整条工具链，同一份色板，一起换。**
 下面这对是 Ghostty，跑的是同样三条命令：
 
 <table>
@@ -104,7 +104,7 @@
 
 ## 二、跟网上那些 dotfiles 有什么不一样
 
-1. **一份色板，管到四个终端**〔付费〕。别家换主题只换一个终端的底色。这里 `./theme.sh` 一条命令，iTerm2、Ghostty、Warp、**macOS 自带终端**四个一起换，连 `cat`（bat）、`Ctrl+T`（fzf）、`ls`（eza）、`git diff`（delta）、tmux、VS Code 全部同色——因为它们的配色是**同一份色板生成的**，不是各写一遍。手写多套色板一定会漂，这点我用实测数据交过学费：曾经手工维护的 Warp 主题，注释写着「与 iTerm2 完全一致」，实际 16 个色槽错了 8 个。
+1. **一份色板，管到六个终端**〔付费〕。别家换主题只换一个终端的底色。这里 `./theme.sh` 一条命令，iTerm2、Ghostty、Warp、**cmux**、**Tabby**、**macOS 自带终端**一起换，连 `cat`（bat）、`Ctrl+T`（fzf）、`ls`（eza）、`git diff`（delta）、tmux、VS Code 全部同色——因为它们的配色是**同一份色板生成的**，不是各写一遍。手写多套色板一定会漂，这点我用实测数据交过学费：曾经手工维护的 Warp 主题，注释写着「与 iTerm2 完全一致」，实际 16 个色槽错了 8 个。
 2. **为 AI 工作流准备的那几处细节**〔开源版就有〕。 `Shift+Enter` 换行不提交（写多行 prompt）；`ERROR/WARN/SUCCESS` 在输出里自动标色；**Cmd-click** `path:line` / Git SHA / `localhost:port`；`Password:` 提示自动弹密码管理器；跟随系统深浅色自动换肤〔付费〕。
 3. **敢装，也敢卸**〔开源版就有〕。 `install.sh --dry-run` 先告诉你要改哪些文件、写哪些系统设置、什么绝对不碰；已经有自己的 `.zshrc`？`migrate.sh` 把你的 alias/PATH 搬进 `~/.zshrc.local` 再套模板，而不是盖掉；后悔了 `uninstall.sh` 从备份还原、把 GUI 设置恢复出厂默认。
 4. **体检能自己修**〔开源版就有〕。 `doctor.sh --status` 一眼看钉住状态；`--fix` 逐项确认后自动修，`--profile` 直接点名是哪个插件让你的终端开得慢（我自己机器上揪出来的是 `compinit`，258ms）。
@@ -148,7 +148,7 @@
 | **Claude Code Skill**：装进 `~/.claude/skills/`，直接跟 AI 说「给我换个亮色主题」「我终端怎么开得这么慢」，它自己把整套跑完 | — | ✅ |
 | **品牌主题** | — | V2 米黑 · V1 科技黑 · **V2 米白** · **V3 财经白** |
 | **亮色主题**（白天 / 投屏 / 录课 / 户外） | — | ✅ 两套 |
-| **多终端同步**：Ghostty · Warp · macOS 自带终端 | — | ✅ 一条命令四个终端 |
+| **多终端同步**：Ghostty · Warp · cmux · Tabby · macOS 自带终端 | — | ✅ 一条命令六个终端 |
 | **全生态同色**：bat · fzf · eza · git diff · tmux · VS Code | — | ✅ |
 | **字体优先级表**：自动认出你已装的 Operator Mono 等商业字体 | 用推荐默认字体 | ✅ |
 | **跟随系统深浅色自动切**（`./theme.sh --auto`） | — | ✅ |
@@ -344,7 +344,7 @@ CN=1 ./install.sh
 
 ---
 
-## 七、换肤：一条命令，四个终端 + 整条工具链
+## 七、换肤：一条命令，六个终端 + 整条工具链
 
 ```bash
 ./theme.sh                 # 主题画廊：每套一行，带真彩色 16 色条、标出当前用的哪套
@@ -558,7 +558,7 @@ Triggers 解决「愿不愿意看」；语义层解决「少操作几步」—�
 
 文档站深链（可分享）：[语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
 
-> ⚠️ **只在 iTerm2 里有**：Ghostty / Warp / 自带终端没有 Smart Selection 对应物——和 Triggers 同一条诚实边界。付费档的多终端同步管的是配色观感，不是可点语义。
+> ⚠️ **只在 iTerm2 里有**：Ghostty / Warp / cmux / Tabby / 自带终端没有 Smart Selection 对应物——和 Triggers 同一条诚实边界。付费档的多终端同步管的是配色观感，不是可点语义。
 
 ### Shell Integration：终端里看图 + 命令成败一眼可见
 
@@ -568,7 +568,7 @@ Triggers 解决「愿不愿意看」；语义层解决「少操作几步」—�
   <img src="images/22-shell.png" width="78%" alt="Shell Integration">
 </p>
 
-### Ghostty / Warp / 自带终端的差异
+### Ghostty / Warp / cmux / Tabby / 自带终端的差异
 
 <p align="center">
   <img src="images/30-ghostty-parity.png" width="92%" alt="同一条命令配好的 iTerm2 与 Ghostty">

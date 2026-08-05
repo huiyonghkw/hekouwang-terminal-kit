@@ -18,7 +18,7 @@ hekouwang-terminal-kit — 一键换肤（终端 + 整条工具链）
   ./theme.sh --lang en            切回英文
 
 一条命令切的不只是终端底色，还有 bat / fzf / eza / delta(git diff) /
-tmux / Ghostty / Warp / VS Code —— 全部来自同一份色板，不会互相漂。
+tmux / Ghostty / Warp / cmux / Tabby / VS Code —— 全部来自同一份色板，不会互相漂。
 
 跟随系统默认关闭。手动 ./theme.sh <主题> 会钉住该主题，并自动关掉跟随
 （避免「配了黑色却被系统浅色顶回白色」）。想重新跟随再跑 --auto。
@@ -56,7 +56,7 @@ M_THEME_SEC_MULTI="多终端"
 M_THEME_SEC_TOOLCHAIN="工具链"
 M_THEME_ITERM_FONT="字体 %s"
 M_THEME_ITERM_NOTE="保存即生效；已开着的窗口按 Cmd+T 开新 tab 看效果"
-M_THEME_MULTI_ITEMS="Ghostty / Warp / macOS 自带终端"
+M_THEME_MULTI_ITEMS="Ghostty / Warp / cmux / Tabby / macOS 自带终端"
 M_THEME_PAID_ONLY="付费包能力"
 M_THEME_ECO_ITEMS="bat / fzf / eza / git diff / tmux"
 M_THEME_ECO_SAME="同色"

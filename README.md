@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/paid%20tier-4%20terminals%3A%20iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20Terminal.app-6a45e0">
+  <img src="https://img.shields.io/badge/paid%20tier-6%20terminals%3A%20iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20cmux%20%C2%B7%20Tabby%20%C2%B7%20Terminal.app-6a45e0">
   <img src="https://img.shields.io/badge/paid%20tier-one%20palette%3A%20terminal%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-6a45e0">
   <img src="https://img.shields.io/badge/open%20source-a%20properly%20configured%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
@@ -34,16 +34,16 @@
 |---|---|
 | [Install](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/install.html?lang=en) | install / migrate / dry-run / China mirrors |
 | [Themes & auto](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/theme.html?lang=en) | `theme.sh`, pin vs `--auto`, fzf + ANSI preview |
-| [Four terminals](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=en) | iTerm2 · Ghostty · Warp · Terminal.app |
+| [Six terminals](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=en) | iTerm2 · Ghostty · Warp · cmux · Tabby · Terminal.app |
 | [Node manager](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/node.html?lang=en) | fnm / nvm / brew / vfox — pick one |
 | [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html?lang=en) | Cmd-click `path:line` / SHA / port |
 | [Doctor & uninstall](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/doctor.html?lang=en) | `--status` dashboard, uninstall, backups |
 | [CLI index](https://huiyonghkw.github.io/hekouwang-terminal-kit/tools/index.html?lang=en) · [Theme gallery](https://huiyonghkw.github.io/hekouwang-terminal-kit/themes/index.html?lang=en) · [Changelog](https://huiyonghkw.github.io/hekouwang-terminal-kit/changelog.html?lang=en) | |
 
 > **Open source** = a complete iTerm2 (3 community schemes, blur, Triggers, semantic Cmd-click, CLI set, doctor).
-> **Paid** = that palette walks out to **Ghostty · Warp · Terminal.app** + tool chain + Skill.
+> **Paid** = that palette walks out to **Ghostty · Warp · cmux · Tabby · Terminal.app** + tool chain + Skill.
 > The docs site documents the free path fully; paid is “what / why buy”, not a cookbook.
-> See [Four terminals](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=en).
+> See [Six terminals](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=en).
 
 <p align="center">
   <img src="docs/images/01-cover.en.png" width="88%" alt="Turning a dark, ugly terminal into a workbench that fits your hand">
@@ -76,7 +76,7 @@ On the right, all four are **generated from the same palette**, so they are fami
 I learned this the hard way: a hand-maintained Warp theme whose comment said "identical to iTerm2" had **8 of 16 ANSI slots wrong**.
 
 iTerm2 only → the free build is enough (looks right + AI details + safe uninstall).
-Also using Ghostty / Warp / Terminal.app, or wanting `cat`/`ls`/`git diff` to match the terminal → the paid tier is "one palette walks out".
+Also using Ghostty / Warp / cmux / Tabby / Terminal.app, or wanting `cat`/`ls`/`git diff` to match the terminal → the paid tier is "one palette walks out".
 
 ---
 
@@ -98,7 +98,7 @@ This kit is aimed at those gaps. **Whatever I can do with AI, I run first, then 
 
 ## 2. How this differs from the dotfiles repos out there
 
-1. **One palette, four terminals** 〔paid〕. Most theme switches only recolor one app. Here `./theme.sh` reskins iTerm2, Ghostty, Warp, and **macOS Terminal**, plus `cat` (bat), `Ctrl+T` (fzf), `ls` (eza), `git diff` (delta), tmux, and VS Code — because their colors are **generated from one palette**, not hand-copied.
+1. **One palette, six terminals** 〔paid〕. Most theme switches only recolor one app. Here `./theme.sh` reskins iTerm2, Ghostty, Warp, **cmux**, **Tabby**, and **macOS Terminal**, plus `cat` (bat), `Ctrl+T` (fzf), `ls` (eza), `git diff` (delta), tmux, and VS Code — because their colors are **generated from one palette**, not hand-copied.
 2. **Details for AI workflows** 〔open source〕. `Shift+Enter` newline without submit; `ERROR/WARN/SUCCESS` auto-color; **Cmd-click** `path:line` / Git SHA / `localhost:port`; `Password:` prompts open the password manager; follow system light/dark 〔paid〕.
 3. **Safe to install, safe to remove** 〔open source〕. `install.sh --dry-run` lists every file and setting; existing `.zshrc` goes through `migrate.sh` into `~/.zshrc.local`; `uninstall.sh` restores from backup.
 4. **A checkup that can fix itself** 〔open source〕. `doctor.sh --status` shows the pinned state dashboard; `--fix` repairs after confirm; `--profile` names the plugin slowing startup (on my machine it was `compinit`, 258ms).
@@ -272,7 +272,7 @@ All shortcuts → [`references/shortcuts.md`](references/shortcuts.md)
 ```
 
 Open source switches **iTerm2** (Dynamic Profile, applies on save).
-Paid: the same command also updates Ghostty / Warp / Terminal.app, plus bat / fzf / eza / git diff / tmux / VS Code — **one generated palette, not hand copies**.
+Paid: the same command also updates Ghostty / Warp / cmux / Tabby / Terminal.app, plus bat / fzf / eza / git diff / tmux / VS Code — **one generated palette, not hand copies**.
 
 Paid extras: `./theme.sh --auto` follows system appearance; project workspaces (tab color on `cd`); palette deriver / import. See the paid buyer homepage and [`docs/manual.md`](docs/manual.md) sections 7–8.
 

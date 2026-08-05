@@ -23,7 +23,7 @@ Usage:
   ./theme.sh --lang zh            run in Chinese
 
 One command switches more than the terminal background: bat / fzf / eza /
-delta (git diff) / tmux / Ghostty / Warp / VS Code all come from the same
+delta (git diff) / tmux / Ghostty / Warp / cmux / Tabby / VS Code all come from the same
 palette, so they can never drift apart.
 
 Following the system is off by default. A manual ./theme.sh <theme> pins that
@@ -63,7 +63,7 @@ M_THEME_SEC_MULTI="Other terminals"
 M_THEME_SEC_TOOLCHAIN="Tool chain"
 M_THEME_ITERM_FONT="font %s"
 M_THEME_ITERM_NOTE="Live on save; in windows that are already open, press Cmd+T for a new tab to see it"
-M_THEME_MULTI_ITEMS="Ghostty / Warp / macOS Terminal"
+M_THEME_MULTI_ITEMS="Ghostty / Warp / cmux / Tabby / macOS Terminal"
 M_THEME_PAID_ONLY="paid pack"
 M_THEME_ECO_ITEMS="bat / fzf / eza / git diff / tmux"
 M_THEME_ECO_SAME="same colors"

@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>The terminal deserves one more round of setup in the AI era.</b><br>
-  The free build makes your iTerm2 look right.<br>The paid build makes that same palette walk out of iTerm2 — four terminals and the whole command-line tool chain change together.
+  The free build makes your iTerm2 look right.<br>The paid build makes that same palette walk out of iTerm2 — six terminals and the whole command-line tool chain change together.
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/paid%20tier-4%20terminals%3A%20iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20Terminal.app-6a45e0">
+  <img src="https://img.shields.io/badge/paid%20tier-6%20terminals%3A%20iTerm2%20%C2%B7%20Ghostty%20%C2%B7%20Warp%20%C2%B7%20cmux%20%C2%B7%20Tabby%20%C2%B7%20Terminal.app-6a45e0">
   <img src="https://img.shields.io/badge/paid%20tier-one%20palette%3A%20terminal%2Bbat%2Bfzf%2Beza%2Bgit%20diff%2Btmux%2BVS%20Code-6a45e0">
   <img src="https://img.shields.io/badge/open%20source-a%20properly%20configured%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
@@ -62,7 +62,7 @@ Let me be straight about this first: **Ghostty ships 463 themes of its own** (ca
 
 What is being sold is what those 463 cannot do: **they only cover Ghostty**. Ghostty has no idea which theme your iTerm2 uses, and cares even less about `cat`, `ls`, `git diff` or `tmux`. Change your scheme and you go change each of them by hand.
 
-`./theme.sh v2-mihei`, one command: **four terminals plus the whole tool chain, one palette, all at once.** The pair below is Ghostty, running the same three commands:
+`./theme.sh v2-mihei`, one command: **six terminals plus the whole tool chain, one palette, all at once.** The pair below is Ghostty, running the same three commands:
 
 <table>
 <tr>
@@ -101,7 +101,7 @@ This setup exists for exactly those. **Anything AI can do, I run for real first 
 
 ## 2. How this differs from the dotfiles repos out there
 
-1. **One palette, four terminals** 〔paid〕. Other setups reskin one terminal's background. Here `./theme.sh` is one command, and iTerm2, Ghostty, Warp and **the built-in macOS Terminal** change together, along with `cat` (bat), `Ctrl+T` (fzf), `ls` (eza), `git diff` (delta), tmux and VS Code — because their colors are **generated from one palette** rather than written out several times. Hand-maintaining several palettes always drifts, and I paid that tuition with measurements: a Warp theme I maintained by hand carried a comment saying "identical to the iTerm2 one" while 8 of its 16 slots were actually wrong.
+1. **One palette, six terminals** 〔paid〕. Other setups reskin one terminal's background. Here `./theme.sh` is one command, and iTerm2, Ghostty, Warp, **cmux**, **Tabby** and **the built-in macOS Terminal** change together, along with `cat` (bat), `Ctrl+T` (fzf), `ls` (eza), `git diff` (delta), tmux and VS Code — because their colors are **generated from one palette** rather than written out several times. Hand-maintaining several palettes always drifts, and I paid that tuition with measurements: a Warp theme I maintained by hand carried a comment saying "identical to the iTerm2 one" while 8 of its 16 slots were actually wrong.
 2. **The details built for AI workflows** 〔in the free build〕. `Shift+Enter` inserts a newline instead of submitting (multi-line prompts); `ERROR/WARN/SUCCESS` get colored automatically; **Cmd-click** opens `path:line` / Git SHA / `localhost:port`; a `Password:` prompt pops your password manager; the theme follows the system light/dark switch 〔paid〕.
 3. **Safe to install, safe to remove** 〔free build〕. `install.sh --dry-run` tells you which files it will touch, which system settings it will write, and what it will never go near. Already have your own `.zshrc`? `migrate.sh` moves your aliases and PATH into `~/.zshrc.local` and then lays down the template, instead of overwriting you. Changed your mind? `uninstall.sh` restores from the backup and resets the GUI settings to factory defaults.
 4. **A checkup that can fix itself** 〔free build〕. `doctor.sh --status` shows the pinned state dashboard; `--fix` fixes each item after you confirm it, and `--profile` names the plugin making your terminal slow to open (on my own machine it caught `compinit`, 258ms).
@@ -144,7 +144,7 @@ The open-source build is not a demo: 3 color schemes, blur, automatic log colori
 | **Claude Code Skill**: drop it into `~/.claude/skills/` and an agent drives the whole kit — "switch me to a light theme", "why does my terminal take so long to open" | — | ✅ |
 | **Brand themes** | — | V2 Warm Dark · V1 Tech Dark · **V2 Warm Light** · **V3 Finance Light** |
 | **Light themes** (daylight / presenting / recording / outdoors) | — | ✅ two of them |
-| **Multi-terminal sync**: Ghostty · Warp · the built-in Terminal | — | ✅ one command, four terminals |
+| **Multi-terminal sync**: Ghostty · Warp · cmux · Tabby · the built-in Terminal | — | ✅ one command, six terminals |
 | **Whole ecosystem in one color**: bat · fzf · eza · git diff · tmux · VS Code | — | ✅ |
 | **Font priority table**: picks up commercial fonts you already own, e.g. Operator Mono | uses the recommended default | ✅ |
 | **Follows the system light/dark switch** (`./theme.sh --auto`) | — | ✅ |
@@ -331,7 +331,7 @@ Plus one for the AI: **`Shift + Enter` inserts a newline instead of submitting**
 
 ---
 
-## 7. Switching themes: one command, four terminals plus the tool chain
+## 7. Switching themes: one command, six terminals plus the tool chain
 
 ```bash
 ./theme.sh                      # gallery: one row per theme, true-color swatches, current one marked
@@ -539,7 +539,7 @@ Quad-click selects the whole span via Smart Selection. Semantic History is set t
 
 Shareable docs page: [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
 
-> ⚠️ **iTerm2 only**: Ghostty / Warp / Terminal.app have no Smart Selection equivalent — same honesty as Triggers. Paid multi-terminal sync is about palette look, not clickable semantics.
+> ⚠️ **iTerm2 only**: Ghostty / Warp / cmux / Tabby / Terminal.app have no Smart Selection equivalent — same honesty as Triggers. Paid multi-terminal sync is about palette look, not clickable semantics.
 
 ### Shell Integration: images in the terminal, success visible at a glance
 
@@ -549,7 +549,7 @@ Shareable docs page: [Semantic layer](https://huiyonghkw.github.io/hekouwang-ter
   <img src="images/22-shell.en.png" width="78%" alt="Shell Integration">
 </p>
 
-### How Ghostty / Warp / Terminal.app differ
+### How Ghostty / Warp / cmux / Tabby / Terminal.app differ
 
 <p align="center">
   <img src="images/30-ghostty-parity.en.png" width="92%" alt="iTerm2 and Ghostty configured by the same command">
