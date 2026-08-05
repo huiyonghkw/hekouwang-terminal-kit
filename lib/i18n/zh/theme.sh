@@ -6,7 +6,9 @@ blk_theme_help() {
 hekouwang-terminal-kit — 一键换肤（终端 + 整条工具链）
 
 用法:
-  ./theme.sh                      主题画廊（带真彩色色条）+ 当前主题
+  ./theme.sh                      有 fzf：模糊选主题 + 右侧 ANSI 整块预览；否则画廊
+  ./theme.sh --pick               强制走 fzf 选肤（没有 fzf 则退回画廊）
+  ./theme.sh --list               只出画廊，不进 fzf
   ./theme.sh v2-mihei             切到某套主题
   ./theme.sh --preview v2-mihei   单套整块预览（提示符/文件列表/git diff/语法高亮/标色）
   ./theme.sh --gallery            全部主题挨个整块预览（给付费仓截图用）
@@ -36,6 +38,13 @@ M_THEME_AUTO_PINNED_HOW="想重新跟随：./theme.sh --auto"
 M_THEME_HINT_SWITCH="换肤 "
 M_THEME_HINT_PREVIEW="    看整块预览 "
 M_THEME_HINT_GALLERY="    整套预览 "
+M_THEME_HINT_PICK="模糊选 "
+M_THEME_HINT_PICK_HOW="（装了 fzf 时；右侧是 ANSI 预览）"
+M_THEME_PICK_PROMPT="主题 ›"
+M_THEME_PICK_HEADER="当前：%s   Enter 切换 · Ctrl+/ 显隐预览 · Esc 取消"
+M_THEME_PICK_NO_FZF="本机没有 fzf，退回画廊。装：brew install fzf"
+M_THEME_PICK_NO_TTY="非交互终端，退回画廊"
+M_THEME_PICK_ABORT="已取消，主题未改"
 
 M_THEME_PREVIEW_WHICH="✗ 要预览哪套？"
 M_THEME_PREVIEW_FAIL="✗ 预览渲染失败"

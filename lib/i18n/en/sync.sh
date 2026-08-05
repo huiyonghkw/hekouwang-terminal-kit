@@ -3,17 +3,22 @@
 
 blk_sync_help() {
   cat <<'EOF'
-hekouwang-terminal-kit — multi-machine sync / config drift check
+hekouwang-terminal-kit — multi-machine sync / config drift / pinned-state migrate
 
 Usage:
-  ./sync.sh                   check: is what is deployed still identical to the repo (read-only)
-  ./sync.sh --pull            redeploy from the repo, pulling drifted files back into line
-  ./sync.sh --export <path>   build a package you can carry to a second machine
-  ./sync.sh --lang zh         run in Chinese
+  ./sync.sh                        check: is what is deployed still identical to the repo (read-only)
+  ./sync.sh --pull                 redeploy from the repo, pulling drifted files back into line
+  ./sync.sh --export <path>        build a package you can carry to a second machine (whole tree)
+  ./sync.sh --state-export [file]  export pinned state (theme / auto / node / optical / scene / badge)
+  ./sync.sh --state-import <file>  restore pinned state on a new machine from the manifest
+  ./sync.sh --lang zh              run in Chinese
 
 The problem it solves: you hand-edited the Ghostty config on machine A, machine B is
 still on the old config, and six months later you have no idea which one is right.
 This makes "where did it drift" something you can see in one line.
+
+For "what did I pin" across machines use --state-export / --state-import;
+--export still packs the whole kit.
 EOF
 }
 
@@ -24,6 +29,28 @@ M_SY_EXPORT_NEXT="On the second machine: unzip → cd into it → ./install.sh"
 M_SY_EXPORT_BRAND="(includes the brand theme pack — for your own machines only, do not pass it on)"
 M_SY_EXPORT_NO_BRAND="(without the brand theme pack, so it installs with the 3 community themes)"
 
+M_SY_STATE_EXPORT_HEAD="Exporting pinned state…"
+M_SY_STATE_EXPORT_OK="✓ wrote %s"
+M_SY_STATE_EXPORT_NEXT="On the new machine (kit installed): ./sync.sh --state-import <this json>"
+M_SY_STATE_IMPORT_NEED="✗ usage: ./sync.sh --state-import <manifest.json>"
+M_SY_STATE_IMPORT_HEAD="Restoring from manifest: %s"
+M_SY_STATE_APPLIED_LANG="lang → %s"
+M_SY_STATE_APPLIED_NODE="Node → %s"
+M_SY_STATE_APPLIED_THEME="theme → %s"
+M_SY_STATE_APPLIED_AUTO="follow-system → on"
+M_SY_STATE_APPLIED_AUTO_OFF="follow-system → off"
+M_SY_STATE_APPLIED_OPTICAL="optical → %s"
+M_SY_STATE_APPLIED_SCENE="scene → %s"
+M_SY_STATE_APPLIED_BADGE="badge → %s"
+M_SY_STATE_APPLIED_BADGE_FILE="badge written to runtime file"
+M_SY_STATE_FAIL_NODE="Node restore failed"
+M_SY_STATE_FAIL_THEME="theme restore failed (theme may be missing on this machine)"
+M_SY_STATE_FAIL_AUTO="follow-system restore failed"
+M_SY_STATE_FAIL_OPTICAL="optical restore failed"
+M_SY_STATE_FAIL_SCENE="scene restore failed"
+M_SY_STATE_SKIP_PAID="skip paid item %s (script not in open-source tree)"
+M_SY_STATE_IMPORT_DONE="✓ pinned state restored as far as this build allows"
+M_SY_STATE_IMPORT_NEXT="Suggested: ./doctor.sh --status"
 M_SY_HEAD="═══ Config drift check ═══"
 M_SY_CURRENT="current theme: %s"
 M_SY_NOT_DEPLOYED="not deployed"

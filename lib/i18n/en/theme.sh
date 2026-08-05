@@ -11,7 +11,9 @@ blk_theme_help() {
 hekouwang-terminal-kit — switch theme (terminal + the whole tool chain)
 
 Usage:
-  ./theme.sh                      theme gallery (with true-color swatches) + current theme
+  ./theme.sh                      with fzf: fuzzy pick + ANSI preview pane; else gallery
+  ./theme.sh --pick               force fzf picker (falls back to gallery if no fzf)
+  ./theme.sh --list               gallery only, no fzf
   ./theme.sh v2-mihei             switch to a theme
   ./theme.sh --preview v2-mihei   full preview of one theme (prompt / file list / git diff / syntax / log colors)
   ./theme.sh --gallery            full preview of every theme, one after another
@@ -43,6 +45,13 @@ M_THEME_AUTO_PINNED_HOW="To follow again: ./theme.sh --auto"
 M_THEME_HINT_SWITCH="switch "
 M_THEME_HINT_PREVIEW="    full preview "
 M_THEME_HINT_GALLERY="    every theme "
+M_THEME_HINT_PICK="fuzzy pick "
+M_THEME_HINT_PICK_HOW="(when fzf is installed; ANSI preview on the right)"
+M_THEME_PICK_PROMPT="theme ›"
+M_THEME_PICK_HEADER="current: %s   Enter apply · Ctrl+/ toggle preview · Esc cancel"
+M_THEME_PICK_NO_FZF="fzf not found — showing gallery. Install: brew install fzf"
+M_THEME_PICK_NO_TTY="not a tty — showing gallery"
+M_THEME_PICK_ABORT="cancelled; theme unchanged"
 
 M_THEME_PREVIEW_WHICH="✗ Preview which one?"
 M_THEME_PREVIEW_FAIL="✗ Preview renderer failed"

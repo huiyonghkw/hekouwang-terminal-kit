@@ -146,6 +146,14 @@ current_theme() {   # 当前激活的是哪套
   return 0
 }
 
+theme_names() {   # stdout：每行一个可 apply 的主题名
+  local f
+  for f in "$THEMES_DIR"/*.json; do
+    is_theme_json "$f" || continue
+    basename "$f" .json
+  done
+}
+
 list() {
   local cur; cur="$(current_theme)"
   # 主路：带真彩色色条的画廊。卖配色的东西，列表里必须能看见颜色。
@@ -174,7 +182,43 @@ list() {
   fi
   printf "  ${c_dim}%s${c_off}./theme.sh <name>${c_dim}%s${c_off}./theme.sh --preview <name>${c_dim}%s${c_off}./theme.sh --gallery\n" \
     "$(t M_THEME_HINT_SWITCH)" "$(t M_THEME_HINT_PREVIEW)" "$(t M_THEME_HINT_GALLERY)"
+  if command -v fzf >/dev/null 2>&1; then
+    printf "  ${c_dim}%s${c_off}./theme.sh --pick${c_dim}%s${c_off}\n" \
+      "$(t M_THEME_HINT_PICK)" "$(t M_THEME_HINT_PICK_HOW)"
+  fi
   printf "${c_off}\n"
+}
+
+# fzf 模糊选主题；右侧 ANSI 整块预览（直接调 _preview.py，不经 theme.sh 以免递归）
+# 没有 fzf / 非 tty → 退回画廊 list，不报错。
+pick() {
+  local cur chosen preview_cmd
+  cur="$(current_theme)"
+  if ! command -v fzf >/dev/null 2>&1 || [ ! -t 0 ]; then
+    [ -t 0 ] || dim M_THEME_PICK_NO_TTY
+    command -v fzf >/dev/null 2>&1 || dim M_THEME_PICK_NO_FZF
+    list
+    return 0
+  fi
+  preview_cmd="python3 \"$PREVIEW\" --card {}"
+  [ -f "$PREVIEW" ] || preview_cmd="echo '(preview renderer missing)'"
+  # --ansi：预览里的真彩色别被 fzf 吃掉
+  chosen="$(
+    theme_names | fzf \
+      --ansi \
+      --prompt="$(t M_THEME_PICK_PROMPT) " \
+      --header="$(t M_THEME_PICK_HEADER "${cur:-?}")" \
+      --preview="$preview_cmd" \
+      --preview-window='right,70%,border-left' \
+      --height=90% \
+      --bind='ctrl-/:toggle-preview' \
+      ${cur:+--query="$cur"}
+  )" || true
+  if [ -z "${chosen:-}" ]; then
+    dim M_THEME_PICK_ABORT
+    return 0
+  fi
+  apply "$chosen"
 }
 
 # 整块「假终端」预览：提示符 / eza / git diff / 语法高亮 / 错误标色全在一张图里。
@@ -469,7 +513,9 @@ auto_off() {
 
 # ============================================================
 case "${1:-}" in
-  "")            list ;;
+  "")            pick ;;          # 有 fzf → 模糊选 + ANSI 预览；否则画廊
+  --list)        list ;;          # 只要画廊、不进 fzf
+  --pick)        pick ;;
   --preview|-p)  preview "${2:-}" ;;
   --gallery)     gallery_all ;;
   --apply-auto)  auto_apply ;;

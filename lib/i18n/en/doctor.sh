@@ -7,7 +7,7 @@ hekouwang-terminal-kit — environment check
 
 Usage:
   ./doctor.sh          read-only check: a ✓/✗/⚠ list plus how to fix each item
-  ./doctor.sh --fix    check, then ask about each fix one by one (it tells you what it will run)
+  ./doctor.sh --fix    check, then ask fixes by group (Node / auto / optical / scene / reload / GUI / theme …)
   ./doctor.sh --status print the state dashboard only (theme / auto / node / optical / scene / semantic / reload)
   ./doctor.sh --quiet  print the verdict line only (for use inside scripts)
   ./doctor.sh --profile  also rank the slowest zsh startup entries (zprof)
@@ -179,9 +179,20 @@ M_DOC_PAID_HINT="This is the open-source build — iTerm2 only. Four terminals a
 M_DOC_WARN_ONLY="%d warnings (non-fatal), no fatal problems"
 M_DOC_FAIL_N="%d fatal problems"
 M_DOC_WARN_N="%d warnings"
-M_DOC_FIX_HEAD="═══ Fixable items (asked one by one, nothing runs in bulk) ═══"
+M_DOC_FIX_HEAD="═══ Fixable items (asked by group, nothing runs in bulk) ═══"
+M_DOC_FIX_GROUP_HINT="Order: Node → follow-system → optical → scene → reload → GUI → theme → other"
 M_DOC_FIX_ITEM="issue"
 M_DOC_FIX_CMD="will run: %s"
+M_DOC_FIX_MANUAL="needs a manual step (script cannot: press Cmd+Shift+, in Ghostty)"
+M_DOC_FIX_MANUAL_OK="✓ noted (confirm you finished it in the app)"
 M_DOC_FIX_ASK="run it? "
 M_DOC_FIX_RECHECK="Re-run ./doctor.sh once you are done."
 M_DOC_FIX_HINT="%d of them can be fixed automatically: run ./doctor.sh --fix"
+M_DOC_FIX_G_node="Node manager"
+M_DOC_FIX_G_auto="Follow system"
+M_DOC_FIX_G_optical="Optical calibration"
+M_DOC_FIX_G_scene="Scene aesthetics"
+M_DOC_FIX_G_reload="Multi-terminal reload"
+M_DOC_FIX_G_gui="iTerm2 GUI"
+M_DOC_FIX_G_theme="Theme / Profile"
+M_DOC_FIX_G_other="Other"

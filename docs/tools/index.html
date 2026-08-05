@@ -14,7 +14,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CLI & scripts · OneLook</title>
 <meta name="description" content="Full how-to for every open-source script — commands, flags, and what happens.">
-<link rel="stylesheet" href="../assets/site.css?v=2.9.4">
+<link rel="stylesheet" href="../assets/site.css?v=2.10.0">
 </head>
 <body>
 <div class="prog" id="prog"></div>
@@ -116,15 +116,17 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <h2 id="theme"><code>theme.sh</code> <span class="tag tag-free">free</span></h2>
 <p><span class="en">Switch theme / gallery / follow-system. <b>Open source syncs iTerm2</b> (3 community palettes). Walking the same palette out to Ghostty / Warp / Terminal.app / bat / fzf / eza / delta / tmux / VS Code is <span class="tag tag-paid">paid</span>.</span><span class="zh">换肤 / 画廊 / 跟随系统。<b>开源版只同步 iTerm2</b>（3 套社区配色）。同一份色板走到 Ghostty / Warp / 自带终端 / bat / fzf / eza / delta / tmux / VS Code 属 <span class="tag tag-paid">paid</span>。</span></p>
 <div class="term"><div class="bar"><i></i><i></i><i></i><span>theme</span></div>
-<pre class="sc"><span class="cm"># <span class="en">Gallery + current theme (true-color bars)</span><span class="zh">画廊 + 当前主题（真彩色色条）</span></span>
+<pre class="sc"><span class="cm"># <span class="en">Fuzzy pick + ANSI preview pane (needs fzf); else gallery</span><span class="zh">有 fzf：模糊选 + 右侧 ANSI 预览；否则画廊</span></span>
 <span class="p">$</span> <span class="o">./theme.sh</span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --pick            <span class="cm"># <span class="en">force fzf</span><span class="zh">强制 fzf</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --list            <span class="cm"># <span class="en">gallery only</span><span class="zh">只要画廊</span></span>
 
 <span class="cm"># <span class="en">Switch (open-source examples)</span><span class="zh">切换（开源版示例）</span></span>
 <span class="p">$</span> <span class="o">./theme.sh</span> tokyo-night
 <span class="p">$</span> <span class="o">./theme.sh</span> catppuccin-mocha
 <span class="p">$</span> <span class="o">./theme.sh</span> v2-mihei          <span class="cm"># <span class="en">brand themes → paid</span><span class="zh">品牌主题 → 付费</span></span>
 
-<span class="cm"># <span class="en">Single-theme / all-theme preview blocks</span><span class="zh">单套 / 全套整块预览</span></span>
+<span class="cm"># <span class="en">Single-theme / all-theme ANSI preview blocks</span><span class="zh">单套 / 全套 ANSI 整块预览</span></span>
 <span class="p">$</span> <span class="o">./theme.sh</span> --preview tokyo-night
 <span class="p">$</span> <span class="o">./theme.sh</span> --gallery
 
@@ -156,7 +158,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <div class="term"><div class="bar"><i></i><i></i><i></i><span>doctor</span></div>
 <pre class="sc"><span class="p">$</span> <span class="o">./doctor.sh</span>                 <span class="cm"># <span class="en">full checklist + fix suggestions</span><span class="zh">完整清单 + 修复建议</span></span>
 <span class="p">$</span> <span class="o">./doctor.sh</span> --status        <span class="cm"># <span class="en">dashboard only: theme / auto / node / optical / scene / semantic / Ghostty reload</span><span class="zh">只看仪表盘：主题 / 跟随 / Node / 光学 / 场景 / 语义 / Ghostty 重载</span></span>
-<span class="p">$</span> <span class="o">./doctor.sh</span> --fix           <span class="cm"># <span class="en">after check, ask per item whether to repair</span><span class="zh">体检完逐项问要不要修</span></span>
+<span class="p">$</span> <span class="o">./doctor.sh</span> --fix           <span class="cm"># <span class="en">ask fixes by group: Node / auto / optical / scene / reload / GUI / theme</span><span class="zh">按组问修：Node / 跟随 / 光学 / 场景 / 重载 / GUI / 主题</span></span>
 <span class="p">$</span> <span class="o">./doctor.sh</span> --quiet         <span class="cm"># <span class="en">one-line verdict (for scripts)</span><span class="zh">只输出结论行（给脚本调）</span></span>
 <span class="p">$</span> <span class="o">./doctor.sh</span> --profile       <span class="cm"># <span class="en">also zprof the slowest startup pieces</span><span class="zh">顺带 zprof 点名最慢的启动项</span></span></pre></div>
 <p><span class="en">Guide: <a href="../guide/doctor.html">Doctor &amp; uninstall</a>.</span><span class="zh">指南：<a href="../guide/doctor.html">体检与卸载</a>。</span></p>
@@ -183,7 +185,11 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <pre class="sc"><span class="p">$</span> <span class="o">./sync.sh</span>                   <span class="cm"># <span class="en">read-only drift report</span><span class="zh">只读：哪儿漂了</span></span>
 <span class="p">$</span> <span class="o">./sync.sh</span> --pull            <span class="cm"># <span class="en">redeploy from repo; pull drift back</span><span class="zh">按仓库重部署，把漂掉的对回来</span></span>
 <span class="p">$</span> <span class="o">./sync.sh</span> --export ~/Desktop/kit-pack
-                             <span class="cm"># <span class="en">bundle to carry to a second machine</span><span class="zh">打一个能带到第二台机器的包</span></span></pre></div>
+                             <span class="cm"># <span class="en">bundle whole kit for a second machine</span><span class="zh">打整仓包带到第二台</span></span>
+<span class="p">$</span> <span class="o">./sync.sh</span> --state-export ~/Desktop/hkw-state.json
+                             <span class="cm"># <span class="en">export pinned state only (theme/auto/node/optical/scene/badge)</span><span class="zh">只导出钉住状态</span></span>
+<span class="p">$</span> <span class="o">./sync.sh</span> --state-import ~/Desktop/hkw-state.json
+                             <span class="cm"># <span class="en">restore pins on a new machine</span><span class="zh">新机按 manifest 还原钉住状态</span></span></pre></div>
 
 <!-- ========== setup-gui ========== -->
 <h2 id="setup-gui"><code>setup-gui.sh</code> <span class="tag tag-free">free</span></h2>
@@ -259,6 +265,6 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   <span class="brand">OneLook · 会勇禾口王的AI笔记</span>
   <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
 </footer></div>
-<script src="../assets/site.js?v=2.9.4"></script>
+<script src="../assets/site.js?v=2.10.0"></script>
 </body>
 </html>

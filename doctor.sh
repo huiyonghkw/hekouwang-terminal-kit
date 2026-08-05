@@ -32,6 +32,30 @@ done
 
 g='\033[1;32m'; r='\033[1;31m'; y='\033[1;33m'; b='\033[1;34m'; d='\033[2m'; o='\033[0m'
 FIXES=()   # 攒起来最后统一问，别打断体检的节奏
+# --fix 分组：node / auto / optical / scene / reload / gui / theme / other
+fix_group_of() {   # fix_group_of <cmd> <item文案>
+  case "$1" in
+    *node-mgr*|*install\ fnm*|*install\ nvm*|*install\ vfox*|*brew\ install\ fnm*|*brew\ install\ nvm*|*brew\ install\ vfox*|*brew\ install\ node*) printf '%s' node ;;
+    *--auto*) printf '%s' auto ;;
+    *font.sh*) printf '%s' optical ;;
+    *scene.sh*) printf '%s' scene ;;
+    :manual:*) printf '%s' reload ;;
+    *setup-gui*) printf '%s' gui ;;
+    *theme.sh*) printf '%s' theme ;;
+    *)
+      case "$2" in
+        *Node*|*fnm*|*nvm*|*vfox*) printf '%s' node ;;
+        *跟随*|*Follow\ system*) printf '%s' auto ;;
+        *光学*|*Optical*|*字体\ PostScript*|*font*) printf '%s' optical ;;
+        *场景*|*Scene*) printf '%s' scene ;;
+        *Ghostty*|*reload*|*重载*) printf '%s' reload ;;
+        *GUI*|*Shift+Enter*|*Minimal*|*Cmd-click*|*CommandSelection*|*默认\ Profile*|*default\ profile*) printf '%s' gui ;;
+        *Profile*|*主题*|*Triggers*|*语义*|*Smart\ Selection*) printf '%s' theme ;;
+        *) printf '%s' other ;;
+      esac
+      ;;
+  esac
+}
 
 ok()   { [ "$QUIET" = "1" ] || printf "  ${g}✓${o} %s\n" "$1"; }
 bad()  { [ "$QUIET" = "1" ] || { printf "  ${r}✗${o} %s\n" "$1"; [ -n "${2:-}" ] && printf "      ${d}↳ %s${o}\n" "$2"; }; FAIL=$((FAIL+1)); [ -n "${3:-}" ] && FIXES+=("$1|$3"); }
@@ -512,7 +536,7 @@ else:
 PY
 )"
     case "$_gr" in
-      reload) warn "$(t M_DOC_GHOSTTY_RELOAD)" "$(t M_DOC_GHOSTTY_RELOAD_FIX)" ;;
+      reload) warn "$(t M_DOC_GHOSTTY_RELOAD)" "$(t M_DOC_GHOSTTY_RELOAD_FIX)" ":manual:" ;;
       ok) ok "$(t M_DOC_GHOSTTY_OK)" ;;
     esac
   fi
@@ -648,21 +672,39 @@ if [ -z "${HKW_NO_PROMO:-}" ] && [ ! -f "$SCRIPT_DIR/config/themes/_apply_pro.sh
   printf "${d}%s${o}\n" "$(t M_DOC_PAID_HINT "$HKW_URL_BUY")"
 fi
 
-# ---- --fix：逐项问，每项先说清楚要跑什么 ----
+# ---- --fix：按组问，每项先说清楚要跑什么 ----
 if [ "$FIX" = "1" ] && [ "${#FIXES[@]}" -gt 0 ]; then
   printf "\n${b}%s${o}\n" "$(t M_DOC_FIX_HEAD)"
-  for entry in "${FIXES[@]}"; do
-    item="${entry%%|*}"; cmd="${entry#*|}"
-    printf "\n  ${y}%s${o} %s\n" "$(t M_DOC_FIX_ITEM)" "$item"
-    printf "  ${d}%s${o}\n" "$(t M_DOC_FIX_CMD "$cmd")"
-    printf "  ${y}?${o} %s%s" "$(t M_DOC_FIX_ASK)" "$(t M_YES_NO)"
-    read -r a </dev/tty || a=""
-    if [[ "$a" =~ ^[Yy] ]]; then
-      # shellcheck disable=SC2086
-      eval "$cmd" && printf "  ${g}%s${o}\n" "$(t M_DONE_EXEC)" || printf "  ${r}%s${o}\n" "$(t M_FAILED_EXEC)"
-    else
-      printf "  ${d}%s${o}\n" "$(t M_SKIPPED)"
-    fi
+  printf "${d}%s${o}\n" "$(t M_DOC_FIX_GROUP_HINT)"
+  _fix_order="node auto optical scene reload gui theme other"
+  for _g in $_fix_order; do
+    _group_has=0
+    for entry in "${FIXES[@]}"; do
+      item="${entry%%|*}"; cmd="${entry#*|}"
+      [ "$(fix_group_of "$cmd" "$item")" = "$_g" ] || continue
+      if [ "$_group_has" = "0" ]; then
+        printf "\n${b}── %s ──${o}\n" "$(t "M_DOC_FIX_G_$_g")"
+        _group_has=1
+      fi
+      printf "\n  ${y}%s${o} %s\n" "$(t M_DOC_FIX_ITEM)" "$item"
+      if [[ "$cmd" == :manual:* ]]; then
+        printf "  ${d}%s${o}\n" "$(t M_DOC_FIX_MANUAL)"
+      else
+        printf "  ${d}%s${o}\n" "$(t M_DOC_FIX_CMD "$cmd")"
+      fi
+      printf "  ${y}?${o} %s%s" "$(t M_DOC_FIX_ASK)" "$(t M_YES_NO)"
+      read -r a </dev/tty || a=""
+      if [[ "$a" =~ ^[Yy] ]]; then
+        if [[ "$cmd" == :manual:* ]]; then
+          printf "  ${g}%s${o}\n" "$(t M_DOC_FIX_MANUAL_OK)"
+        else
+          # shellcheck disable=SC2086
+          eval "$cmd" && printf "  ${g}%s${o}\n" "$(t M_DONE_EXEC)" || printf "  ${r}%s${o}\n" "$(t M_FAILED_EXEC)"
+        fi
+      else
+        printf "  ${d}%s${o}\n" "$(t M_SKIPPED)"
+      fi
+    done
   done
   printf "\n${d}%s${o}\n" "$(t M_DOC_FIX_RECHECK)"
 elif [ "$FIX" = "0" ] && [ "${#FIXES[@]}" -gt 0 ]; then

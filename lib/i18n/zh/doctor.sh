@@ -7,7 +7,7 @@ hekouwang-terminal-kit — 环境自检
 
 用法:
   ./doctor.sh          纯只读体检，给 ✓/✗/⚠ 清单与修复建议
-  ./doctor.sh --fix    体检完逐项问你要不要修（每项都先说清楚要跑什么）
+  ./doctor.sh --fix    体检完按组问你要不要修（Node / 跟随 / 光学 / 场景 / 重载 / GUI / 主题 …）
   ./doctor.sh --status 只打印状态机仪表盘（主题/跟随/Node/光学/场景/语义/重载）
   ./doctor.sh --quiet  只输出结论行（脚本里调用用）
   ./doctor.sh --profile  顺带用 zprof 把最慢的启动项点名
@@ -179,9 +179,20 @@ M_DOC_PAID_HINT="当前是开源版，只管 iTerm2。四个终端 + 整条工�
 M_DOC_WARN_ONLY="%d 项警告（非致命），无致命问题"
 M_DOC_FAIL_N="%d 项致命问题"
 M_DOC_WARN_N="%d 项警告"
-M_DOC_FIX_HEAD="═══ 可自动修的项（逐项确认，不批量执行）═══"
+M_DOC_FIX_HEAD="═══ 可修的项（按组确认，不批量执行）═══"
+M_DOC_FIX_GROUP_HINT="顺序：Node → 跟随系统 → 光学 → 场景 → 多终端重载 → GUI → 主题 → 其它"
 M_DOC_FIX_ITEM="问题"
 M_DOC_FIX_CMD="要跑：%s"
+M_DOC_FIX_MANUAL="需本机手动操作（脚本跑不了：在 Ghostty 按 Cmd+Shift+,）"
+M_DOC_FIX_MANUAL_OK="✓ 已记下（请确认你已在对应 App 里做完）"
 M_DOC_FIX_ASK="执行？"
 M_DOC_FIX_RECHECK="修完重跑 ./doctor.sh 复检。"
 M_DOC_FIX_HINT="其中 %d 项能自动修：跑 ./doctor.sh --fix"
+M_DOC_FIX_G_node="Node 管理器"
+M_DOC_FIX_G_auto="跟随系统"
+M_DOC_FIX_G_optical="光学校准"
+M_DOC_FIX_G_scene="场景美学"
+M_DOC_FIX_G_reload="多终端重载"
+M_DOC_FIX_G_gui="iTerm2 GUI"
+M_DOC_FIX_G_theme="主题 / Profile"
+M_DOC_FIX_G_other="其它"

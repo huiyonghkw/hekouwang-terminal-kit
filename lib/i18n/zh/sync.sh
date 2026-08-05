@@ -3,16 +3,21 @@
 
 blk_sync_help() {
   cat <<'EOF'
-hekouwang-terminal-kit — 多机同步 / 配置漂移检查
+hekouwang-terminal-kit — 多机同步 / 配置漂移检查 / 钉住状态换机
 
 用法:
-  ./sync.sh                  体检：部署出去的配置和仓库里的还一致吗（只读）
-  ./sync.sh --pull           按仓库重新部署一遍，把漂掉的对回来
-  ./sync.sh --export <路径>  打一个可以带去第二台机器的包
-  ./sync.sh --lang en        切回英文
+  ./sync.sh                      体检：部署出去的配置和仓库里的还一致吗（只读）
+  ./sync.sh --pull               按仓库重新部署一遍，把漂掉的对回来
+  ./sync.sh --export <路径>       打一个可以带去第二台机器的包（整仓）
+  ./sync.sh --state-export [文件] 导出本机钉住状态（主题/跟随/Node/光学/场景/badge）
+  ./sync.sh --state-import <文件> 在新机按 manifest 还原钉住状态
+  ./sync.sh --lang en            切回英文
 
 解决的问题：你在 A 机器上手改过 Ghostty config、B 机器还是老配置、
 半年后完全想不起哪台是对的。这个脚本让「哪儿漂了」变成一句话能看清的事。
+
+换机只带「钉住了什么」用 --state-export / --state-import；
+整仓搬家仍用 --export。
 EOF
 }
 
@@ -22,6 +27,29 @@ M_SY_EXPORT_OK="✓ 打包完成"
 M_SY_EXPORT_NEXT="第二台机器上：解压 → cd 进去 → ./install.sh"
 M_SY_EXPORT_BRAND="（含品牌主题包，仅供你本人的机器使用，别转发）"
 M_SY_EXPORT_NO_BRAND="（不含品牌主题包，装完只有 3 套社区主题）"
+
+M_SY_STATE_EXPORT_HEAD="导出本机钉住状态…"
+M_SY_STATE_EXPORT_OK="✓ 已写入 %s"
+M_SY_STATE_EXPORT_NEXT="新机上装好套件后：./sync.sh --state-import <这份 json>"
+M_SY_STATE_IMPORT_NEED="✗ 用法：./sync.sh --state-import <manifest.json>"
+M_SY_STATE_IMPORT_HEAD="按 manifest 还原：%s"
+M_SY_STATE_APPLIED_LANG="语言 → %s"
+M_SY_STATE_APPLIED_NODE="Node → %s"
+M_SY_STATE_APPLIED_THEME="主题 → %s"
+M_SY_STATE_APPLIED_AUTO="跟随系统 → 开"
+M_SY_STATE_APPLIED_AUTO_OFF="跟随系统 → 关"
+M_SY_STATE_APPLIED_OPTICAL="光学 → %s"
+M_SY_STATE_APPLIED_SCENE="场景 → %s"
+M_SY_STATE_APPLIED_BADGE="badge → %s"
+M_SY_STATE_APPLIED_BADGE_FILE="badge 已写入 runtime 文件"
+M_SY_STATE_FAIL_NODE="Node 还原失败"
+M_SY_STATE_FAIL_THEME="主题还原失败（新机可能没有这套主题）"
+M_SY_STATE_FAIL_AUTO="跟随系统还原失败"
+M_SY_STATE_FAIL_OPTICAL="光学还原失败"
+M_SY_STATE_FAIL_SCENE="场景还原失败"
+M_SY_STATE_SKIP_PAID="跳过付费项 %s（开源树没有对应脚本）"
+M_SY_STATE_IMPORT_DONE="✓ 钉住状态已尽量还原"
+M_SY_STATE_IMPORT_NEXT="建议再跑 ./doctor.sh --status 看一眼"
 
 M_SY_HEAD="═══ 配置漂移检查 ═══"
 M_SY_CURRENT="当前主题：%s"
