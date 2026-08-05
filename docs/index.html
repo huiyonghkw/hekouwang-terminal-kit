@@ -14,7 +14,8 @@
   ⚠️ 页面必须**自包含**：不引 CDN、不引外部字体。受众有很大一块从小红书/公众号来，
      Google Fonts 在墙内又慢又常失败，一个加载不出来的字体会让首屏空半天
      （见 memory tietu-fonts-local-not-google）。
-     所以中文走 **自托管子集** docs/fonts/hkw-sans-sc-subset.woff2（102 KB，详见下面 @font-face）。
+     所以中文走 **自托管子集** docs/fonts/hkw-sans-sc-subset.woff2（~250 KB，含拉丁，详见 @font-face）。
+     文案大改后跑 docs/fonts/subset.sh 重子集化。
      ⛔ 曾经图省事只用系统栈让 PingFang SC 扛中文，结果标题一律发虚 ——
         PingFang 最粗只到 Semibold(600)，font-weight:800/900 在它身上不成立。
 
@@ -47,7 +48,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OneLook — turn same colors into the same look</title>
 <meta name="description" content="OneLook: optical, scene, and semantic layers on one palette. Open source configures iTerm2; the paid build makes that palette walk out of iTerm2. Safe to install and fully uninstall.">
-<link rel="stylesheet" href="assets/site.css?v=2.10.5">
+<link rel="stylesheet" href="assets/site.css?v=2.10.6">
 </head>
 <body>
 
@@ -398,7 +399,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 </footer>
 </div>
 
-<script src="assets/site.js?v=2.10.5"></script>
+<script src="assets/site.js?v=2.10.6"></script>
 
 </body>
 </html>

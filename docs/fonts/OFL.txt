@@ -1,7 +1,7 @@
 本目录字体：hkw-sans-sc-subset.woff2
 
 它是 Noto Sans SC（Adobe / Google 的 Source Han Sans 系列）的**子集化 + 改名**版本：
-  · 只保留本站页面实际用到的 425 个字形（7.6 MB → 102 KB）
+  · 只保留本站文档实际用到的字形（7.6 MB → ~250 KB，含拉丁 + 中文）
   · 保留 wght 100–900 可变轴
   · 族名按 OFL 对「修改版不得使用保留字体名」的要求，改成 HKW Sans SC
 

@@ -2,8 +2,8 @@
    ⛔ 别把中文交给 PingFang SC 去扛粗体 —— 它最粗只到 Semibold(600)，
       font-weight:800/900 在它上面要么被合成、要么直接落回 600，标题就是发虚的。
       这是「字重不够先查字体栈顺序」那条坑（memory xhs-cover-vf-font-and-2x）。
-   本文件 = Noto Sans SC 可变字体子集：只留本页真正用到的 425 个字形
-   （7.6 MB → 102 KB），wght 100–900 轴完整保留，所以 900 是真字重不是合成的。
+   本文件 = Noto Sans SC 可变字体子集：只留文档站真正用到的字形
+   （7.6 MB → ~250 KB，含拉丁 + 中文），wght 100–900 轴完整保留，900 是真字重不是合成的。
    ⚠️ 页面文案改动较大时要重新子集化，否则新字会掉回系统字体（粗细对不上就是这个原因）。
    授权：原字体 SIL OFL 1.1；子集属修改版，按 OFL 要求已改族名（不沿用保留字体名），
         版权与全文见 docs/fonts/OFL.txt。 */
@@ -32,9 +32,9 @@
   --danger:#d23f4d;
   --shadow:0 8px 28px rgba(20,30,50,.06);
   --shadow2:0 16px 44px rgba(20,30,50,.10);
-  /* 顺序有讲究：拉丁交给系统 SF Pro（自带 Heavy），中文交给自托管的可变子集。
-     PingFang SC 只当兜底 —— 子集没覆盖到的字会落到它身上（那时粗细会对不上，是信号）。 */
+  /* 正文拉丁仍可走系统 SF Pro；标题走 --font-display，中英同族避免「OneLook 比中文粗」。 */
   --font:-apple-system,BlinkMacSystemFont,'Inter','HKW Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  --font-display:'HKW Sans SC',-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',system-ui,sans-serif;
   --mono:'JetBrains Mono','SF Mono',SFMono-Regular,Menlo,Consolas,ui-monospace,monospace;
 }
 *{box-sizing:border-box}
@@ -93,11 +93,14 @@ html.lang-zh .zh{display:inline!important}
 main{counter-reset:sec}
 section{padding:70px 0;border-top:1px solid var(--border);position:relative}
 section:first-child{border-top:0;padding-top:52px}
-h1,h2,h3{line-height:1.28;margin:0 0 16px;letter-spacing:-.01em}
+h1,h2,h3{line-height:1.28;margin:0 0 16px;letter-spacing:-.01em;font-family:var(--font-display)}
 h1{font-size:clamp(32px,5.2vw,50px);font-weight:900;letter-spacing:-.025em}
 /* 标题关键词绿→紫渐字（第16.2节 第3条）：亮底上很出彩 */
 h1 .hl{background:linear-gradient(100deg,var(--accent),var(--accent2));
-       -webkit-background-clip:text;background-clip:text;color:transparent}
+       -webkit-background-clip:text;background-clip:text;
+       -webkit-text-fill-color:transparent;color:transparent;
+       /* background-clip:text 抗锯齿会「吃」笔画，补一点描边让渐字跟实心黑字同粗 */
+       -webkit-text-stroke:.035em rgba(15,19,32,.13);paint-order:stroke fill}
 h2{font-size:clamp(23px,3.3vw,31px);font-weight:800;position:relative;z-index:1}
 /* 每节背后的巨型幽灵序号（counter 自动递增，不用手填） */
 h2::after{counter-increment:sec;content:counter(sec,decimal-leading-zero);
@@ -107,7 +110,7 @@ h2::after{counter-increment:sec;content:counter(sec,decimal-leading-zero);
 h3{font-size:16.5px;font-weight:700}
 p{margin:0 0 16px;color:var(--text2)}
 .dek{font-size:clamp(17px,2.1vw,20.5px);color:var(--text);max-width:70ch;line-height:1.7}
-.dek b{font-weight:800}
+.dek b{font-family:var(--font-display);font-weight:800}
 .muted{color:var(--text3);font-size:14px;line-height:1.7}
 
 /* ---- mono 眉标 + 渐变短横 ---- */
@@ -181,6 +184,7 @@ p{margin:0 0 16px;color:var(--text2)}
 /* ---- pull 渐变顶杠金句 ---- */
 .pull{margin:34px 0;padding:24px 0 0;border-top:3px solid transparent;
       border-image:linear-gradient(90deg,var(--accent),var(--accent2)) 1;
+      font-family:var(--font-display);
       font-size:clamp(19px,2.5vw,25px);font-weight:900;line-height:1.55;color:var(--text)}
 .pull em{font-style:normal;color:var(--accent2)}
 
@@ -341,7 +345,7 @@ footer{border-top:1px solid var(--border);padding:34px 0 60px;
 .feat .ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;
   font-size:20px;margin-bottom:14px;background:rgba(6,168,140,.09);border:1px solid rgba(6,168,140,.22)}
 .feat.paid .ic{background:rgba(106,69,224,.09);border-color:rgba(106,69,224,.24)}
-.feat .tt{font-weight:800;font-size:17px;margin:0 0 8px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.feat .tt{font-family:var(--font-display);font-weight:800;font-size:17px;margin:0 0 8px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .feat .ds{font-size:14px;color:var(--text2);line-height:1.65;margin:0}
 section.noseq h2::after{display:none}
 .landing-hero + section{border-top:0;padding-top:36px}
