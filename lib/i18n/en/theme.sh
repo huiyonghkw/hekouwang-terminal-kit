@@ -15,7 +15,7 @@ Usage:
   ./theme.sh v2-mihei             switch to a theme
   ./theme.sh --preview v2-mihei   full preview of one theme (prompt / file list / git diff / syntax / log colors)
   ./theme.sh --gallery            full preview of every theme, one after another
-  ./theme.sh --auto               follow the system light/dark switch (default dark/light pair)
+  ./theme.sh --auto               follow system light/dark (off by default; this turns it on)
   ./theme.sh --auto <dark> <light>  follow the system with your own pair
   ./theme.sh --auto off           stop following
   ./theme.sh --lang zh            run in Chinese
@@ -23,6 +23,10 @@ Usage:
 One command switches more than the terminal background: bat / fzf / eza /
 delta (git diff) / tmux / Ghostty / Warp / VS Code all come from the same
 palette, so they can never drift apart.
+
+Following the system is off by default. A manual ./theme.sh <theme> pins that
+theme and turns following off (so a dark pick is not overwritten by a light
+system appearance). Run --auto again when you want it back.
 EOF
 }
 
@@ -33,7 +37,9 @@ M_THEME_TONE_LIGHT="light"
 M_THEME_AUTO_LABEL="Follow system "
 M_THEME_AUTO_ON="on"
 M_THEME_AUTO_PAIR="   dark→%s   light→%s   turn it off with ./theme.sh --auto off"
-M_THEME_AUTO_HINT="Follow the system light/dark switch: ./theme.sh --auto"
+M_THEME_AUTO_HINT="Follow system: off by default. Turn on: ./theme.sh --auto"
+M_THEME_AUTO_PINNED_OFF="Turned off follow-system (a manual switch pins this theme)"
+M_THEME_AUTO_PINNED_HOW="To follow again: ./theme.sh --auto"
 M_THEME_HINT_SWITCH="switch "
 M_THEME_HINT_PREVIEW="    full preview "
 M_THEME_HINT_GALLERY="    every theme "

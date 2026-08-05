@@ -46,13 +46,39 @@ sect() { [ "$QUIET" = "1" ] || printf "\n${b}%s${o}\n" "$1"; }
 # ---- 1. 基础工具链 ----
 sect "$(t M_DOC_S1)"
 MISSING_PKGS=""
-for tool in brew starship eza bat fzf fd zoxide rg atuin fnm tmux delta; do
+for tool in brew starship eza bat fzf fd zoxide rg atuin tmux delta; do
   if command -v "$tool" >/dev/null 2>&1; then ok "$tool"; else
     pkg="$tool"; [ "$tool" = "rg" ] && pkg="ripgrep"; [ "$tool" = "delta" ] && pkg="git-delta"
     MISSING_PKGS="$MISSING_PKGS $pkg"
     bad "$(t M_DOC_TOOL_MISSING "$tool")" "brew install $pkg" "brew install $pkg"
   fi
 done
+# Node 管理器按用户选择检查（不再硬要求 fnm）
+_NODE_CUR=""
+[ -f "$HOME/.config/hekouwang-terminal/node-manager" ] \
+  && _NODE_CUR="$(tr -d '[:space:]' < "$HOME/.config/hekouwang-terminal/node-manager")"
+case "$_NODE_CUR" in
+  fnm)
+    if command -v fnm >/dev/null 2>&1; then ok "$(t M_DOC_NODE_ACTIVE fnm)"
+    else bad "$(t M_DOC_NODE_MISSING fnm)" "brew install fnm" "brew install fnm"; fi ;;
+  nvm)
+    if [ -s "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ] \
+       || [ -s "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm/nvm.sh" ] \
+       || [ -s /usr/local/opt/nvm/nvm.sh ]; then
+      ok "$(t M_DOC_NODE_ACTIVE nvm)"
+    else
+      bad "$(t M_DOC_NODE_MISSING nvm)" "brew install nvm" "brew install nvm"
+    fi ;;
+  brew)
+    if command -v node >/dev/null 2>&1; then ok "$(t M_DOC_NODE_ACTIVE brew)"
+    else bad "$(t M_DOC_NODE_MISSING brew)" "brew install node" "brew install node"; fi ;;
+  vfox)
+    if command -v vfox >/dev/null 2>&1; then ok "$(t M_DOC_NODE_ACTIVE vfox)"
+    else bad "$(t M_DOC_NODE_MISSING vfox)" "brew install vfox" "brew install vfox"; fi ;;
+  *)
+    # 未选过：老用户可能仍在 .zshrc 内联 fnm，不算缺件
+    ;;
+esac
 
 # ---- 2. 字体 ----
 sect "$(t M_DOC_S2)"
@@ -337,8 +363,20 @@ if [ -f "$ZRC" ]; then
     warn "$(t M_DOC_COLORS_WARN)" "$(t M_DOC_COLORS_FIX)"
   fi
   nodemgrs=0
-  grep -q 'fnm env' "$ZRC" && nodemgrs=$((nodemgrs+1))
-  grep -q 'NVM_DIR' "$ZRC" && nodemgrs=$((nodemgrs+1))
+  # 扫 .zshrc / .zshrc.local / runtime node.sh —— 多套同时出现才算冲突
+  _node_scan="$ZRC"
+  [ -f "$HOME/.zshrc.local" ] && _node_scan="$_node_scan $HOME/.zshrc.local"
+  [ -f "$HOME/.config/hekouwang-terminal/node.sh" ] \
+    && _node_scan="$_node_scan $HOME/.config/hekouwang-terminal/node.sh"
+  # shellcheck disable=SC2086
+  grep -qE 'fnm[[:space:]]+env|fnm env' $_node_scan 2>/dev/null && nodemgrs=$((nodemgrs+1))
+  # shellcheck disable=SC2086
+  grep -qE 'NVM_DIR|nvm\.sh' $_node_scan 2>/dev/null && nodemgrs=$((nodemgrs+1))
+  # shellcheck disable=SC2086
+  grep -qE 'vfox[[:space:]]+activate|vfox activate' $_node_scan 2>/dev/null && nodemgrs=$((nodemgrs+1))
+  # brew node：只认明确的 opt/node 路径，避免误伤无关 PATH 行
+  # shellcheck disable=SC2086
+  grep -qE 'opt/node(/bin)?|brew --prefix node' $_node_scan 2>/dev/null && nodemgrs=$((nodemgrs+1))
   if [ "$nodemgrs" -gt 1 ]; then
     warn "$(t M_DOC_NODE_WARN)" "$(t M_DOC_NODE_FIX)"
   else ok "$(t M_DOC_NODE_OK)"; fi

@@ -36,8 +36,10 @@ znap source marlonrichert/zsh-autocomplete
 [ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
   source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-# ---- 4. Node：只用 fnm（不要 nvm/brew node 混用）------------
-command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
+# ---- 4. Node 版本管理器（只留一套，别混用）------------------
+# 装机时选（./install.sh --node …），之后想换跑 ./node-mgr.sh。
+# 片段在 ~/.config/hekouwang-terminal/node.sh，换管理器不用改本文件。
+[ -f ~/.config/hekouwang-terminal/node.sh ] && source ~/.config/hekouwang-terminal/node.sh
 
 # ---- 5. 其他运行时 ------------------------------------------
 # Java 17（用 java_home 动态解析，不写死小版本）

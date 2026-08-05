@@ -284,7 +284,7 @@ When you see `✅ All done!` it worked. It finishes by running `doctor.sh`, and 
 
 **Close the built-in Terminal and open iTerm2** to see the new setup.
 
-> 💡 The script is idempotent and safe to re-run; `~/.zshrc` is backed up to `~/.zshrc.bak.<timestamp>` before being replaced.
+> 💡 The script is idempotent and safe to re-run; `~/.zshrc` is backed up under `~/.hekouwang-terminal-backups/` before being replaced.
 
 ---
 
@@ -378,10 +378,12 @@ JetBrainsMono-Regular|JetBrains Mono||Apache-2.0, fallback
 ### Following the system light/dark switch <sub>(works out of the box in the paid build)</sub>
 
 ```bash
-./theme.sh --auto                        # default pair (dark → V2 Warm Dark, light → V2 Warm Light)
+./theme.sh --auto                        # off by default — run this to turn following on
 ./theme.sh --auto v1-keji v3-caijing-bai # your own pair
 ./theme.sh --auto off                    # turn it off
 ```
+
+Following the system is **off by default**. A manual `./theme.sh <theme>` pins that theme; if following was on, it turns following off so a dark pick is not overwritten by a light system appearance.
 
 How it works: macOS writes `~/Library/Preferences/.GlobalPreferences.plist` when the appearance changes, so a launchd agent watching that file is enough. Light theme at sunset, and presentations follow the system without you touching anything.
 
@@ -618,7 +620,7 @@ The script installs them one at a time and a single failure does not abort the r
 <details>
 <summary><b>Will I lose my existing terminal config</b></summary>
 
-No. `install.sh` backs `~/.zshrc` up to `~/.zshrc.bak.<timestamp>` before replacing it.
+No. `install.sh` backs `~/.zshrc` up under `~/.hekouwang-terminal-backups/` before replacing it.
 The better path, though, is to run `./migrate.sh` first — it moves your aliases / PATH / env vars into `~/.zshrc.local` rather than overwriting them.
 </details>
 

@@ -211,6 +211,19 @@ apply() {
     printf "${c_purple}%s${c_off}\n\n" "$(t M_THEME_NO_SUCH "$theme")"; list; exit 1
   fi
 
+  # 手动钉主题时关掉「跟随系统」——否则 launchd 会按系统浅/深色再打回来，
+  # 看起来像「配了黑色却自动变白」。auto_apply / auto_setup 调 apply 时带
+  # HKW_AUTO_APPLYING=1，跳过这一步。
+  if [ -z "${HKW_AUTO_APPLYING:-}" ] && [ -f "$AUTO_CONF" ]; then
+    launchctl bootout "gui/$(id -u)/$AGENT_LABEL" 2>/dev/null \
+      || launchctl unload "$AGENT_PLIST" 2>/dev/null || true
+    rm -f "$AGENT_PLIST" "$AUTO_CONF"
+    # 回执稍后 flush；先记一条，别在换肤中途插一堵墙
+    _AUTO_WAS_ON=1
+  else
+    _AUTO_WAS_ON=0
+  fi
+
   # 0. 先定字体。分两套：
   #    · 主字体      给 iTerm2 / Ghostty —— 它们有「主字体 + Symbols Nerd Font 兜底」两层，
   #                  所以可以用不含图标的商业字体（如 Operator Mono）
@@ -340,6 +353,10 @@ PY
   echo
   render --banner "$theme" || printf "  ${c_bold}%s${c_off}\n" "$(theme_display "$src")"
   r_flush
+  if [ "${_AUTO_WAS_ON:-0}" = "1" ]; then
+    printf "  ${c_dim}%s${c_off}\n" "$(t M_THEME_AUTO_PINNED_OFF)"
+    printf "  ${c_dim}%s${c_off}\n" "$(t M_THEME_AUTO_PINNED_HOW)"
+  fi
   echo
   printf "  ${c_dim}%s${c_off}./theme.sh --preview %s\n" "$(t M_THEME_SEE_IT)" "$theme"
   # ---- 付费档在哪儿 ------------------------------------------
@@ -381,7 +398,8 @@ auto_apply() {   # 被 launchd 调用：读配置 + 看当前外观 → 切
   [ -n "$want" ] || exit 0
   # 已经是目标主题就别白忙（WatchPaths 一次外观切换会触发好几回）
   if [ -f "$RUNTIME/theme" ] && [ "$(cat "$RUNTIME/theme")" = "$want" ]; then exit 0; fi
-  apply "$want" >/dev/null 2>&1 || true
+  # ⛔ 必须带这个标记：否则 apply() 会把 auto 自己关掉
+  HKW_AUTO_APPLYING=1 apply "$want" >/dev/null 2>&1 || true
 }
 
 auto_setup() {
@@ -437,6 +455,8 @@ PLIST
   dim M_THEME_AUTO_PAIRED "$dark" "$light"
   dim M_THEME_AUTO_TRY
   echo
+  # ⛔ 同 auto_apply：带标记，别让 apply() 把刚装上的 auto 拆掉
+  HKW_AUTO_APPLYING=1
   if system_is_dark; then apply "$dark"; else apply "$light"; fi
 }
 

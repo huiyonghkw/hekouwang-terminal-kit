@@ -6,7 +6,8 @@
 #    这里只留逻辑。`./install.sh -h` 打的就是词条表里的 blk_install_help，
 #    不再是「打印本文件头部注释」那套 —— 双语之后那条路必然漂。
 #
-# 幂等：重复执行安全，已装的跳过。覆盖 ~/.zshrc 前先备份成 ~/.zshrc.bak.<时间戳>。
+# 幂等：重复执行安全，已装的跳过。覆盖 ~/.zshrc 前先备份进
+# ~/.hekouwang-terminal-backups/（不再散落家目录根）。
 # 已经在用自己的 .zshrc 的人应该先跑 ./migrate.sh，不是直接装。
 # ============================================================
 set -e
@@ -19,18 +20,38 @@ DEFAULT_THEME="${THEME:-}"
 . "$SCRIPT_DIR/lib/i18n.sh"
 hkw_i18n_init install "$@"
 eval set -- "$HKW_ARGS"
+# shellcheck disable=SC1091
+. "$SCRIPT_DIR/lib/bak.sh"
 
 DRY=0
-for a in "$@"; do
-  case "$a" in
-    --dry-run|-n) DRY=1 ;;
+NODE_MGR=""
+NODE_MGR_EXPLICIT=""
+# 解析参数：--node 要吃掉下一个参数，不能用「for a in」那种扫法
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --dry-run|-n) DRY=1; shift ;;
+    --node)
+      NODE_MGR="${2:-}"; NODE_MGR_EXPLICIT=1
+      shift; [ $# -gt 0 ] && shift
+      ;;
+    --node=*)
+      NODE_MGR="${1#--node=}"; NODE_MGR_EXPLICIT=1; shift
+      ;;
     -h|--help) blk_install_help; exit 0 ;;
+    *) shift ;;
   esac
 done
+# 环境变量也算显式（CI / 非交互）
+if [ -z "$NODE_MGR_EXPLICIT" ] && [ -n "${HKW_NODE:-}" ]; then
+  NODE_MGR="$HKW_NODE"; NODE_MGR_EXPLICIT=1
+fi
 
 say()  { printf "\n\033[1;35m▶ %s\033[0m\n" "$(t "$@")"; }
 info() { printf "  %s\n" "$(t "$@")"; }
 dim()  { printf "\033[2m  %s\033[0m\n" "$(t "$@")"; }
+
+# shellcheck disable=SC1091
+. "$SCRIPT_DIR/lib/node-mgr.sh"
 
 # 没指定主题时，按「品牌包在不在」自动挑默认
 if [ -z "$DEFAULT_THEME" ]; then
@@ -63,6 +84,40 @@ if [ -z "${HKW_LANG_EXPLICIT:-}" ] && [ ! -f "$HKW_LANG_FILE" ] && [ -t 0 ]; the
   echo
 fi
 hkw_lang_persist
+
+# ---- 0c. Node 版本管理器：显式 > 已记住的 > 交互问一次 > 默认 fnm ----
+# 非交互绝不卡在这里。铁律：只留一套（fnm / nvm / brew node / vfox）。
+if [ -n "$NODE_MGR_EXPLICIT" ]; then
+  _n="$(hkw_node_normalize "$NODE_MGR")"
+  if [ -z "$_n" ]; then
+    printf "\033[1;35m%s\033[0m\n" "$(t M_INSTALL_NODE_BAD "$NODE_MGR")"
+    dim M_INSTALL_NODE_CHOICES
+    exit 1
+  fi
+  NODE_MGR="$_n"
+elif NODE_MGR="$(hkw_node_read_saved 2>/dev/null)"; then
+  :  # 重装沿用上次选择
+elif [ -t 0 ]; then
+  printf "\n%s\n" "$(t M_INSTALL_NODE_PROMPT)"
+  dim M_INSTALL_NODE_OPT_FNM
+  dim M_INSTALL_NODE_OPT_NVM
+  dim M_INSTALL_NODE_OPT_BREW
+  dim M_INSTALL_NODE_OPT_VFOX
+  printf "%s" "$(t M_INSTALL_NODE_ASK)"
+  read -r _ans </dev/tty || _ans=""
+  case "$_ans" in
+    2|nvm|NVM)             NODE_MGR=nvm ;;
+    3|brew|BREW|node|NODE) NODE_MGR=brew ;;
+    4|vfox|VFOX)           NODE_MGR=vfox ;;
+    *)                     NODE_MGR=fnm ;;
+  esac
+  echo
+else
+  NODE_MGR="$HKW_NODE_DEFAULT"
+fi
+NODE_MGR="$(hkw_node_normalize "$NODE_MGR")"
+[ -n "$NODE_MGR" ] || NODE_MGR="$HKW_NODE_DEFAULT"
+info M_INSTALL_NODE_PICKED "$NODE_MGR"
 
 # ---- 0b. 国内镜像（可选）----
 # 国内网络连不上 GitHub / ghcr.io 时（报错 portable-ruby 下载失败、
@@ -132,8 +187,11 @@ done
 # 改成逐个装、单包失败只记录不中断，最后汇总没装上的。
 say M_INSTALL_CLI
 FAILED_PKGS=""
-for pkg in starship eza bat fzf fd zoxide ripgrep atuin fnm tmux git-delta \
-           zsh-autosuggestions zsh-syntax-highlighting; do
+# Node 管理器按用户选择装一个对应 brew 包（fnm→fnm / nvm→nvm / brew→node / vfox→vfox）
+_NODE_BREW_PKG="$(hkw_node_brew_pkg "$NODE_MGR")"
+for pkg in starship eza bat fzf fd zoxide ripgrep atuin tmux git-delta \
+           zsh-autosuggestions zsh-syntax-highlighting $_NODE_BREW_PKG; do
+  [ -n "$pkg" ] || continue
   if brew list --formula "$pkg" >/dev/null 2>&1; then
     info M_PKG_SKIP "$pkg"
   elif brew install "$pkg"; then
@@ -257,9 +315,10 @@ fi
 # ---- 10. .zshrc ----
 # 已有 .zshrc（含 oh-my-zsh 自动生成的模板）一律先备份再覆盖，可随时回滚。
 # 想保留自己原有配置的，应该先跑 ./migrate.sh 而不是直接装。
+# 备份进 ~/.hekouwang-terminal-backups/，顺手把家目录根里的旧 .bak 收进去。
+hkw_bak_sweep_legacy
 if [ -f ~/.zshrc ]; then
-  BAK=~/.zshrc.bak."$(date +%Y%m%d%H%M%S)"
-  cp ~/.zshrc "$BAK"
+  BAK="$(hkw_bak_copy ~/.zshrc zshrc)"
   info M_INSTALL_ZSHRC_BAK "$BAK"
   if [ ! -f ~/.zshrc.local ] && grep -qE '^\s*(alias|export)\s' "$BAK" 2>/dev/null; then
     info M_INSTALL_ZSHRC_HINT_MIGRATE
@@ -273,6 +332,11 @@ ZSHRC_LOCAL_TPL="$SCRIPT_DIR/config/zshrc.local.example"
 [ "$HKW_LANG" != "en" ] && [ -f "$ZSHRC_LOCAL_TPL.$HKW_LANG" ] && ZSHRC_LOCAL_TPL="$ZSHRC_LOCAL_TPL.$HKW_LANG"
 cp "$ZSHRC_TPL" ~/.zshrc
 [ -f ~/.zshrc.local ] || cp "$ZSHRC_LOCAL_TPL" ~/.zshrc.local
+
+# Node 片段：写进 runtime，~/.zshrc 只 source 这一份（换管理器不用改 .zshrc）
+hkw_node_write "$NODE_MGR" || info M_INSTALL_NODE_WRITE_FAIL
+info M_INSTALL_NODE_DEPLOYED "$NODE_MGR"
+dim M_INSTALL_NODE_SWITCH_HINT
 
 # ---- 11. iTerm2 Shell Integration ----
 say M_INSTALL_SI
@@ -317,6 +381,7 @@ dim M_INSTALL_TAIL_LOCAL
 dim M_INSTALL_TAIL_OPEN
 dim M_INSTALL_TAIL_THEME
 dim M_INSTALL_TAIL_AUTO
+dim M_INSTALL_TAIL_NODE
 dim M_INSTALL_TAIL_UNDO
 echo ""
 dim M_INSTALL_TAIL_CN

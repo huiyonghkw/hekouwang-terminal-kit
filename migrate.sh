@@ -19,10 +19,13 @@
 # ============================================================
 set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RUNTIME="$HOME/.config/hekouwang-terminal"
 # shellcheck disable=SC1091
 . "$SCRIPT_DIR/lib/i18n.sh"
 hkw_i18n_init migrate "$@"
 eval set -- "$HKW_ARGS"
+# shellcheck disable=SC1091
+. "$SCRIPT_DIR/lib/bak.sh"
 ZRC="$HOME/.zshrc"
 LOCAL="$HOME/.zshrc.local"
 APPLY=0; FORCE=0
@@ -95,7 +98,9 @@ MANAGED = [
     (r'starship\s+init',                          _r('the template initialises starship', '模板会初始化 starship')),
     (r'zoxide\s+init',                            _r('the template initialises zoxide', '模板会初始化 zoxide')),
     (r'atuin\s+init',                             _r('the template initialises atuin', '模板会初始化 atuin')),
-    (r'fnm\s+env',                                _r('the template initialises fnm', '模板会初始化 fnm')),
+    (r'fnm\s+env|NVM_DIR|vfox\s+activate|opt/node',
+     _r('the template sources one Node manager via ~/.config/hekouwang-terminal/node.sh',
+        '模板通过 ~/.config/hekouwang-terminal/node.sh 只加载一套 Node 管理器')),
     (r'fzf\s+--zsh|\.fzf\.zsh',                   _r('the template initialises fzf', '模板会初始化 fzf')),
     (r'zsh-syntax-highlighting\.zsh',             _r('the template puts it in the right spot, second to last', '模板把它放在正确的倒数第二位')),
     (r'zsh-autosuggestions\.zsh',                 _r('the template sources it', '模板会 source 它')),
@@ -254,8 +259,8 @@ fi
 
 # ---- 真正执行 ----------------------------------------------
 printf "\n${b}%s${o}\n" "$(t M_MIG_RUNNING)"
-BAK="$HOME/.zshrc.bak.$(date +%Y%m%d%H%M%S)"
-cp "$ZRC" "$BAK"
+hkw_bak_sweep_legacy
+BAK="$(hkw_bak_copy "$ZRC" zshrc)"
 printf "  ${g}·${o} %s\n" "$(t M_MIG_BAK "$BAK")"
 
 if [ -s "$OUT/kept.txt" ]; then
@@ -263,8 +268,7 @@ if [ -s "$OUT/kept.txt" ]; then
   #    $LOCAL_BAK 从来没人赋值 —— 于是「自动回滚」只还原得了 .zshrc，
   #    追加进 .zshrc.local 的那一坨永远留着，回滚是假的。2026-07-23 补。
   if [ -f "$LOCAL" ]; then
-    LOCAL_BAK="$HOME/.zshrc.local.bak.$(date +%Y%m%d%H%M%S)"
-    cp "$LOCAL" "$LOCAL_BAK"
+    LOCAL_BAK="$(hkw_bak_copy "$LOCAL" zshrc.local)"
     printf "  ${g}·${o} %s\n" "$(t M_MIG_LOCAL_BAK "$LOCAL_BAK")"
   fi
   {

@@ -29,7 +29,7 @@ M_UN_BAK_FOUND="Backup found: "
 M_UN_ASK_RESTORE="Restore it as ~/.zshrc? (the current one is kept as .zshrc.uninstall.bak)"
 M_UN_RESTORED="Restored ~/.zshrc ← %s"
 M_UN_KEEP_ZSHRC="Keeping the current ~/.zshrc (its line sourcing the ecosystem colors will go stale; remove it by hand)"
-M_UN_NO_BAK="No ~/.zshrc.bak.* backup found — this script will not guess your content, please check ~/.zshrc yourself"
+M_UN_NO_BAK="No zshrc backup found (~/.hekouwang-terminal-backups/ or home-root legacy) — this script will not guess your content, please check ~/.zshrc yourself"
 M_UN_NO_BAK_NOTE="What this kit added to .zshrc was: source ~/.config/hekouwang-terminal/current/colors.sh"
 
 M_UN_S2="2. Files this kit wrote"

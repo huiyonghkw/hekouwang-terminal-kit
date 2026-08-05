@@ -70,6 +70,13 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ## Block 5 · Node version management (⚠️ the biggest problem area in this config)
 
+**Current approach (2.8.0+)**: pick one at install (`fnm` / `nvm` / `brew` / `vfox`).
+The snippet lives in `~/.config/hekouwang-terminal/node.sh`; `.zshrc` only sources it.
+Switch later with `./node-mgr.sh <name>` — no need to edit `.zshrc`. Rule stays:
+**exactly one**.
+
+The anti-pattern below is kept so the “why pick one” still reads clearly:
+
 The original file had **four sources of Node at once**:
 
 ```bash

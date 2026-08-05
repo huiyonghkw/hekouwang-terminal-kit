@@ -29,7 +29,7 @@ M_UN_BAK_FOUND="找到备份："
 M_UN_ASK_RESTORE="把它还原成 ~/.zshrc？（当前 .zshrc 会另存为 .zshrc.uninstall.bak）"
 M_UN_RESTORED="已还原 ~/.zshrc ← %s"
 M_UN_KEEP_ZSHRC="保留当前 ~/.zshrc（里面 source 生态配色的那行会失效，可手动删）"
-M_UN_NO_BAK="没找到 ~/.zshrc.bak.* 备份 —— 不替你猜内容，请自己检查 ~/.zshrc"
+M_UN_NO_BAK="没找到 zshrc 备份（~/.hekouwang-terminal-backups/ 与家目录根）—— 不替你猜内容，请自己检查 ~/.zshrc"
 M_UN_NO_BAK_NOTE="本套装在 .zshrc 里加的是：source ~/.config/hekouwang-terminal/current/colors.sh"
 
 M_UN_S2="2. 本套装写的配置文件"

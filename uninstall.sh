@@ -10,7 +10,7 @@
 # 设计底线（和 install.sh 是一对，别单独改其中一个）：
 #   1. 只删本套装自己装的东西。Homebrew 本体、oh-my-zsh、你自己的
 #      ~/.zshrc.local、你 git 里的配置，一律不碰（除非你显式勾）。
-#   2. ~/.zshrc 从 install.sh 留下的 .bak 时间戳备份里还原，不是删掉了事。
+#   2. ~/.zshrc 从 ~/.hekouwang-terminal-backups/ 里最新备份还原（兼容家目录根旧 .bak）。
 #      找不到备份就明说找不到，不假装成功。
 #   3. iTerm2 的 GUI 设置用 defaults delete 还原成「iTerm2 出厂默认」，
 #      不是写一个我们以为的默认值 —— 那样只是换一种方式改你的配置。
@@ -22,6 +22,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "$SCRIPT_DIR/lib/i18n.sh"
 hkw_i18n_init uninstall "$@"
 eval set -- "$HKW_ARGS"
+# shellcheck disable=SC1091
+. "$SCRIPT_DIR/lib/bak.sh"
 DOMAIN="com.googlecode.iterm2"
 GUID="catppuccin-mocha-dynamic-2026"
 DP_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
@@ -73,13 +75,16 @@ printf "${b}%s${o}\n" "$(t M_UN_HEAD)"
 
 # ---- 1. ~/.zshrc 还原 --------------------------------------
 head M_UN_S1
-# 取最新一个 install.sh 留下的备份。ls 在这里不可靠（可能被 eza 之类接管），用 find。
-LATEST_BAK="$(find "$HOME" -maxdepth 1 -name '.zshrc.bak.*' -type f -print 2>/dev/null | sort | tail -1)"
+# 取最新一个 install/migrate 留下的备份。优先新目录 backups/，兼容家目录根散落的旧文件。
+# ls 在这里不可靠（可能被 eza 之类接管），用 find。
+hkw_bak_sweep_legacy
+LATEST_BAK="$(hkw_bak_latest_zshrc)"
 if [ -n "$LATEST_BAK" ]; then
   printf "  %s${d}%s${o}\n" "$(t M_UN_BAK_FOUND)" "$LATEST_BAK"
   if ask M_UN_ASK_RESTORE y; then
     if [ "$DRY" = "0" ]; then
-      [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$HOME/.zshrc.uninstall.bak"
+      # 卸载前的现场也收进 backups/，别再丢回 $HOME
+      [ -f "$HOME/.zshrc" ] && hkw_bak_copy "$HOME/.zshrc" zshrc.uninstall >/dev/null
       cp "$LATEST_BAK" "$HOME/.zshrc"
       act M_UN_RESTORED "$(basename "$LATEST_BAK")"
     else
@@ -286,7 +291,7 @@ fi
 
 # ---- 6. 可选：卸命令行工具 ----------------------------------
 head M_UN_S6
-PKGS="starship eza bat fzf fd zoxide ripgrep atuin fnm tmux zsh-autosuggestions zsh-syntax-highlighting git-delta"
+PKGS="starship eza bat fzf fd zoxide ripgrep atuin fnm nvm node vfox tmux zsh-autosuggestions zsh-syntax-highlighting git-delta"
 INSTALLED=""
 for p in $PKGS; do
   brew list --formula "$p" >/dev/null 2>&1 && INSTALLED="$INSTALLED $p"

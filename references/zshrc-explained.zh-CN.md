@@ -68,6 +68,12 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ## 块 5 · Node 版本管理（⚠️ 本配置最大问题区）
 
+**现行做法（2.8.0+）**：装机时四选一（`fnm` / `nvm` / `brew` / `vfox`），片段写在
+`~/.config/hekouwang-terminal/node.sh`，`.zshrc` 只 `source` 那一份。换管理器跑
+`./node-mgr.sh <名字>`，不用改 `.zshrc`。铁律仍是**只留一套**。
+
+下面保留「原文件里四套共存」的反面教材，方便理解为什么要选一个：
+
 原文件里同时存在 **4 套 Node 来源**：
 
 ```bash

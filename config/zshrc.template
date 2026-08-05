@@ -38,8 +38,10 @@ znap source marlonrichert/zsh-autocomplete
 [ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
   source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-# ---- 4. Node: fnm only (do not mix nvm / brew node) ---------
-command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
+# ---- 4. Node version manager (exactly one — do not mix) ----
+# Choice is made at install (./install.sh --node …) or later via ./node-mgr.sh.
+# Snippet lives outside this file so switching managers does not rewrite ~/.zshrc.
+[ -f ~/.config/hekouwang-terminal/node.sh ] && source ~/.config/hekouwang-terminal/node.sh
 
 # ---- 5. Other runtimes --------------------------------------
 # Java 17 (resolved through java_home, so no minor version is hard-coded)

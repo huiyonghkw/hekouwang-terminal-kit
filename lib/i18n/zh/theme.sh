@@ -10,13 +10,16 @@ hekouwang-terminal-kit — 一键换肤（终端 + 整条工具链）
   ./theme.sh v2-mihei             切到某套主题
   ./theme.sh --preview v2-mihei   单套整块预览（提示符/文件列表/git diff/语法高亮/标色）
   ./theme.sh --gallery            全部主题挨个整块预览（给付费仓截图用）
-  ./theme.sh --auto               跟随系统深浅色自动切（用默认暗/亮配对）
+  ./theme.sh --auto               跟随系统深浅色（默认关；开启用这条，默认暗/亮配对）
   ./theme.sh --auto <暗> <亮>      跟随系统，自己指定配对
   ./theme.sh --auto off           关掉跟随
   ./theme.sh --lang en            切回英文
 
 一条命令切的不只是终端底色，还有 bat / fzf / eza / delta(git diff) /
 tmux / Ghostty / Warp / VS Code —— 全部来自同一份色板，不会互相漂。
+
+跟随系统默认关闭。手动 ./theme.sh <主题> 会钉住该主题，并自动关掉跟随
+（避免「配了黑色却被系统浅色顶回白色」）。想重新跟随再跑 --auto。
 EOF
 }
 
@@ -27,7 +30,9 @@ M_THEME_TONE_LIGHT="亮底"
 M_THEME_AUTO_LABEL="跟随系统 "
 M_THEME_AUTO_ON="开"
 M_THEME_AUTO_PAIR="   深色→%s   浅色→%s   关掉 ./theme.sh --auto off"
-M_THEME_AUTO_HINT="跟随系统深浅色自动切：./theme.sh --auto"
+M_THEME_AUTO_HINT="跟随系统：默认关。开启：./theme.sh --auto"
+M_THEME_AUTO_PINNED_OFF="已关掉「跟随系统」（手动换肤 = 钉住这套主题）"
+M_THEME_AUTO_PINNED_HOW="想重新跟随：./theme.sh --auto"
 M_THEME_HINT_SWITCH="换肤 "
 M_THEME_HINT_PREVIEW="    看整块预览 "
 M_THEME_HINT_GALLERY="    整套预览 "

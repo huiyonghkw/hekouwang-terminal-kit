@@ -297,7 +297,7 @@ CN=1 ./install.sh
 
 **关掉自带终端，打开 iTerm2**，新界面就生效了。
 
-> 💡 脚本是幂等的，重跑安全；`~/.zshrc` 覆盖前会备份成 `~/.zshrc.bak.时间戳`。
+> 💡 脚本是幂等的，重跑安全；`~/.zshrc` 覆盖前会备份进 `~/.hekouwang-terminal-backups/`。
 
 ---
 
@@ -390,10 +390,12 @@ JetBrainsMono-Regular|JetBrains Mono||Apache-2.0，兜底
 > 为什么要探测而不是写死一个名字：字体名写错时 iTerm2 和 Ghostty 都是**静默回退到系统字体**，不报错。`./doctor.sh` 第 2 节会告诉你最终用的是哪套、以及 Profile 里写的名字能不能被解析到。
 > 另：两个 App 取名口径不同——iTerm2 要 PostScript 名（`OperatorMono-Book`），Ghostty 要 family 名（`Operator Mono`）+ `font-style`。表里两列都存着，别互相抄。
 
-### 跟随系统深浅色自动切 <sub>（付费版开箱可用）</sub>
+### 跟随系统深浅色自动切 <sub>（付费版 · 默认关）</sub>
+
+跟随系统**默认关闭**。手动 `./theme.sh <主题>` 会钉住该主题；若当时开着跟随，会自动关掉，避免「配了黑色被系统浅色顶回白色」。
 
 ```bash
-./theme.sh --auto                       # 用默认配对（深色→V2米黑，浅色→V2米白）
+./theme.sh --auto                       # 明确想跟系统时再开（深色→V2米黑，浅色→V2米白）
 ./theme.sh --auto v1-keji v3-caijing-bai # 自己指定配对
 ./theme.sh --auto off                   # 关掉
 ```
@@ -655,7 +657,7 @@ HKW_LANG=zh ./theme.sh      # 只让这一条命令说中文
 <details>
 <summary><b>我原来的终端配置会丢吗</b></summary>
 
-不会。`install.sh` 覆盖 `~/.zshrc` 前会备份成 `~/.zshrc.bak.时间戳`。
+不会。`install.sh` 覆盖 `~/.zshrc` 前会备份进 `~/.hekouwang-terminal-backups/`。
 但更好的做法是先跑 `./migrate.sh`——它把你的 alias/PATH/环境变量搬进 `~/.zshrc.local` 而不是覆盖掉。
 </details>
 

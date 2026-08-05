@@ -9,6 +9,30 @@
 
 ---
 
+## [2.8.0] · Node 自选 · 跟随系统默认关 · 备份归目录（公开版可见的变化）
+
+开源版与付费版共用这三条（不涉及付费档能力）：
+
+**Node 管理器四选一**  
+装机可选 `fnm`（默认）/ `nvm` / `brew` / `vfox`，或装完跑 `./node-mgr.sh <名字>`。  
+选择写在 `~/.config/hekouwang-terminal/node.sh`，`.zshrc` 只 source 那一份；**只留一套，别混用**。
+
+```bash
+./install.sh --node vfox
+./node-mgr.sh fnm
+```
+
+**跟随系统深浅色：默认关**  
+`--auto` 仍可用，但默认不开。手动 `./theme.sh <主题>` 会钉住该主题；若曾开跟随，会自动关掉，避免「配了黑色被系统浅色顶回白色」。想开再跑：
+
+```bash
+./theme.sh --auto
+./theme.sh --auto off
+```
+
+**.zshrc 备份进专用目录**  
+不再往家目录根丢 `~/.zshrc.bak.*`。统一进 `~/.hekouwang-terminal-backups/`；装机时会把旧散落文件收进去。卸载不会误删这份还原历史。
+
 ## [2.7.1] · 窗口水印可自定义（公开版可见的变化）
 
 - 付费档场景引擎新增 `./scene.sh badge <文字>`：iTerm2 窗口右上角的水印写自己的名字或项目名，

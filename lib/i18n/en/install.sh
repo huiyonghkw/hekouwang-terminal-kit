@@ -13,10 +13,11 @@ Usage:
   ./install.sh              install everything
   ./install.sh --dry-run    list every file and setting it would touch, write nothing
   ./install.sh --lang zh    run in Chinese (remembered for later runs)
+  ./install.sh --node fnm   pick a Node manager: fnm / nvm / brew / vfox (remembered)
   CN=1 ./install.sh         use China mirrors (Tsinghua TUNA) end to end
 
 Idempotent: safe to re-run, anything already installed is skipped.
-Your ~/.zshrc is backed up to ~/.zshrc.bak.<timestamp> before it gets replaced.
+Your ~/.zshrc is backed up under ~/.hekouwang-terminal-backups/ before it gets replaced.
 Already using your own .zshrc? Run ./migrate.sh first — it moves your aliases /
 PATH / env vars into ~/.zshrc.local instead of overwriting them.
 Changed your mind: ./uninstall.sh (restores .zshrc, resets the GUI settings)
@@ -32,13 +33,16 @@ blk_install_dryrun() {
 Will install (skipped if already there)
   Homebrew (if missing) · iTerm2
   Fonts: Maple Mono NF CN (SIL OFL, free for commercial use) + Symbols Nerd Font
-  CLI: starship eza bat fzf fd zoxide ripgrep atuin fnm tmux git-delta
+  CLI: starship eza bat fzf fd zoxide ripgrep atuin tmux git-delta
        zsh-autosuggestions zsh-syntax-highlighting
+       + the brew package for your Node choice (fnm / nvm / node / vfox)
   oh-my-zsh (if missing) · iTerm2 Shell Integration
 
 Will write these files
-  ~/.zshrc                                    <- backed up to ~/.zshrc.bak.<timestamp> first
+  ~/.zshrc                                    <- backed up under ~/.hekouwang-terminal-backups/ first
   ~/.zshrc.local                              <- created only if absent, never overwritten
+  ~/.config/hekouwang-terminal/node.sh         <- Node manager snippet (switch with ./node-mgr.sh)
+  ~/.hekouwang-terminal-backups/               <- .zshrc backup folder (not scattered in $HOME)
   ~/.config/starship.toml
   ~/.config/hekouwang-terminal/current/        <- ecosystem colors (colors.sh/delta/tmux)
   ~/Library/Application Support/iTerm2/DynamicProfiles/hekouwang-active-theme.json
@@ -60,6 +64,7 @@ Will not touch
   your ~/.ssh/, an existing ~/.zshrc.local, other Homebrew packages you installed
 
 Default theme: $DEFAULT_THEME
+Follow system light/dark: off by default (turn on with ./theme.sh --auto)
 How to undo: ./uninstall.sh (has --dry-run too)
 EOF
 }
@@ -105,9 +110,24 @@ M_INSTALL_TAIL_OPEN="Open iTerm2 and it is live."
 #    is printed by both builds. Advertising it here is the same fishing mistake
 #    that was once in the public repo's GitHub description.
 M_INSTALL_TAIL_THEME="Switch theme: ./theme.sh"
-M_INSTALL_TAIL_AUTO="Follow the system light/dark switch: ./theme.sh --auto"
+M_INSTALL_TAIL_AUTO="Follow system light/dark (off by default): turn on with ./theme.sh --auto"
+M_INSTALL_TAIL_NODE="Switch Node manager: ./node-mgr.sh <fnm|nvm|brew|vfox>"
 M_INSTALL_TAIL_UNDO="Changed your mind: ./uninstall.sh (supports --dry-run)"
 M_INSTALL_TAIL_CN="💡 On a China network, if it dies on portable-ruby / download errors, use: CN=1 ./install.sh"
 # Printed only when the paid pack is absent. %s = landing page.
 M_INSTALL_TAIL_BUY="Make this palette walk out of iTerm2 — four terminals + the whole tool chain, ¥19.9: %s"
 M_INSTALL_GUI_FAIL="! GUI setup did not finish (everything else is installed). Run it later: ./setup-gui.sh"
+
+# ---- Node manager choice ------------------------------------
+M_INSTALL_NODE_PROMPT="Pick one Node version manager (keep exactly one — do not mix):"
+M_INSTALL_NODE_OPT_FNM="  1) fnm   — Fast Node Manager (recommended, default)"
+M_INSTALL_NODE_OPT_NVM="  2) nvm"
+M_INSTALL_NODE_OPT_BREW="  3) brew  — Homebrew node (single version, not a version manager)"
+M_INSTALL_NODE_OPT_VFOX="  4) vfox  — version-fox (multi-language SDKs)"
+M_INSTALL_NODE_ASK="Which one? [1]: "
+M_INSTALL_NODE_PICKED="Node manager: %s"
+M_INSTALL_NODE_BAD="✗ Unknown Node manager '%s'"
+M_INSTALL_NODE_CHOICES="Choices: fnm · nvm · brew · vfox (or ./install.sh --node fnm)"
+M_INSTALL_NODE_DEPLOYED="✓ Node snippet written (%s)"
+M_INSTALL_NODE_SWITCH_HINT="To switch later: ./node-mgr.sh <fnm|nvm|brew|vfox>"
+M_INSTALL_NODE_WRITE_FAIL="⚠ Could not write the Node snippet (check config/node/)"
