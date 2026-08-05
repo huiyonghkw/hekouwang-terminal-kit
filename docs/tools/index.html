@@ -13,8 +13,8 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CLI & scripts · OneLook</title>
-<meta name="description" content="Every entrypoint at a glance.">
-<link rel="stylesheet" href="../assets/site.css?v=2.9.3">
+<meta name="description" content="Full how-to for every open-source script — commands, flags, and what happens.">
+<link rel="stylesheet" href="../assets/site.css?v=2.9.4">
 </head>
 <body>
 <div class="prog" id="prog"></div>
@@ -23,7 +23,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   <div class="wrap">
     <a class="mh-l" href="../index.html" style="text-decoration:none"><b>OneLook</b></a>
     <nav class="mh-nav" aria-label="Primary">
-            <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
       <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a>
       <a href="../tools/index.html" aria-current="page"><span class="en">Tools</span><span class="zh">工具</span></a>
       <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
@@ -39,7 +39,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <div class="wrap"><div class="docgrid">
 <aside class="side" aria-label="Docs">
   <div class="st"><span class="en">Guide</span><span class="zh">指南</span></div>
-    <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a>
   <a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a>
   <a href="../guide/theme.html"><span class="en">Themes & auto</span><span class="zh">换肤与跟随</span></a>
   <a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a>
@@ -47,34 +47,210 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   <a href="../guide/doctor.html"><span class="en">Doctor & uninstall</span><span class="zh">体检与卸载</span></a>
   <div class="grp">
     <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
-        <a href="../tools/index.html" aria-current="page"><span class="en">CLI index</span><span class="zh">脚本索引</span></a>
+    <a href="../tools/index.html" aria-current="page"><span class="en">CLI index</span><span class="zh">脚本索引</span></a>
     <a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a>
     <a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a>
     <a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
-        <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
     <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
   </div>
 </aside>
 <article class="doc">
 <div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">CLI & scripts</span><span class="zh">CLI 与脚本</span></div>
 <h1><span class="en">CLI & scripts</span><span class="zh">CLI 与脚本</span></h1>
-<p class="lead"><span class="en">Every entrypoint at a glance.</span><span class="zh">所有入口一览。</span></p>
+<p class="lead"><span class="en">Not a name list — every open-source script below has the full command path: flags, what it touches, and how to undo.</span><span class="zh">不是名单 —— 下面每个开源脚本都写出完整操作路径：参数、会动什么、怎么撤回。</span></p>
 
-<div class="tablewrap"><table>
-<thead><tr><th><span class="en">Script</span><span class="zh">脚本</span></th><th><span class="en">Role</span><span class="zh">作用</span></th><th><span class="en">Tier</span><span class="zh">分档</span></th></tr></thead>
-<tbody>
-<tr><td><code>install.sh</code></td><td><span class="en">One-shot install</span><span class="zh">一键安装</span></td><td><span class="tag tag-free">free</span></td></tr>
-<tr><td><code>migrate.sh</code></td><td><span class="en">Adopt existing .zshrc</span><span class="zh">接管已有 .zshrc</span></td><td><span class="tag tag-free">free</span></td></tr>
-<tr><td><code>theme.sh</code></td><td><span class="en">Switch theme / gallery / --auto</span><span class="zh">换肤 / 画廊 / 跟随</span></td><td><span class="tag tag-free">free</span></td></tr>
-<tr><td><code>node-mgr.sh</code></td><td><span class="en">Pick Node manager</span><span class="zh">选 Node 管理器</span></td><td><span class="tag tag-free">free</span></td></tr>
-<tr><td><code>doctor.sh</code></td><td><span class="en">Self-check · <code>--status</code> state dashboard</span><span class="zh">自检 · <code>--status</code> 状态机仪表盘</span></td><td><span class="tag tag-free">free</span></td></tr>
-<tr><td><code>uninstall.sh</code></td><td><span class="en">Restore & remove</span><span class="zh">还原与卸载</span></td><td><span class="tag tag-free">free</span></td></tr>
-<tr><td><code>update.sh</code> / <code>sync.sh</code></td><td><span class="en">Update / drift</span><span class="zh">更新 / 漂移</span></td><td><span class="tag tag-free">free</span></td></tr>
-<tr><td><code>font.sh</code> / <code>scene.sh</code></td><td><span class="en">Optical calibration / scene aesthetics</span><span class="zh">光学校准 / 场景美学</span></td><td><span class="tag tag-paid">paid</span></td></tr>
-<tr><td><code>workspace.sh</code> / <code>palette.sh</code> / <code>import.sh</code></td><td><span class="en">Workspaces / deriver / import</span><span class="zh">工作区 / 推导 / 导入</span></td><td><span class="tag tag-paid">paid</span></td></tr>
-</tbody></table></div>
-<p><span class="en">Not a separate script: <a href="../guide/semantic.html">Semantic Interaction Layer</a> ships inside the iTerm2 profile (Cmd-click path:line / SHA / port).</span><span class="zh">不是单独脚本：<a href="../guide/semantic.html">语义交互层</a>写进 iTerm2 Profile（Cmd-click 路径:行号 / SHA / 端口）。</span></p>
-<p class="muted"><span class="en">Paid scripts ship as stubs in the open-source tree: they explain what is missing and where to buy — they do not unlock paid engines.</span><span class="zh">付费脚本在开源树里是广告位桩：说明缺什么、去哪儿买 —— 不会解锁付费引擎。</span></p>
+<p><span class="en">Run everything from the kit directory after <code>cd hekouwang-terminal-kit</code>. Shared flags: <code>--lang en|zh</code> (remembered). Prefer <code>--dry-run</code> / <code>--check</code> before the first real run.</span><span class="zh">进入套件目录后再跑：<code>cd hekouwang-terminal-kit</code>。共用参数：<code>--lang en|zh</code>（会记住）。第一次真跑前优先 <code>--dry-run</code> / <code>--check</code>。</span></p>
+
+<div class="h2sub"><span class="en">jump</span><span class="zh">跳转</span></div>
+<p>
+  <a href="#install">install</a> ·
+  <a href="#migrate">migrate</a> ·
+  <a href="#theme">theme</a> ·
+  <a href="#node-mgr">node-mgr</a> ·
+  <a href="#doctor">doctor</a> ·
+  <a href="#uninstall">uninstall</a> ·
+  <a href="#update">update</a> ·
+  <a href="#sync">sync</a> ·
+  <a href="#setup-gui">setup-gui</a> ·
+  <a href="#unlock">unlock</a> ·
+  <a href="#paid">paid</a> ·
+  <a href="#semantic">semantic</a>
+</p>
+
+<!-- ========== install ========== -->
+<h2 id="install"><code>install.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">One-shot install. Idempotent — safe to re-run; skips what is already there. Backs up <code>~/.zshrc</code> into <code>~/.hekouwang-terminal-backups/</code> before overwrite.</span><span class="zh">一键安装。幂等 —— 重复执行安全，已装的跳过。覆盖 <code>~/.zshrc</code> 前会备份进 <code>~/.hekouwang-terminal-backups/</code>。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>install</span></div>
+<pre class="sc"><span class="cm"># <span class="en">1) Preview — lists files and settings; changes nothing</span><span class="zh">1) 预演 —— 列出要动的文件与设置，一个字节都不改</span></span>
+<span class="p">$</span> <span class="o">./install.sh</span> --dry-run
+
+<span class="cm"># <span class="en">2) Install</span><span class="zh">2) 安装</span></span>
+<span class="p">$</span> <span class="o">./install.sh</span>
+
+<span class="cm"># <span class="en">3) Optional: pin language / Node manager (remembered)</span><span class="zh">3) 可选：钉住语言 / Node 管理器（会记住）</span></span>
+<span class="p">$</span> <span class="o">./install.sh</span> --lang zh
+<span class="p">$</span> <span class="o">./install.sh</span> --node fnm          <span class="cm"># fnm | nvm | brew | vfox</span>
+
+<span class="cm"># <span class="en">4) China network: TUNA mirrors end-to-end</span><span class="zh">4) 国内网络：全程清华等镜像</span></span>
+<span class="p">$</span> <span class="o">CN=1</span> ./install.sh</pre></div>
+<div class="ask"><span class="lb">before overwrite</span>
+<span class="en">Already have a long-lived <code>~/.zshrc</code>? Run <a href="#migrate"><code>./migrate.sh</code></a> first — it moves your aliases / PATH into <code>~/.zshrc.local</code> instead of wiping them.</span><span class="zh">已经有用了很久的 <code>~/.zshrc</code>？先跑 <a href="#migrate"><code>./migrate.sh</code></a> —— 把 alias / PATH 搬进 <code>~/.zshrc.local</code>，而不是直接盖掉。</span>
+</div>
+<p><span class="en">Changed your mind: <a href="#uninstall"><code>./uninstall.sh</code></a>. Narrative guide: <a href="../guide/install.html">Install</a>.</span><span class="zh">后悔了：<a href="#uninstall"><code>./uninstall.sh</code></a>。叙事指南：<a href="../guide/install.html">安装</a>。</span></p>
+
+<!-- ========== migrate ========== -->
+<h2 id="migrate"><code>migrate.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Adopt an existing <code>~/.zshrc</code> instead of overwriting it. Picks out lines that are uniquely yours into <code>~/.zshrc.local</code>; drops lines the template will recreate (omz / starship / fzf init, …). Conservative: when unsure, treats a line as yours.</span><span class="zh">接管已有 <code>~/.zshrc</code>，而不是覆盖。把「只有你才有」的行搬进 <code>~/.zshrc.local</code>；丢掉模板会重建的行（omz / starship / fzf init …）。判定保守：拿不准一律算「你的」。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>migrate</span></div>
+<pre class="sc"><span class="cm"># <span class="en">1) Report only — decide after reading</span><span class="zh">1) 只看报告，读完再决定</span></span>
+<span class="p">$</span> <span class="o">./migrate.sh</span>
+
+<span class="cm"># <span class="en">2) Apply (still backs up first)</span><span class="zh">2) 执行（仍然先备份）</span></span>
+<span class="p">$</span> <span class="o">./migrate.sh</span> --apply
+
+<span class="cm"># <span class="en">3) Then install as usual</span><span class="zh">3) 再照常安装</span></span>
+<span class="p">$</span> <span class="o">./install.sh</span></pre></div>
+
+<!-- ========== theme ========== -->
+<h2 id="theme"><code>theme.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Switch theme / gallery / follow-system. <b>Open source syncs iTerm2</b> (3 community palettes). Walking the same palette out to Ghostty / Warp / Terminal.app / bat / fzf / eza / delta / tmux / VS Code is <span class="tag tag-paid">paid</span>.</span><span class="zh">换肤 / 画廊 / 跟随系统。<b>开源版只同步 iTerm2</b>（3 套社区配色）。同一份色板走到 Ghostty / Warp / 自带终端 / bat / fzf / eza / delta / tmux / VS Code 属 <span class="tag tag-paid">paid</span>。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>theme</span></div>
+<pre class="sc"><span class="cm"># <span class="en">Gallery + current theme (true-color bars)</span><span class="zh">画廊 + 当前主题（真彩色色条）</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span>
+
+<span class="cm"># <span class="en">Switch (open-source examples)</span><span class="zh">切换（开源版示例）</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> tokyo-night
+<span class="p">$</span> <span class="o">./theme.sh</span> catppuccin-mocha
+<span class="p">$</span> <span class="o">./theme.sh</span> v2-mihei          <span class="cm"># <span class="en">brand themes → paid</span><span class="zh">品牌主题 → 付费</span></span>
+
+<span class="cm"># <span class="en">Single-theme / all-theme preview blocks</span><span class="zh">单套 / 全套整块预览</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --preview tokyo-night
+<span class="p">$</span> <span class="o">./theme.sh</span> --gallery
+
+<span class="cm"># <span class="en">Follow system appearance (off by default)</span><span class="zh">跟随系统深浅色（默认关）</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --auto
+<span class="p">$</span> <span class="o">./theme.sh</span> --auto &lt;dark&gt; &lt;light&gt;
+<span class="p">$</span> <span class="o">./theme.sh</span> --auto off
+
+<span class="cm"># <span class="en">After switch: open a new tab for Dynamic Profile rules</span><span class="zh">换肤后：新开 tab，Dynamic Profile 规则才生效</span></span></pre></div>
+<div class="ask"><span class="lb">pin</span>
+<span class="en">Manual <code>./theme.sh &lt;name&gt;</code> pins that theme and turns <code>--auto</code> off — so a dark pick is not yanked back by system light mode.</span><span class="zh">手动 <code>./theme.sh &lt;名&gt;</code> 会钉住该主题并关掉 <code>--auto</code> —— 避免配了黑色却被系统浅色顶回白色。</span>
+</div>
+<p><span class="en">More narrative: <a href="../guide/theme.html">Themes &amp; auto</a> · <a href="../themes/index.html">gallery</a>.</span><span class="zh">叙事：<a href="../guide/theme.html">换肤与跟随</a> · <a href="../themes/index.html">画廊</a>。</span></p>
+
+<!-- ========== node-mgr ========== -->
+<h2 id="node-mgr"><code>node-mgr.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Pick exactly one Node manager for the machine. Mixing fnm / nvm / brew node / vfox fights over PATH. Choice lives under <code>~/.config/hekouwang-terminal/</code>; <code>~/.zshrc</code> sources only that one.</span><span class="zh">整台机器只留一套 Node 管理器。混用 fnm / nvm / brew node / vfox 会 PATH 打架。选择写在 <code>~/.config/hekouwang-terminal/</code>；<code>~/.zshrc</code> 只 source 那一份。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>node</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./node-mgr.sh</span>              <span class="cm"># <span class="en">show current</span><span class="zh">看当前选了哪个</span></span>
+<span class="p">$</span> <span class="o">./node-mgr.sh</span> fnm          <span class="cm"># <span class="en">recommended default</span><span class="zh">推荐默认</span></span>
+<span class="p">$</span> <span class="o">./node-mgr.sh</span> nvm
+<span class="p">$</span> <span class="o">./node-mgr.sh</span> brew         <span class="cm"># <span class="en">single Homebrew node, not a version manager</span><span class="zh">Homebrew 单版本 node，不是版本管理器</span></span>
+<span class="p">$</span> <span class="o">./node-mgr.sh</span> vfox</pre></div>
+<p><span class="en">Also set at install time: <code>./install.sh --node fnm</code>. Guide: <a href="../guide/node.html">Node manager</a>.</span><span class="zh">安装时也能钉：<code>./install.sh --node fnm</code>。指南：<a href="../guide/node.html">Node 管理器</a>。</span></p>
+
+<!-- ========== doctor ========== -->
+<h2 id="doctor"><code>doctor.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Read-only self-check by default (exit 0 = all green, 1 = has ✗). Section 0 is the state dashboard.</span><span class="zh">默认纯只读体检（退出码 0＝全过，1＝有 ✗）。第 0 节就是状态机仪表盘。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>doctor</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./doctor.sh</span>                 <span class="cm"># <span class="en">full checklist + fix suggestions</span><span class="zh">完整清单 + 修复建议</span></span>
+<span class="p">$</span> <span class="o">./doctor.sh</span> --status        <span class="cm"># <span class="en">dashboard only: theme / auto / node / optical / scene / semantic / Ghostty reload</span><span class="zh">只看仪表盘：主题 / 跟随 / Node / 光学 / 场景 / 语义 / Ghostty 重载</span></span>
+<span class="p">$</span> <span class="o">./doctor.sh</span> --fix           <span class="cm"># <span class="en">after check, ask per item whether to repair</span><span class="zh">体检完逐项问要不要修</span></span>
+<span class="p">$</span> <span class="o">./doctor.sh</span> --quiet         <span class="cm"># <span class="en">one-line verdict (for scripts)</span><span class="zh">只输出结论行（给脚本调）</span></span>
+<span class="p">$</span> <span class="o">./doctor.sh</span> --profile       <span class="cm"># <span class="en">also zprof the slowest startup pieces</span><span class="zh">顺带 zprof 点名最慢的启动项</span></span></pre></div>
+<p><span class="en">Guide: <a href="../guide/doctor.html">Doctor &amp; uninstall</a>.</span><span class="zh">指南：<a href="../guide/doctor.html">体检与卸载</a>。</span></p>
+
+<!-- ========== uninstall ========== -->
+<h2 id="uninstall"><code>uninstall.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Pair with install. Restores <code>~/.zshrc</code> from backup; GUI settings go back via <code>defaults delete</code> (real factory defaults). Does not remove Homebrew itself, oh-my-zsh, or your <code>~/.zshrc.local</code> unless you explicitly opt in.</span><span class="zh">与 install 成对。从备份还原 <code>~/.zshrc</code>；GUI 用 <code>defaults delete</code> 回真正出厂默认。默认不卸 Homebrew 本体、oh-my-zsh、你的 <code>~/.zshrc.local</code>（除非你显式勾）。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>uninstall</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./uninstall.sh</span> --dry-run    <span class="cm"># <span class="en">identical checklist, zero writes</span><span class="zh">清单与真跑相同，一个字节都不动</span></span>
+<span class="p">$</span> <span class="o">./uninstall.sh</span>              <span class="cm"># <span class="en">interactive; default = kit-owned items only</span><span class="zh">交互式；默认只删本套装的东西</span></span>
+<span class="p">$</span> <span class="o">./uninstall.sh</span> --yes        <span class="cm"># <span class="en">no prompts; default tier (keeps brew packages &amp; omz)</span><span class="zh">不问；执行默认档（不卸 brew 包、不删 omz）</span></span></pre></div>
+
+<!-- ========== update ========== -->
+<h2 id="update"><code>update.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Pull latest → regenerate themes → redeploy the theme you are on. Does not touch <code>~/.zshrc.local</code> or GUI tweaks you made yourself.</span><span class="zh">拉更新 → 重新生成主题 → 重新部署当前主题。不碰 <code>~/.zshrc.local</code>、不碰你自己改过的 GUI。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>update</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./update.sh</span> --check         <span class="cm"># <span class="en">is there a newer version? what changed?</span><span class="zh">有没有新版本、更了什么？不动文件</span></span>
+<span class="p">$</span> <span class="o">./update.sh</span>                 <span class="cm"># <span class="en">pull + regenerate + redeploy</span><span class="zh">拉取 + 重生 + 重部署</span></span></pre></div>
+
+<!-- ========== sync ========== -->
+<h2 id="sync"><code>sync.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Drift check across machines / hand-edits: is what is deployed still what the repo says?</span><span class="zh">多机 / 手改漂移检查：部署出去的配置和仓库里的还一致吗？</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>sync</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./sync.sh</span>                   <span class="cm"># <span class="en">read-only drift report</span><span class="zh">只读：哪儿漂了</span></span>
+<span class="p">$</span> <span class="o">./sync.sh</span> --pull            <span class="cm"># <span class="en">redeploy from repo; pull drift back</span><span class="zh">按仓库重部署，把漂掉的对回来</span></span>
+<span class="p">$</span> <span class="o">./sync.sh</span> --export ~/Desktop/kit-pack
+                             <span class="cm"># <span class="en">bundle to carry to a second machine</span><span class="zh">打一个能带到第二台机器的包</span></span></pre></div>
+
+<!-- ========== setup-gui ========== -->
+<h2 id="setup-gui"><code>setup-gui.sh</code> <span class="tag tag-free">free</span></h2>
+<p><span class="en">Writes iTerm2 GUI prefs that must land while iTerm2 is <b>not</b> running (Minimal theme, default profile, Shift+Enter, scrollbar hide, Cmd-click / Semantic History, …). <code>install.sh</code> usually calls this; re-run if doctor section 4 complains.</span><span class="zh">写必须在 iTerm2 <b>退出后</b>才能落盘的 GUI 项（Minimal、默认 Profile、Shift+Enter、藏滚动条、Cmd-click / Semantic History …）。<code>install.sh</code> 通常会调；doctor 第 4 节告警时再补跑。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>setup-gui</span></div>
+<pre class="sc"><span class="cm"># <span class="en">Do NOT run this inside a live iTerm2 session — it will skip.</span><span class="zh">不要在正开着的 iTerm2 里跑 —— 会直接跳过。</span></span>
+<span class="cm"># <span class="en">A) Quit iTerm2 (Cmd+Q), open macOS Terminal.app, then:</span><span class="zh">A) Cmd+Q 退出 iTerm2，打开「终端」App，再跑：</span></span>
+<span class="p">$</span> <span class="o">cd</span> /path/to/hekouwang-terminal-kit
+<span class="p">$</span> <span class="o">./setup-gui.sh</span>
+
+<span class="cm"># <span class="en">B) Or from Terminal.app only (never from iTerm2)</span><span class="zh">B) 或只用「终端」App（别从 iTerm2 进）</span></span>
+<span class="p">$</span> <span class="o">./doctor.sh</span>                 <span class="cm"># <span class="en">re-check section 4 afterwards</span><span class="zh">跑完再看第 4 节</span></span></pre></div>
+
+<!-- ========== unlock ========== -->
+<h2 id="unlock"><code>unlock.sh</code> <span class="tag tag-free">free</span> → <span class="tag tag-paid">paid zip</span></h2>
+<p><span class="en">Open-source entry that installs a paid zip onto this tree (checksum + unpack + regenerate + optional theme apply). No unlock codes — the zip <b>is</b> the paid build.</span><span class="zh">开源仓里的付费包入口：校验 → 解压进本树 → 重生主题 → 可选重新 apply。没有解锁码 —— zip <b>本身</b>就是付费档。</span></p>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>unlock</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./unlock.sh</span> ~/Downloads/hekouwang-terminal-kit-付费包-*.zip --dry-run
+<span class="p">$</span> <span class="o">./unlock.sh</span> ~/Downloads/hekouwang-terminal-kit-付费包-*.zip
+<span class="p">$</span> <span class="o">./unlock.sh</span> &lt;zip&gt; --no-apply   <span class="cm"># <span class="en">unpack + regenerate, skip theme redeploy</span><span class="zh">解压重生，不重部署主题</span></span></pre></div>
+<p><span class="en">Buy / pay: <a href="../index.html#buy">landing page</a> · feature map: <a href="../pricing.html">Paid build</a>.</span><span class="zh">购买：<a href="../index.html#buy">落地页</a> · 能力对照：<a href="../pricing.html">付费版</a>。</span></p>
+
+<!-- ========== paid ========== -->
+<h2 id="paid"><span class="en">Paid-only scripts</span><span class="zh">仅付费包里的脚本</span> <span class="tag tag-paid">paid</span></h2>
+<p><span class="en">These files are <b>not</b> in the public MIT tree. After <code>unlock.sh</code> (or a private clone) you get the engines. Below is the <b>command surface</b> so you know what you are buying — not a copy-paste cookbook of the paid internals.</span><span class="zh">这些文件<strong>不在</strong>公开 MIT 树里。用 <code>unlock.sh</code>（或 private 仓）装上后才有引擎。下面是<strong>命令形态</strong>，方便你知道买到什么 —— 不是付费内部实现的可复制菜谱。</span></p>
+
+<h3><code>font.sh</code> · <span class="en">Optical Calibration Engine</span><span class="zh">终端光学校准引擎</span></h3>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>font</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./font.sh</span>
+<span class="p">$</span> <span class="o">./font.sh</span> status
+<span class="p">$</span> <span class="o">./font.sh</span> apply maple|operator|victor|jetbrains \
+      [--density compact|comfortable|present] [--theme &lt;name&gt;]</pre></div>
+
+<h3><code>scene.sh</code> · <span class="en">Scene Aesthetics Engine</span><span class="zh">场景美学引擎</span></h3>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>scene</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./scene.sh</span>
+<span class="p">$</span> <span class="o">./scene.sh</span> status
+<span class="p">$</span> <span class="o">./scene.sh</span> apply daily|focus|present|record|remote \
+      [--theme &lt;name&gt;] [--badge &lt;text&gt;|off]
+<span class="p">$</span> <span class="o">./scene.sh</span> badge [&lt;text&gt;|off]</pre></div>
+
+<h3><code>workspace.sh</code> · <span class="en">project tab colors</span><span class="zh">项目标签色</span></h3>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>workspace</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./workspace.sh</span> add ~/code/my-project
+<span class="cm"># <span class="en">After register: cd into the dir → tab color + badge name</span><span class="zh">登记后：cd 进目录 → 标签页变色、右上角印项目名</span></span></pre></div>
+
+<h3><code>palette.sh</code> · <span class="en">derive a theme from one accent</span><span class="zh">从一个品牌色推出整套主题</span></h3>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>palette</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./palette.sh</span> --from '#e08a5f' --name my-theme \
+      [--light] [--preset 编辑|科技|数据|默认] [--dry-run]</pre></div>
+
+<h3><code>import.sh</code> · <span class="en">import Ghostty / other theme packs</span><span class="zh">导入 Ghostty 等主题包</span></h3>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>import</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./import.sh</span> --list
+<span class="p">$</span> <span class="o">./import.sh</span> 'Catppuccin Frappe'
+<span class="p">$</span> <span class="o">./import.sh</span> --all-builtin</pre></div>
+
+<p><span class="en">Buyer handbook ships inside the paid package (<code>docs/manual.md</code>). Public site stops at “what / why buy”.</span><span class="zh">买家完整手册在付费包内的 <code>docs/manual.md</code>。公开站只写到「是什么 / 为什么买」。</span></p>
+
+<!-- ========== semantic ========== -->
+<h2 id="semantic"><span class="en">Not a script:</span><span class="zh">不是脚本：</span> <span class="en">Semantic Interaction Layer</span><span class="zh">语义交互层</span></h2>
+<p><span class="en">Ships inside the iTerm2 Dynamic Profile (same path as Triggers). After <code>./theme.sh …</code>, <b>open a new tab</b>, then Cmd-click <code>path:line</code> / Git SHA / <code>localhost:port</code>.</span><span class="zh">写在 iTerm2 Dynamic Profile 里（与 Triggers 同路）。<code>./theme.sh …</code> 之后<strong>新开 tab</strong>，再 Cmd-click <code>路径:行号</code> / Git SHA / <code>localhost:端口</code>。</span></p>
+<p><span class="en">Full page: <a href="../guide/semantic.html">Semantic layer</a>. Status bit: <code>./doctor.sh --status</code> → <code>semantic</code>.</span><span class="zh">专页：<a href="../guide/semantic.html">语义交互层</a>。状态位：<code>./doctor.sh --status</code> → <code>semantic</code>。</span></p>
+
+<div class="ask"><span class="lb">maintainer</span>
+<span class="en"><code>release.sh</code> is for publishing OSS/pro trees — not an end-user daily tool. Skip unless you maintain the kit.</span><span class="zh"><code>release.sh</code> 是发 OSS/付费树用的，不是日常用户工具。除非你在维护本套件，否则可忽略。</span>
+</div>
 
 <div class="pager"><a href="../guide/doctor.html">← <span class="en">Doctor</span><span class="zh">体检</span></a><a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span> →</a></div>
 </article>
@@ -83,6 +259,6 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   <span class="brand">OneLook · 会勇禾口王的AI笔记</span>
   <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
 </footer></div>
-<script src="../assets/site.js?v=2.9.3"></script>
+<script src="../assets/site.js?v=2.9.4"></script>
 </body>
 </html>
