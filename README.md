@@ -1,9 +1,10 @@
-<h1 align="center">hekouwang-terminal-kit</h1>
+<h1 align="center">OneLook</h1>
 
 <p align="center">
-  <b>The terminal deserves one more round of setup in the AI era.</b><br>
-  The free build makes your iTerm2 look right.<br>
-  The paid build makes that same palette walk out of iTerm2 — four terminals and the whole command-line tool chain change together.
+  <code>hekouwang-terminal-kit</code> · turn same colors into the same look<br><br>
+  <b>One palette, three layers:</b> optical · scene · semantic.<br>
+  Free configures iTerm2. Paid makes that palette walk out of iTerm2 —
+  four terminals and the whole CLI chain change together.
 </p>
 
 <p align="center">

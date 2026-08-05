@@ -101,11 +101,11 @@ PRO_ONLY_PATHS=(
 #    什么都不改。原来这两条是 529 / 418 字符 —— 也就是说 2026-07-23 改成英文之后，
 #    `--meta` 一次都没成功过，线上一直是更早的中文版，而错误被 `>/dev/null 2>&1` 藏住了。
 #    2026-07-27 缩到限内，并在 --check 里加了长度门（改文案时会当场红，不用等推）。
-OSS_DESC="A macOS terminal reconfigured for the AI era: iTerm2 Minimal with no borders, blur, automatic ERROR/WARN coloring and Shift+Enter for multi-line prompts, on top of oh-my-zsh / Starship / the modern CLI set. Config as code, safe to install and safe to remove. English by default, --lang zh for Chinese."
+OSS_DESC="OneLook (hekouwang-terminal-kit): same colors → same look. Open-source iTerm2 — Minimal, blur, ERROR/WARN coloring, Shift+Enter, oh-my-zsh / Starship / modern CLI. Config as code; safe to install and remove. EN default; --lang zh."
 # 公开仓**不打** ghostty / warp —— 那两个是付费能力，打了会把搜这两个词的人骗进来
-OSS_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh"
+OSS_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh,onelook"
 
-PRO_DESC="The complete paid build: 4 brand themes (two of them light) and one palette syncing iTerm2 + Ghostty + Warp + the built-in macOS Terminal, with bat / fzf / eza / git diff / tmux / VS Code in the same colors. Palette deriver, font table, workspaces, cheat sheet, plus the Claude Code Skill that lets an agent drive it. Manual: docs/manual.md."
+PRO_DESC="OneLook paid: 4 brand themes (incl. light) + one palette across iTerm2 / Ghostty / Warp / Terminal.app, with bat / fzf / eza / git diff / tmux / VS Code. Optical / scene / semantic pillars, palette deriver, font table, cheat sheet, Claude Code Skill. Manual: docs/manual.md."
 # claude-code / agent-skill 只打在付费仓：Skill 是付费能力，公开仓打上就是钓鱼
 PRO_TOPICS="iterm2,macos,terminal,zsh,dotfiles,color-scheme,color-palette,starship,oh-my-zsh,ghostty,warp,tmux,claude-code,agent-skill"
 

@@ -1,9 +1,10 @@
-<h1 align="center">hekouwang-terminal-kit</h1>
+<h1 align="center">OneLook</h1>
 
 <p align="center">
-  <b>AI 时代的终端，值得重新配一次。</b><br>
-  免费版让你的 iTerm2 好看。<br>
-  付费版让这份色板走出 iTerm2——四个终端和整条命令行工具链一起变。
+  <code>hekouwang-terminal-kit</code> · 把「同色」做成「同观感」<br><br>
+  <b>一份色板，三层观感：</b>光学 · 场景 · 语义。<br>
+  免费版配好 iTerm2。付费版让这份色板走出 iTerm2——
+  四个终端和整条命令行工具链一起变。
 </p>
 
 <p align="center">
