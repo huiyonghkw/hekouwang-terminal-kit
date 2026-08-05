@@ -244,6 +244,28 @@ Section 3 of `doctor.sh` checks they are there; to see or change them, go to
 > extra dependency plus manually allowing "trigger runs a command", and it did not look good
 > in testing either. On balance it is left out to keep these four clean and reliable.
 
+### 4.4b Semantic Interaction Layer v1 ⭐ shipped with the profile
+
+**Smart Selection + Semantic History** — also written into the Dynamic Profile by
+`smart_selection_rules()` / `semantic_history()` in `_generate.py`.
+
+| Match | Cmd-click / first action | Also in context menu |
+|---|---|---|
+| `path/to/file.ext:42` or `:42:8` | Open at line (best editor) | Copy path:line |
+| Git SHA (`[0-9a-f]{7,40}`) | `git show --stat` in repo cwd | Copy SHA |
+| `localhost:3xxx` / `127.0.0.1:…` | Open `http://…` in browser | Copy host:port |
+
+Stock iTerm2 rules (Paths, HTTP URL, email, …) are kept in the same list — setting
+`Smart Selection Rules` **replaces** inheritance, so the generator embeds them.
+
+Semantic History action = `best editor` (Cursor / VS Code / … if installed).
+`setup-gui.sh` pins `CommandSelection=YES` so Cmd-click is not silently off.
+
+```bash
+./doctor.sh --status          # semantic line must show product rules + SH=best editor
+./theme.sh <theme> && Cmd+T   # new tab required
+```
+
 ### 4.5 Status bar (optional)
 
 `Settings → Profiles → Session → Status bar enabled → Configure`

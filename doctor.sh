@@ -20,11 +20,12 @@ DP_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
 RUNTIME="$HOME/.config/hekouwang-terminal"
 DOMAIN="com.googlecode.iterm2"
 FAIL=0; WARN=0
-FIX=0; QUIET=0
+FIX=0; QUIET=0; STATUS_ONLY=0
 for a in "$@"; do
   case "$a" in
     --fix) FIX=1 ;;
     --quiet|-q) QUIET=1 ;;
+    --status) STATUS_ONLY=1 ;;
     -h|--help) blk_doctor_help; exit 0 ;;
   esac
 done
@@ -36,11 +37,140 @@ ok()   { [ "$QUIET" = "1" ] || printf "  ${g}✓${o} %s\n" "$1"; }
 bad()  { [ "$QUIET" = "1" ] || { printf "  ${r}✗${o} %s\n" "$1"; [ -n "${2:-}" ] && printf "      ${d}↳ %s${o}\n" "$2"; }; FAIL=$((FAIL+1)); [ -n "${3:-}" ] && FIXES+=("$1|$3"); }
 warn() { [ "$QUIET" = "1" ] || { printf "  ${y}⚠${o} %s\n" "$1"; [ -n "${2:-}" ] && printf "      ${d}↳ %s${o}\n" "$2"; }; WARN=$((WARN+1)); [ -n "${3:-}" ] && FIXES+=("$1|$3"); }
 sect() { [ "$QUIET" = "1" ] || printf "\n${b}%s${o}\n" "$1"; }
+# 状态机仪表盘行：键对齐，值原样；不计入 fail/warn（明细检查仍在后面）
+st()   { [ "$QUIET" = "1" ] || printf "  ${d}%-10s${o} %s\n" "$1" "$2"; }
 
 [ "$QUIET" = "1" ] || {
   printf "${b}%s${o}\n" "$(t M_DOC_HEAD)"
   printf "${d}brew prefix: %s   arch: %s   lang: %s${o}\n" "$BREW_PREFIX" "$(uname -m)" "$HKW_LANG"
 }
+
+# ---- 0. 状态机仪表盘（一眼看钉住了什么）----
+# 只读汇总；光学/场景/Node 的「缺件报警」仍在后面各节，避免这里既摘要又重复打 ✗。
+print_state_dashboard() {
+  sect "$(t M_DOC_S0)"
+  # theme
+  _th="$(cat "$RUNTIME/theme" 2>/dev/null || true)"
+  if [ -n "$_th" ]; then
+    st "$(t M_DOC_ST_THEME)" "$(t M_DOC_ST_PINNED "$_th")"
+  else
+    st "$(t M_DOC_ST_THEME)" "$(t M_DOC_ST_NONE)"
+  fi
+  # auto follow-system
+  if [ -f "$HOME/Library/LaunchAgents/com.hekouwang.terminal.autotheme.plist" ]; then
+    st "$(t M_DOC_ST_AUTO)" "$(t M_DOC_ST_AUTO_ON)"
+  else
+    st "$(t M_DOC_ST_AUTO)" "$(t M_DOC_ST_AUTO_OFF)"
+  fi
+  # node
+  _nm="$(tr -d '[:space:]' < "$RUNTIME/node-manager" 2>/dev/null || true)"
+  if [ -n "$_nm" ]; then
+    st "$(t M_DOC_ST_NODE)" "$_nm"
+  else
+    st "$(t M_DOC_ST_NODE)" "$(t M_DOC_ST_NODE_UNSET)"
+  fi
+  # optical (paid)
+  if [ -f "$SCRIPT_DIR/config/typography/_engine.py" ]; then
+    _oj="$(python3 "$SCRIPT_DIR/config/typography/_engine.py" resolve 2>/dev/null || true)"
+    if [ -n "$_oj" ]; then
+      _oid="$(printf '%s' "$_oj" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("id",""))' 2>/dev/null || true)"
+      _od="$(printf '%s' "$_oj" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("density",""))' 2>/dev/null || true)"
+      _os="$(printf '%s' "$_oj" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("source",""))' 2>/dev/null || true)"
+      st "$(t M_DOC_ST_OPTICAL)" "$(t M_DOC_ST_OPTICAL_VAL "$_oid" "$_od" "$_os")"
+    else
+      st "$(t M_DOC_ST_OPTICAL)" "$(t M_DOC_ST_UNREADABLE)"
+    fi
+  else
+    st "$(t M_DOC_ST_OPTICAL)" "$(t M_DOC_ST_PAID_ONLY)"
+  fi
+  # scene (paid)
+  if [ -f "$SCRIPT_DIR/config/scenes/_engine.py" ]; then
+    _sj="$(python3 "$SCRIPT_DIR/config/scenes/_engine.py" resolve 2>/dev/null || true)"
+    if [ -n "$_sj" ]; then
+      _sid="$(printf '%s' "$_sj" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("id",""))' 2>/dev/null || true)"
+      _ss="$(printf '%s' "$_sj" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d.get("source",""))' 2>/dev/null || true)"
+      st "$(t M_DOC_ST_SCENE)" "$(t M_DOC_ST_SCENE_VAL "$_sid" "$_ss")"
+    else
+      st "$(t M_DOC_ST_SCENE)" "$(t M_DOC_ST_UNREADABLE)"
+    fi
+  else
+    st "$(t M_DOC_ST_SCENE)" "$(t M_DOC_ST_PAID_ONLY)"
+  fi
+  # semantic layer from active profile
+  _active="$DP_DIR/hekouwang-active-theme.json"
+  if [ -f "$_active" ]; then
+    _sem="$(python3 - "$_active" <<'PY' 2>/dev/null || true
+import json,sys
+p=json.load(open(sys.argv[1]))["Profiles"][0]
+ss=p.get("Smart Selection Rules") or []
+ours=sum(1 for r in ss if "hekouwang" in (r.get("notes") or ""))
+sh=(p.get("Semantic History") or {}).get("action","")
+print(f"{len(ss)}|{ours}|{sh}")
+PY
+)"
+    _nr="${_sem%%|*}"; _rest="${_sem#*|}"; _no="${_rest%%|*}"; _sha="${_rest#*|}"
+    if [ -n "$_nr" ] && [ "$_nr" != "$_sem" ]; then
+      st "$(t M_DOC_ST_SEMANTIC)" "$(t M_DOC_ST_SEMANTIC_VAL "$_nr" "$_no" "$_sha")"
+    else
+      st "$(t M_DOC_ST_SEMANTIC)" "$(t M_DOC_ST_SEMANTIC_MISS)"
+    fi
+  else
+    st "$(t M_DOC_ST_SEMANTIC)" "$(t M_DOC_ST_NONE)"
+  fi
+  # Ghostty reload hint（配置已写 ≠ 运行中窗口已吃进去）
+  if [ -d "/Applications/Ghostty.app" ] || command -v ghostty >/dev/null 2>&1; then
+    _gcfg="$HOME/.config/ghostty/config"
+    if [ -f "$_gcfg" ]; then
+      _need_reload="$(python3 - "$_gcfg" <<'PY' 2>/dev/null || echo ''
+import os, sys, subprocess, time
+cfg = sys.argv[1]
+try:
+    mtime = os.path.getmtime(cfg)
+except OSError:
+    print("")
+    raise SystemExit
+out = subprocess.run(
+    ["ps", "-axo", "lstart=,comm="], capture_output=True, text=True
+).stdout.splitlines()
+hits = []
+for line in out:
+    line = line.rstrip()
+    # ps comm 最后一列：Ghostty（GUI）—— CLI 子命令通常不叫这个
+    if not line.endswith("Ghostty"):
+        continue
+    stamp = line[: -len("Ghostty")].strip()
+    for fmt in ("%a %b %d %H:%M:%S %Y", "%c"):
+        try:
+            hits.append(time.mktime(time.strptime(stamp, fmt)))
+            break
+        except ValueError:
+            continue
+if not hits:
+    print("no-process")
+elif max(hits) < mtime:
+    print("reload")
+else:
+    print("ok")
+PY
+)"
+      case "$_need_reload" in
+        reload) st "$(t M_DOC_ST_RELOAD)" "$(t M_DOC_ST_RELOAD_GHOSTTY)" ;;
+        no-process) st "$(t M_DOC_ST_RELOAD)" "$(t M_DOC_ST_RELOAD_NOPROC)" ;;
+        ok) st "$(t M_DOC_ST_RELOAD)" "$(t M_DOC_ST_RELOAD_OK)" ;;
+        *) st "$(t M_DOC_ST_RELOAD)" "$(t M_DOC_ST_RELOAD_SKIP)" ;;
+      esac
+    else
+      st "$(t M_DOC_ST_RELOAD)" "$(t M_DOC_ST_RELOAD_NOCFG)"
+    fi
+  else
+    st "$(t M_DOC_ST_RELOAD)" "$(t M_DOC_ST_RELOAD_NOAPP)"
+  fi
+}
+
+print_state_dashboard
+if [ "$STATUS_ONLY" = "1" ]; then
+  exit 0
+fi
 
 
 # ---- 1. 基础工具链 ----
@@ -199,6 +329,25 @@ if [ -n "$ACTIVE" ]; then
   else
     warn "$(t M_DOC_TRIG_WARN)" "$(t M_DOC_TRIG_FIX)"
   fi
+  # 语义交互层 v1：Smart Selection 产品规则 + Semantic History
+  _SEM_META="$(python3 - "$ACTIVE" <<'PY' 2>/dev/null || true
+import json,sys
+p=json.load(open(sys.argv[1]))["Profiles"][0]
+ss=p.get("Smart Selection Rules") or []
+ours=[r.get("notes","") for r in ss if "hekouwang" in (r.get("notes") or "")]
+sh=(p.get("Semantic History") or {}).get("action","")
+print(f"{len(ours)}|{sh}|{'|'.join(ours)}")
+PY
+)"
+  _SEM_N="${_SEM_META%%|*}"
+  _SEM_REST="${_SEM_META#*|}"
+  _SEM_SH="${_SEM_REST%%|*}"
+  if [ -n "$_SEM_N" ] && [ "$_SEM_N" -ge 3 ] 2>/dev/null; then
+    ok "$(t M_DOC_SEM_OK "$_SEM_N" "${_SEM_SH:-?}")"
+  else
+    warn "$(t M_DOC_SEM_WARN)" "$(t M_DOC_SEM_FIX)" \
+         "$SCRIPT_DIR/theme.sh $(cat "$RUNTIME/theme" 2>/dev/null || echo v2-mihei)"
+  fi
 fi
 DEF="$(defaults read "$DOMAIN" 'Default Bookmark Guid' 2>/dev/null || echo '')"
 if [ -n "$GUID" ] && [ "$DEF" = "$GUID" ]; then ok "$(t M_DOC_DEFAULT_OK)"
@@ -214,6 +363,17 @@ if defaults read "$DOMAIN" GlobalKeyMap 2>/dev/null | grep -q '0xd-0x20000'; the
 else
   warn "$(t M_DOC_SHIFTENTER_WARN)" "$(t M_DOC_RUN_SETUPGUI)" "$SCRIPT_DIR/setup-gui.sh"
 fi
+# Cmd-click → Semantic History / URL（键名 CommandSelection，出厂默认 YES）
+_CMDCLICK="$(defaults read "$DOMAIN" CommandSelection 2>/dev/null || echo '')"
+case "$_CMDCLICK" in
+  1|YES|Yes|yes|true|TRUE) ok "$(t M_DOC_CMDCLICK_OK)" ;;
+  0|NO|No|no|false|FALSE)
+    warn "$(t M_DOC_CMDCLICK_OFF)" "$(t M_DOC_CMDCLICK_FIX)" \
+         "defaults write $DOMAIN CommandSelection -bool true" ;;
+  *)
+    # 键不存在 = 走 iTerm2 出厂默认 YES，不算故障
+    ok "$(t M_DOC_CMDCLICK_DEFAULT)" ;;
+esac
 
 # ---- 5. 生态配色是否真的一致 ----
 # 开源版只同步 iTerm2，多终端与生态是付费包能力 —— 缺了不是故障，别报警。
@@ -322,6 +482,39 @@ PY
   else
     warn "$(t M_DOC_TMUX_WARN)" \
          "echo 'source-file ~/.config/hekouwang-terminal/current/tmux.conf' >> ~/.tmux.conf"
+  fi
+  # Ghostty：进程是否吃到最新 config（与状态机仪表盘同源判据，这里升级成 warn）
+  if { [ -d "/Applications/Ghostty.app" ] || command -v ghostty >/dev/null 2>&1; } \
+     && [ -f "$HOME/.config/ghostty/config" ]; then
+    _gr="$(python3 - "$HOME/.config/ghostty/config" <<'PY' 2>/dev/null || echo ''
+import os, sys, subprocess, time
+cfg = sys.argv[1]
+try:
+    mtime = os.path.getmtime(cfg)
+except OSError:
+    print(""); raise SystemExit
+hits = []
+for line in subprocess.run(["ps","-axo","lstart=,comm="], capture_output=True, text=True).stdout.splitlines():
+    line = line.rstrip()
+    if not line.endswith("Ghostty"):
+        continue
+    stamp = line[: -len("Ghostty")].strip()
+    try:
+        hits.append(time.mktime(time.strptime(stamp, "%a %b %d %H:%M:%S %Y")))
+    except ValueError:
+        pass
+if not hits:
+    print("no-process")
+elif max(hits) < mtime:
+    print("reload")
+else:
+    print("ok")
+PY
+)"
+    case "$_gr" in
+      reload) warn "$(t M_DOC_GHOSTTY_RELOAD)" "$(t M_DOC_GHOSTTY_RELOAD_FIX)" ;;
+      ok) ok "$(t M_DOC_GHOSTTY_OK)" ;;
+    esac
   fi
 elif [ "$HAS_PRO" = "0" ]; then
   [ "$QUIET" = "1" ] || {

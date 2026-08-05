@@ -73,6 +73,9 @@ say M_GUI_FUNC
 defaults write "$DOMAIN" StatusBarPosition -int 1              # 0=顶 1=底；Minimal 下置底更像原生
 # 工具带：右侧边栏。Captured Output 需要 Profile 里的 CaptureTrigger 才有内容。
 defaults write "$DOMAIN" ToolbeltTools -array "Captured Output" "Snippets" "Command History"
+# 语义交互层依赖：Cmd-click 打开 URL / Semantic History（出厂默认 YES，这里显式钉住防被关）
+# 键名 = iTermPreferences.m 的 kPreferenceKeyCmdClickOpensURLs → @"CommandSelection"
+defaults write "$DOMAIN" CommandSelection -bool true
 
 # ---- 2. 默认 Profile ----
 say M_GUI_PROFILE

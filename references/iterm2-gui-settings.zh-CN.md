@@ -193,6 +193,28 @@ alias ecs:prod:web="ssh -o ServerAliveInterval=60 -t root@<你的服务器IP> 't
 > 会硬塞一行删不掉的 `A trigger fired in session…`；换 `terminal-notifier` 既要多装依赖、又要手动
 > 放行「触发器运行命令」，实测也不好看。权衡下来不收录，保持这 4 条干净可靠。
 
+### 4.4b 语义交互层 v1 ⭐ 已默认随 Profile 交付
+
+**Smart Selection + Semantic History** —— 同样由 `_generate.py` 的 `smart_selection_rules()` /
+`semantic_history()` 写进 Dynamic Profile。
+
+| 匹配 | Cmd-click / 第一条动作 | 右键还可 |
+|---|---|---|
+| `path/to/file.ext:42` 或 `:42:8` | 打开到行（本机最佳编辑器） | Copy path:line |
+| Git SHA（`[0-9a-f]{7,40}`） | 在仓库目录 `git show --stat` | Copy SHA |
+| `localhost:3xxx` / `127.0.0.1:…` | 浏览器打开 `http://…` | Copy host:port |
+
+出厂 Paths / HTTP URL 等规则一并保留——写了 `Smart Selection Rules` 会**整表替换**继承，
+所以生成器必须自带那一组。
+
+Semantic History = `best editor`（本机有 Cursor / VS Code 就会用）。
+`setup-gui.sh` 钉住 `CommandSelection=YES`，避免 Cmd-click 被静默关掉。
+
+```bash
+./doctor.sh --status          # semantic 行应有产品规则 + SH=best editor
+./theme.sh <主题> && Cmd+T    # 必须新开 tab
+```
+
 ### 4.5 状态栏（可选）
 
 `Settings → Profiles → Session → Status bar enabled → Configure`

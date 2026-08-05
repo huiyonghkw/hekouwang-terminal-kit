@@ -174,6 +174,114 @@ def triggers(p):
     ]
 
 
+# ContextMenuActions 数值（iTerm2 ContextMenuActionPrefsController.h）——
+# Dynamic Profile 的 actions[].action 必须是这个整数，不是类名字符串。
+_OPEN_FILE = 0
+_OPEN_URL = 1
+_RUN_CMD = 2
+_COPY = 6
+
+
+def _ss_action(title, action, parameter=""):
+    return {"title": title, "action": action, "parameter": parameter}
+
+
+def smart_selection_rules():
+    """语义交互层 v1 · Smart Selection 规则包。
+
+    Dynamic Profile 一旦写了 `Smart Selection Rules` 就**整表替换**继承值，
+    所以必须自带 iTerm2 出厂那一组（Paths / HTTP URL …），再叠我们的产品规则。
+    Cmd-click 走匹配规则的**第一条** action；右键菜单列出全部。
+
+    产品规则（高/极高精度，压过泛 Paths）：
+      · path:line[:col] → 交给 Semantic History / 打开文件
+      · Git SHA → git show（失败时仍可 Copy）
+      · localhost / 127.0.0.1:port → 浏览器打开
+    """
+    # 出厂规则：字面抄自 /Applications/iTerm.app/.../SmartSelectionRules.plist
+    stock = [
+        {"notes": "Word bounded by whitespace",
+         "regex": r"\S+", "precision": "low"},
+        {"notes": "C++ namespace::identifier",
+         "regex": r"([a-zA-Z0-9_]+::)+[a-zA-Z0-9_]+", "precision": "normal"},
+        {"notes": "Paths",
+         "regex": r"\~?/?([[:letter:][:number:]._-]+/+)+[[:letter:][:number:]._-]+/?",
+         "precision": "normal",
+         "actions": [_ss_action("Open Path", _OPEN_FILE, r"\0")]},
+        {"notes": "Quoted string",
+         "regex": r'@?"(?:[^"\\]|\\.)*"', "precision": "normal"},
+        {"notes": "Java/Python include paths",
+         "regex": r"([[:letter:][:number:]._]+\.)+[[:letter:][:number:]._]+",
+         "precision": "normal"},
+        {"notes": "mailto URL",
+         "regex": r"\bmailto:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b",
+         "precision": "normal"},
+        {"notes": "Obj-C selector",
+         "regex": r"@selector\([^)]+\)", "precision": "high"},
+        {"notes": "email address",
+         "regex": r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b",
+         "precision": "high"},
+        {"notes": "HTTP URL",
+         "regex": (
+             r"((?<!\()https?://([a-z0-9A-Z]+(:[a-zA-Z0-9]+)?@)?([a-z0-9A-Z][-a-z0-9A-Z]*\.)*"
+             r"[A-Za-z][-A-Za-z]*((:[0-9]+)?)(/[a-zA-Z0-9;/\.\-_+%?&@=#~()]*)?)"
+             r"|(https?://([a-z0-9A-Z]+(:[a-zA-Z0-9]+)?@)?([a-z0-9A-Z][-a-z0-9A-Z]*\.)*"
+             r"[A-Za-z][-A-Za-z]*((:[0-9]+)?)(/[a-zA-Z0-9;/\.\-_+%?&@=#~(]*)?)"
+         ),
+         "precision": "very_high",
+         "actions": [_ss_action("Open URL", _OPEN_URL, r"\0")]},
+        {"notes": "SSH URL",
+         "regex": r"\bssh:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b",
+         "precision": "very_high"},
+        {"notes": "Telnet URL",
+         "regex": r"\btelnet:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b",
+         "precision": "very_high"},
+    ]
+    # 产品规则放前面：同位置多规则时更高 precision 优先；并列时列表靠前更直观
+    ours = [
+        {"notes": "hekouwang · path:line[:col]",
+         "regex": (
+             r"(?:~|/|\./|\.\./)?(?:[[:alnum:]._+-]+/)*[[:alnum:]._+-]+\."
+             r"[[:alnum:]]+:[0-9]+(?::[0-9]+)?"
+         ),
+         "precision": "very_high",
+         "actions": [
+             # Semantic History 认 path:line；Open File 参数带 :line 时多数编辑器也能吃
+             _ss_action("Open at line", _OPEN_FILE, r"\0"),
+             _ss_action("Copy path:line", _COPY, r"\0"),
+         ]},
+        {"notes": "hekouwang · Git SHA",
+         "regex": r"\b[0-9a-f]{7,40}\b",
+         "precision": "high",
+         "actions": [
+             _ss_action("git show", _RUN_CMD, r"git -C '\d' show --stat \0"),
+             _ss_action("Copy SHA", _COPY, r"\0"),
+         ]},
+        {"notes": "hekouwang · localhost port",
+         "regex": r"\b(?:localhost|127\.0\.0\.1):(3[0-9]{3}|4[0-9]{3}|5[0-9]{3}|8[0-9]{3}|9[0-9]{3})\b",
+         "precision": "very_high",
+         "actions": [
+             _ss_action("Open in browser", _OPEN_URL, r"http://\0"),
+             _ss_action("Copy host:port", _COPY, r"\0"),
+         ]},
+    ]
+    return ours + stock
+
+
+def semantic_history():
+    """Cmd-click 打开文件：交给本机「最好的编辑器」（Cursor / VS Code / …）。
+
+    action 取值见 iTermSemanticHistoryPrefsController.m：
+      best editor / editor / url / command / raw command / …
+    远程路径打不开时 iTerm2 自己降级提示，我们不另做静默开错文件的逻辑。
+    """
+    return {
+        "action": "best editor",
+        "editor": "",
+        "text": "",
+    }
+
+
 def status_bar(p):
     """底部状态栏（配置即代码，不用手点 GUI）。
 
@@ -266,6 +374,12 @@ def build(p):
         "Use Tab Color": True,
         "Tab Color": col(mix(p["cursor"], p["bg"], TAB_TINT) if TAB_TINT else p["bg"]),
         "Triggers": triggers(p),
+        # ---- 语义交互层 v1（两档都有，同 Triggers）----
+        # Smart Selection：quad-click / Cmd-click / 右键动作；必须自带出厂规则，见 smart_selection_rules()。
+        # Semantic History：Cmd-click 路径交给本机最佳编辑器（Cursor / VS Code …）。
+        "Smart Selection Rules": smart_selection_rules(),
+        "Smart Selection Actions Use Interpolated Strings": False,
+        "Semantic History": semantic_history(),
         # ---- 功能层：状态栏（默认关，见 SHOW_STATUS_BAR 注释）----
         # 位置（顶/底）是全局设置，不在 Profile 里，见 setup-gui.sh 的 StatusBarPosition。
         "Show Status Bar": SHOW_STATUS_BAR,

@@ -9,6 +9,20 @@
 
 ---
 
+## [2.9.0] · 语义交互层 v1 · doctor 状态机（公开版可见的变化）
+
+**语义交互层 v1（随 Profile 交付）**  
+换肤后**新开 tab**：Cmd-click `path:line`、Git SHA、`localhost:port`；四击按 Smart Selection 选中。  
+Semantic History 走本机最佳编辑器。
+
+**doctor 状态机仪表盘**
+
+```bash
+./doctor.sh --status
+```
+
+一眼看：theme / auto / node / optical·scene（付费才有值）/ semantic / Ghostty 是否需重载。
+
 ## [2.8.0] · Node 自选 · 跟随系统默认关 · 备份归目录（公开版可见的变化）
 
 开源版与付费版共用这三条（不涉及付费档能力）：

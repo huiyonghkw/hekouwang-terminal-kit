@@ -8,6 +8,7 @@ hekouwang-terminal-kit — environment check
 Usage:
   ./doctor.sh          read-only check: a ✓/✗/⚠ list plus how to fix each item
   ./doctor.sh --fix    check, then ask about each fix one by one (it tells you what it will run)
+  ./doctor.sh --status print the state dashboard only (theme / auto / node / optical / scene / semantic / reload)
   ./doctor.sh --quiet  print the verdict line only (for use inside scripts)
   ./doctor.sh --profile  also rank the slowest zsh startup entries (zprof)
   ./doctor.sh --lang zh  run in Chinese
@@ -18,6 +19,7 @@ EOF
 }
 
 M_DOC_HEAD="═══ hekouwang-terminal-kit check ═══"
+M_DOC_S0="0. State (pinned)"
 M_DOC_S1="1. CLI tool set"
 M_DOC_S2="2. Fonts (a missing icon font turns ls/starship icons into ? boxes)"
 M_DOC_S3="3. iTerm2 Dynamic Profile"
@@ -27,6 +29,31 @@ M_DOC_S6="6. ~/.zshrc load order"
 M_DOC_S7="7. shell startup time"
 M_DOC_S7B="7b. zprof time ranking (top 8)"
 M_DOC_S8="8. Shell integration"
+
+M_DOC_ST_THEME="theme"
+M_DOC_ST_AUTO="auto"
+M_DOC_ST_NODE="node"
+M_DOC_ST_OPTICAL="optical"
+M_DOC_ST_SCENE="scene"
+M_DOC_ST_SEMANTIC="semantic"
+M_DOC_ST_RELOAD="reload"
+M_DOC_ST_PINNED="%s (pinned)"
+M_DOC_ST_NONE="— (not deployed)"
+M_DOC_ST_AUTO_ON="on (follow system light/dark)"
+M_DOC_ST_AUTO_OFF="off (manual theme stays pinned)"
+M_DOC_ST_NODE_UNSET="— (not chosen yet)"
+M_DOC_ST_OPTICAL_VAL="%s @ %s (%s)"
+M_DOC_ST_SCENE_VAL="%s (%s)"
+M_DOC_ST_SEMANTIC_VAL="%s rules · %s product · SH=%s"
+M_DOC_ST_SEMANTIC_MISS="profile has no hekouwang Smart Selection pack"
+M_DOC_ST_PAID_ONLY="— (paid build)"
+M_DOC_ST_UNREADABLE="— (unreadable)"
+M_DOC_ST_RELOAD_GHOSTTY="Ghostty config newer than process → Cmd+Shift+, to reload"
+M_DOC_ST_RELOAD_NOPROC="Ghostty installed, no running process"
+M_DOC_ST_RELOAD_OK="Ghostty process is newer than config"
+M_DOC_ST_RELOAD_SKIP="Ghostty reload check skipped"
+M_DOC_ST_RELOAD_NOCFG="Ghostty app present, no ~/.config/ghostty/config yet"
+M_DOC_ST_RELOAD_NOAPP="Ghostty not installed (skip)"
 
 M_DOC_TOOL_MISSING="%s is not installed"
 M_DOC_FONT_MAIN_OK="Maple Mono NF CN (main font, icons + CJK built in)"
@@ -64,6 +91,9 @@ M_DOC_DP_DUP_FIX="delete the extras, keep only hekouwang-active-theme.json"
 M_DOC_TRIG_OK="Triggers delivered (%s of them: error red / warning yellow / success green / password manager)"
 M_DOC_TRIG_WARN="The profile has no Triggers (log coloring is missing)"
 M_DOC_TRIG_FIX="re-run config/themes/_generate.py then ./theme.sh; open a new tab to see it"
+M_DOC_SEM_OK="Semantic layer v1 delivered (%s product rules · Semantic History=%s)"
+M_DOC_SEM_WARN="Semantic layer missing (no hekouwang Smart Selection rules in profile)"
+M_DOC_SEM_FIX="re-run ./theme.sh <theme> after updating; open a new tab (Smart Selection applies to new sessions)"
 M_DOC_DEFAULT_OK="Set as the default profile"
 M_DOC_DEFAULT_WARN="This kit's profile is not the default one yet"
 M_DOC_DEFAULT_FIX="run ./setup-gui.sh to set it automatically"
@@ -74,6 +104,13 @@ M_DOC_VALUE_DEFAULT="default"
 M_DOC_RUN_SETUPGUI="run ./setup-gui.sh"
 M_DOC_SHIFTENTER_OK="Shift+Enter newline mapping is configured"
 M_DOC_SHIFTENTER_WARN="Shift+Enter newline mapping is missing (multi-line input for AI CLIs)"
+M_DOC_CMDCLICK_OK="Cmd-click opens URLs / Semantic History (CommandSelection=YES)"
+M_DOC_CMDCLICK_DEFAULT="Cmd-click uses iTerm2 factory default (on)"
+M_DOC_CMDCLICK_OFF="Cmd-click opens URLs is OFF — Semantic History will not fire"
+M_DOC_CMDCLICK_FIX="turn it on: defaults write com.googlecode.iterm2 CommandSelection -bool true (quit iTerm2 first), or ./setup-gui.sh"
+M_DOC_GHOSTTY_OK="Ghostty process has loaded a config at least as new as the file on disk"
+M_DOC_GHOSTTY_RELOAD="Ghostty is running on a config older than ~/.config/ghostty/config"
+M_DOC_GHOSTTY_RELOAD_FIX="in Ghostty press Cmd+Shift+, (reload config); new tabs alone will not pick it up"
 
 M_DOC_ECO_OK="Ecosystem colors deployed → %s"
 M_DOC_ECO_MISMATCH="Terminal theme (%s) and ecosystem colors (%s) are not the same one"

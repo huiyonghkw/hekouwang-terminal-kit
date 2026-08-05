@@ -8,6 +8,7 @@ hekouwang-terminal-kit — 环境自检
 用法:
   ./doctor.sh          纯只读体检，给 ✓/✗/⚠ 清单与修复建议
   ./doctor.sh --fix    体检完逐项问你要不要修（每项都先说清楚要跑什么）
+  ./doctor.sh --status 只打印状态机仪表盘（主题/跟随/Node/光学/场景/语义/重载）
   ./doctor.sh --quiet  只输出结论行（脚本里调用用）
   ./doctor.sh --profile  顺带用 zprof 把最慢的启动项点名
   ./doctor.sh --lang en  切回英文
@@ -18,6 +19,7 @@ EOF
 }
 
 M_DOC_HEAD="═══ hekouwang-terminal-kit 体检 ═══"
+M_DOC_S0="0. 状态机（当前钉住）"
 M_DOC_S1="1. CLI 全家桶"
 M_DOC_S2="2. 字体（缺图标字体 → ls/starship 图标变 ? 方块）"
 M_DOC_S3="3. iTerm2 Dynamic Profile"
@@ -27,6 +29,31 @@ M_DOC_S6="6. ~/.zshrc 加载顺序"
 M_DOC_S7="7. shell 启动耗时"
 M_DOC_S7B="7b. zprof 耗时排行（前 8）"
 M_DOC_S8="8. Shell 集成"
+
+M_DOC_ST_THEME="theme"
+M_DOC_ST_AUTO="auto"
+M_DOC_ST_NODE="node"
+M_DOC_ST_OPTICAL="optical"
+M_DOC_ST_SCENE="scene"
+M_DOC_ST_SEMANTIC="semantic"
+M_DOC_ST_RELOAD="reload"
+M_DOC_ST_PINNED="%s（已钉住）"
+M_DOC_ST_NONE="—（尚未部署）"
+M_DOC_ST_AUTO_ON="开（跟随系统深浅色）"
+M_DOC_ST_AUTO_OFF="关（手动主题保持钉住）"
+M_DOC_ST_NODE_UNSET="—（还没选过）"
+M_DOC_ST_OPTICAL_VAL="%s @ %s（%s）"
+M_DOC_ST_SCENE_VAL="%s（%s）"
+M_DOC_ST_SEMANTIC_VAL="%s 条规则 · 产品 %s · SH=%s"
+M_DOC_ST_SEMANTIC_MISS="Profile 里没有 hekouwang Smart Selection 包"
+M_DOC_ST_PAID_ONLY="—（付费档）"
+M_DOC_ST_UNREADABLE="—（读不到）"
+M_DOC_ST_RELOAD_GHOSTTY="Ghostty 配置比进程新 → Cmd+Shift+, 重载"
+M_DOC_ST_RELOAD_NOPROC="装了 Ghostty，当前没在跑"
+M_DOC_ST_RELOAD_OK="Ghostty 进程已不低于配置文件时间"
+M_DOC_ST_RELOAD_SKIP="Ghostty 重载检查跳过"
+M_DOC_ST_RELOAD_NOCFG="有 Ghostty，还没有 ~/.config/ghostty/config"
+M_DOC_ST_RELOAD_NOAPP="未装 Ghostty（跳过）"
 
 M_DOC_TOOL_MISSING="%s 未安装"
 M_DOC_FONT_MAIN_OK="Maple Mono NF CN（主字体，自带图标+中文）"
@@ -64,6 +91,9 @@ M_DOC_DP_DUP_FIX="删掉多余的，只留 hekouwang-active-theme.json"
 M_DOC_TRIG_OK="Triggers 已交付（%s 条：错误标红/警告标黄/成功标绿/密码管理器）"
 M_DOC_TRIG_WARN="Profile 里没有 Triggers（少了日志标色）"
 M_DOC_TRIG_FIX="重跑 config/themes/_generate.py 再 ./theme.sh，新开 tab 生效"
+M_DOC_SEM_OK="语义交互层 v1 已交付（%s 条产品规则 · Semantic History=%s）"
+M_DOC_SEM_WARN="语义交互层缺失（Profile 里没有 hekouwang Smart Selection 规则）"
+M_DOC_SEM_FIX="升级后重跑 ./theme.sh <主题>；新开 tab（Smart Selection 只对新会话生效）"
 M_DOC_DEFAULT_OK="已设为默认 Profile"
 M_DOC_DEFAULT_WARN="本套装的 Profile 还不是默认"
 M_DOC_DEFAULT_FIX="跑 ./setup-gui.sh 自动设默认"
@@ -74,6 +104,13 @@ M_DOC_VALUE_DEFAULT="默认"
 M_DOC_RUN_SETUPGUI="跑 ./setup-gui.sh"
 M_DOC_SHIFTENTER_OK="Shift+Enter 换行键映射已配"
 M_DOC_SHIFTENTER_WARN="Shift+Enter 换行键映射未配（AI CLI 多行输入）"
+M_DOC_CMDCLICK_OK="Cmd-click 打开 URL / Semantic History（CommandSelection=YES）"
+M_DOC_CMDCLICK_DEFAULT="Cmd-click 走 iTerm2 出厂默认（开）"
+M_DOC_CMDCLICK_OFF="Cmd-click 打开 URL 被关了 —— Semantic History 不会触发"
+M_DOC_CMDCLICK_FIX="打开：defaults write com.googlecode.iterm2 CommandSelection -bool true（先退出 iTerm2），或 ./setup-gui.sh"
+M_DOC_GHOSTTY_OK="Ghostty 进程加载的配置不低于磁盘上的文件"
+M_DOC_GHOSTTY_RELOAD="Ghostty 还在跑旧配置（磁盘上的 config 更新了）"
+M_DOC_GHOSTTY_RELOAD_FIX="在 Ghostty 里按 Cmd+Shift+, 重载；只开新标签不够"
 
 M_DOC_ECO_OK="生态配色已部署 → %s"
 M_DOC_ECO_MISMATCH="终端主题(%s) 与生态配色(%s) 不是同一套"
