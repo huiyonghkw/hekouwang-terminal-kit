@@ -12,8 +12,13 @@
 
 <p align="center">
   <a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a>
-  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/index.html?lang=zh"><b>文档站</b></a>
-  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/?lang=zh">落地页 / 购买</a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/index.html?lang=zh"><b>产品主页</b></a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/index.html?lang=zh">文档</a>
+</p>
+
+<p align="center">
+  <b>产品要讲的核心内容在主页</b> —— 同色→同观感、分档、购买与诚实边界。<br>
+  本 README 负责装机与日常命令；细节用法走文档站。
 </p>
 
 <p align="center">
@@ -126,7 +131,7 @@
 
 **付费卖的是三件事**：品牌四套主题、「一份色板管住整条工具链」的生成器、把这套教会 AI 的 Skill。
 
-**想要付费版** → [购买页](https://huiyonghkw.github.io/hekouwang-terminal-kit/)（¥19.9，七天不合用直接退）
+**想要付费版** → [产品主页](https://huiyonghkw.github.io/hekouwang-terminal-kit/index.html?lang=zh)（¥19.9，七天不合用直接退）
 或微信 **`hekouwang`**（备注「终端套装」）。先装开源版用两天再决定完全可以。
 
 <details>

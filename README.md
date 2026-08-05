@@ -12,8 +12,13 @@
 
 <p align="center">
   <a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a>
-  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/index.html?lang=en"><b>Docs site</b></a>
-  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/?lang=en">Landing / buy</a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/index.html?lang=en"><b>Product home</b></a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/index.html?lang=en">Docs</a>
+</p>
+
+<p align="center">
+  <b>The product pitch lives on the homepage</b> — same colors → same look, tiers, buy, honest limits.<br>
+  This README is install + daily commands; deep usage is on the docs site.
 </p>
 
 <p align="center">
@@ -131,7 +136,7 @@ The open-source build is not a demo: 3 palettes, blur, log coloring, `Shift+Ente
 
 **What you pay for**: four brand themes, the generator that fans one palette across the tool chain, and the Skill that teaches an agent the kit.
 
-**Paid build** → [buy page](https://huiyonghkw.github.io/hekouwang-terminal-kit/) (¥19.9, 7-day no-questions refund)
+**Paid build** → [product home](https://huiyonghkw.github.io/hekouwang-terminal-kit/index.html?lang=en) (¥19.9, 7-day no-questions refund)
 or WeChat **`hekouwang`** (note: terminal kit). Trying the open-source build for a couple of days first is fine.
 
 <details>
