@@ -67,9 +67,9 @@
 ## 二、跟网上那些 dotfiles 有什么不一样
 
 1. **一份色板，管到四个终端**〔付费〕。别家换主题只换一个终端的底色。这里 `./theme.sh` 一条命令，iTerm2、Ghostty、Warp、**macOS 自带终端**四个一起换，连 `cat`（bat）、`Ctrl+T`（fzf）、`ls`（eza）、`git diff`（delta）、tmux、VS Code 全部同色——因为它们的配色是**同一份色板生成的**，不是各写一遍。
-2. **为 AI 工作流准备的那几处细节**〔开源版就有〕。`Shift+Enter` 换行不提交；`ERROR/WARN/SUCCESS` 自动标色；`Password:` 提示弹密码管理器；跟随系统深浅色自动换肤〔付费〕。
+2. **为 AI 工作流准备的那几处细节**〔开源版就有〕。`Shift+Enter` 换行不提交；`ERROR/WARN/SUCCESS` 自动标色；**Cmd-click** `path:line` / Git SHA / `localhost:port`；`Password:` 提示弹密码管理器；跟随系统深浅色自动换肤〔付费〕。
 3. **敢装，也敢卸**〔开源版就有〕。`install.sh --dry-run` 先列清要改什么；已有 `.zshrc` 用 `migrate.sh` 搬进 `~/.zshrc.local` 再套模板；后悔了 `uninstall.sh` 从备份还原。
-4. **体检能自己修**〔开源版就有〕。`doctor.sh --fix` 逐项确认后自动修；`--profile` 点名拖慢启动的插件（我机器上揪出过 `compinit`，258ms）。
+4. **体检能自己修**〔开源版就有〕。`doctor.sh --status` 一眼看钉住状态；`--fix` 逐项确认后自动修；`--profile` 点名拖慢启动的插件（我机器上揪出过 `compinit`，258ms）。
 5. **它是一个 Claude Code Skill**〔付费〕。装进 `~/.claude/skills/` 之后，你说「换个亮色」「终端怎么这么慢」，AI 自己挑脚本、跑完、解释结果——**你描述要什么，不用记怎么做**。
 
 装完你会得到：
@@ -94,8 +94,8 @@
 | | 开源版（MIT · 免费） | 付费版 ¥19.9 |
 |---|---|---|
 | 安装 / 迁移 / 换肤 / 体检 / 更新 / 同步 / 卸载 全套脚本 | ✅ | ✅ |
-| Minimal：无标题栏 · 无边框 · 无滚动条 · 毛玻璃 · Triggers · Shift+Enter | ✅ | ✅ |
-| 现代 CLI 全家桶 · `doctor.sh --fix/--profile` · `.zshrc` 迁移 | ✅ | ✅ |
+| Minimal：无标题栏 · 无边框 · 无滚动条 · 毛玻璃 · Triggers · 语义 Cmd-click · Shift+Enter | ✅ | ✅ |
+| 现代 CLI 全家桶 · `doctor.sh --status/--fix/--profile` · `.zshrc` 迁移 | ✅ | ✅ |
 | **配色主题** | 3 套社区 | + 4 套品牌（含 **2 套亮色**） |
 | **Claude Code Skill** | — | ✅ |
 | **多终端同步**（Ghostty · Warp · 自带终端）+ **全生态同色**（bat/fzf/eza/git diff/tmux/VS Code） | — | ✅ |
@@ -248,7 +248,8 @@ CN=1 ./install.sh
 ## 八、维护：体检 / 更新 / 卸载
 
 ```bash
-./doctor.sh            # 体检
+./doctor.sh            # 体检（第 0 节＝状态机仪表盘）
+./doctor.sh --status   # 只看仪表盘：主题 / 跟随 / Node / 语义 / Ghostty 重载
 ./doctor.sh --fix      # 逐项确认后自动修
 ./doctor.sh --profile  # 启动慢？点名是哪个插件
 
@@ -265,9 +266,9 @@ CN=1 ./install.sh
 
 ## 九、进阶与常见问题
 
-tmux `-CC`、Triggers、Shell Integration、多终端差异、完整 FAQ（字体变 `?`、换肤后 `cat` 没变色、`cat | head` 验色陷阱等）→
+tmux `-CC`、Triggers、**语义交互层**（Cmd-click）、Shell Integration、多终端差异、完整 FAQ（字体变 `?`、换肤后 `cat` 没变色、`cat | head` 验色陷阱等）→
 
-**[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)**（English: [`docs/manual.md`](docs/manual.md)）
+**[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)**（English: [`docs/manual.md`](docs/manual.md)）· 文档站深链：[语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
 
 | 其他 | 去哪 |
 |---|---|

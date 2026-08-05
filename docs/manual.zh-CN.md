@@ -105,9 +105,9 @@
 ## 二、跟网上那些 dotfiles 有什么不一样
 
 1. **一份色板，管到四个终端**〔付费〕。别家换主题只换一个终端的底色。这里 `./theme.sh` 一条命令，iTerm2、Ghostty、Warp、**macOS 自带终端**四个一起换，连 `cat`（bat）、`Ctrl+T`（fzf）、`ls`（eza）、`git diff`（delta）、tmux、VS Code 全部同色——因为它们的配色是**同一份色板生成的**，不是各写一遍。手写多套色板一定会漂，这点我用实测数据交过学费：曾经手工维护的 Warp 主题，注释写着「与 iTerm2 完全一致」，实际 16 个色槽错了 8 个。
-2. **为 AI 工作流准备的那几处细节**〔开源版就有〕。 `Shift+Enter` 换行不提交（写多行 prompt）；`ERROR/WARN/SUCCESS` 在输出里自动标色，标注色跟着主题走；`Password:` 提示自动弹密码管理器；跟随系统深浅色自动换肤，白天投屏不用手动切。
+2. **为 AI 工作流准备的那几处细节**〔开源版就有〕。 `Shift+Enter` 换行不提交（写多行 prompt）；`ERROR/WARN/SUCCESS` 在输出里自动标色；**Cmd-click** `path:line` / Git SHA / `localhost:port`；`Password:` 提示自动弹密码管理器；跟随系统深浅色自动换肤〔付费〕。
 3. **敢装，也敢卸**〔开源版就有〕。 `install.sh --dry-run` 先告诉你要改哪些文件、写哪些系统设置、什么绝对不碰；已经有自己的 `.zshrc`？`migrate.sh` 把你的 alias/PATH 搬进 `~/.zshrc.local` 再套模板，而不是盖掉；后悔了 `uninstall.sh` 从备份还原、把 GUI 设置恢复出厂默认。
-4. **体检能自己修**〔开源版就有〕。 `doctor.sh` 不只报问题：`--fix` 逐项确认后自动修，`--profile` 直接点名是哪个插件让你的终端开得慢（我自己机器上揪出来的是 `compinit`，258ms）。
+4. **体检能自己修**〔开源版就有〕。 `doctor.sh --status` 一眼看钉住状态；`--fix` 逐项确认后自动修，`--profile` 直接点名是哪个插件让你的终端开得慢（我自己机器上揪出来的是 `compinit`，258ms）。
 5. **它是一个 Claude Code Skill**〔付费〕。别家 dotfiles 给你一堆脚本和一份 README，命令得你自己记。这套装进 `~/.claude/skills/` 之后，你说「白天投屏看不清，换个亮色」「这终端怎么开这么慢」，AI 自己去挑脚本、配参数、跑完、把结果解释给你听——**你描述要什么结果，不用记它怎么做到**。
 
 装完你会得到：
@@ -141,8 +141,9 @@
 | **配色主题** | ✅ 3 套社区（catppuccin-mocha / tokyo-night / gruvbox-dark） | ✅ 3 套社区 **+ 4 套品牌** |
 | **质感层**：毛玻璃 · 透明度 · 光标形态 | ✅ | ✅ |
 | **Triggers**：ERROR/WARN/SUCCESS 自动标色 + 密码管理器 | ✅ 4 条 | ✅ |
+| **语义交互层 v1**：Cmd-click `path:line` / Git SHA / `localhost:port` | ✅ | ✅ |
 | **`Shift+Enter` 换行**（AI CLI 写多行 prompt） | ✅ | ✅ |
-| 现代 CLI 全家桶 · 体检 `--fix`/`--profile` · `.zshrc` 迁移 · 一键卸载 | ✅ | ✅ |
+| 现代 CLI 全家桶 · 体检 `--status`/`--fix`/`--profile` · `.zshrc` 迁移 · 一键卸载 | ✅ | ✅ |
 | 主题生成器（自己写色板就出完整 iTerm2 主题） | ✅ | ✅ |
 | **Claude Code Skill**：装进 `~/.claude/skills/`，直接跟 AI 说「给我换个亮色主题」「我终端怎么开得这么慢」，它自己把整套跑完 | — | ✅ |
 | **品牌主题** | — | V2 米黑 · V1 科技黑 · **V2 米白** · **V3 财经白** |
@@ -463,7 +464,8 @@ PALETTES = {
 ### 体检 + 自动修
 
 ```bash
-./doctor.sh              # 纯只读，给 ✓/✗/⚠ 清单和修复建议
+./doctor.sh              # 纯只读；第 0 节＝状态机仪表盘
+./doctor.sh --status     # 只看仪表盘：主题 / 跟随 / Node / 语义 / Ghostty 重载
 ./doctor.sh --fix        # 逐项问你要不要修（每项先说清楚要跑什么命令）
 ./doctor.sh --profile    # 终端开得慢？直接点名是哪个插件占的时间
 ```
@@ -536,6 +538,28 @@ ssh server -t 'tmux -CC new -A -s deploy'   # 有就接管、没有就新建
 
 > Triggers 只对**新开的 tab** 生效——刚装好记得 `Cmd+T`。
 
+### 语义交互层 v1：Cmd-click 路径 / SHA / 端口（已默认装好）
+
+Triggers 解决「愿不愿意看」；语义层解决「少操作几步」——报错里的 `src/app.ts:42`、日志里的 commit SHA、`localhost:3000`，**Cmd-click 就能打开或执行动作**。
+
+| 匹配 | Cmd-click（第一条动作） | 右键还可 |
+|---|---|---|
+| `path/to/file.ext:42` 或 `:42:8` | 用本机最佳编辑器打开到行（Cursor / VS Code …） | Copy path:line |
+| Git SHA（`[0-9a-f]{7,40}`） | 在仓库目录跑 `git show --stat` | Copy SHA |
+| `localhost:3xxx` / `127.0.0.1:…` | 浏览器打开 | Copy host:port |
+
+四击（quad-click）按 Smart Selection 选中整段。Semantic History 设为 `best editor`。
+
+```bash
+./theme.sh <当前主题>    # 升级后重部署
+# 然后 Cmd+T 新开 tab —— Smart Selection 只对新会话生效
+./doctor.sh --status     # semantic 行应显示产品规则 + SH=best editor
+```
+
+文档站深链（可分享）：[语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
+
+> ⚠️ **只在 iTerm2 里有**：Ghostty / Warp / 自带终端没有 Smart Selection 对应物——和 Triggers 同一条诚实边界。付费档的多终端同步管的是配色观感，不是可点语义。
+
 ### Shell Integration：终端里看图 + 命令成败一眼可见
 
 `imgcat 图.png` 直接在终端显示图片；每条命令左侧自动打标（绿=成功 / 红=失败），`Cmd+Shift+↑/↓` 在命令块间跳；SSH 远程机上 `it2copy` 直进本地剪贴板。
@@ -595,6 +619,19 @@ open -e ~/.zshrc.local
 
 图标字体没装上，国内网络常见。重跑 `CN=1 ./install.sh` 即可补上。
 跑 `./doctor.sh` 第 2 节会告诉你 Profile 里写的字体名能不能被解析到——**装了不等于上屏**，字体名写错时 iTerm2 是静默回退的。
+</details>
+
+<details>
+<summary><b>Cmd-click 路径 / SHA / 端口没反应</b></summary>
+
+语义交互层随 Profile 交付，但有四条常见漏点：
+
+1. **换肤后没新开 tab** —— Smart Selection 只对新会话生效，按 `Cmd+T`
+2. **升级后没重部署** —— `./theme.sh <当前主题>`，再新开 tab
+3. **Cmd-click 被关了** —— `./doctor.sh` 会查 `CommandSelection`；或跑 `./setup-gui.sh`（需在 iTerm2 外执行）
+4. **本机没装编辑器** —— Semantic History = `best editor`，至少装 VS Code / Cursor 之一
+
+先看 `./doctor.sh --status` 的 `semantic` 行。详解：[语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
 </details>
 
 <details>

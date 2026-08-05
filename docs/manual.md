@@ -102,9 +102,9 @@ This setup exists for exactly those. **Anything AI can do, I run for real first 
 ## 2. How this differs from the dotfiles repos out there
 
 1. **One palette, four terminals** 〔paid〕. Other setups reskin one terminal's background. Here `./theme.sh` is one command, and iTerm2, Ghostty, Warp and **the built-in macOS Terminal** change together, along with `cat` (bat), `Ctrl+T` (fzf), `ls` (eza), `git diff` (delta), tmux and VS Code — because their colors are **generated from one palette** rather than written out several times. Hand-maintaining several palettes always drifts, and I paid that tuition with measurements: a Warp theme I maintained by hand carried a comment saying "identical to the iTerm2 one" while 8 of its 16 slots were actually wrong.
-2. **The details built for AI workflows** 〔in the free build〕. `Shift+Enter` inserts a newline instead of submitting (multi-line prompts); `ERROR/WARN/SUCCESS` get colored automatically in the output, in colors that follow the theme; a `Password:` prompt pops your password manager; the theme follows the system light/dark switch, so presenting in daylight needs no manual change.
+2. **The details built for AI workflows** 〔in the free build〕. `Shift+Enter` inserts a newline instead of submitting (multi-line prompts); `ERROR/WARN/SUCCESS` get colored automatically; **Cmd-click** opens `path:line` / Git SHA / `localhost:port`; a `Password:` prompt pops your password manager; the theme follows the system light/dark switch 〔paid〕.
 3. **Safe to install, safe to remove** 〔free build〕. `install.sh --dry-run` tells you which files it will touch, which system settings it will write, and what it will never go near. Already have your own `.zshrc`? `migrate.sh` moves your aliases and PATH into `~/.zshrc.local` and then lays down the template, instead of overwriting you. Changed your mind? `uninstall.sh` restores from the backup and resets the GUI settings to factory defaults.
-4. **A checkup that can fix itself** 〔free build〕. `doctor.sh` does not only report: `--fix` fixes each item after you confirm it, and `--profile` names the plugin making your terminal slow to open (on my own machine it caught `compinit`, 258ms).
+4. **A checkup that can fix itself** 〔free build〕. `doctor.sh --status` shows the pinned state dashboard; `--fix` fixes each item after you confirm it, and `--profile` names the plugin making your terminal slow to open (on my own machine it caught `compinit`, 258ms).
 5. **It is a Claude Code Skill** 〔paid〕. Other dotfiles repos hand you a pile of scripts and a README, and the commands are yours to memorise. Drop this into `~/.claude/skills/` and you say "I am presenting in daylight, give me a light theme" or "why is this terminal so slow to open" — the agent picks the script, sets the flags, runs it and explains the result. **You describe the outcome; you do not memorise how it gets there.**
 
 When it is done you get:
@@ -137,8 +137,9 @@ The open-source build is not a demo: 3 color schemes, blur, automatic log colori
 | **Color themes** | ✅ 3 community (catppuccin-mocha / tokyo-night / gruvbox-dark) | ✅ the 3 community ones **+ 4 brand themes** |
 | **Texture**: blur · transparency · cursor shape | ✅ | ✅ |
 | **Triggers**: ERROR/WARN/SUCCESS coloring + password manager | ✅ 4 of them | ✅ |
+| **Semantic Interaction Layer v1**: Cmd-click `path:line` / Git SHA / `localhost:port` | ✅ | ✅ |
 | **`Shift+Enter` newline** (multi-line prompts for AI CLIs) | ✅ | ✅ |
-| Modern CLI set · doctor `--fix`/`--profile` · `.zshrc` migration · one-command uninstall | ✅ | ✅ |
+| Modern CLI set · doctor `--status`/`--fix`/`--profile` · `.zshrc` migration · one-command uninstall | ✅ | ✅ |
 | Theme generator (write a palette, get a complete iTerm2 theme) | ✅ | ✅ |
 | **Claude Code Skill**: drop it into `~/.claude/skills/` and an agent drives the whole kit — "switch me to a light theme", "why does my terminal take so long to open" | — | ✅ |
 | **Brand themes** | — | V2 Warm Dark · V1 Tech Dark · **V2 Warm Light** · **V3 Finance Light** |
@@ -444,12 +445,13 @@ The result is a `palettes/<name>.py`; re-run the generator and you get the full 
 ### Checkup and self-repair
 
 ```bash
-./doctor.sh              # read-only, gives a ✓/✗/⚠ list with fixes
+./doctor.sh              # read-only; section 0 = state dashboard
+./doctor.sh --status     # dashboard only: theme / auto / node / semantic / Ghostty reload
 ./doctor.sh --fix        # asks about each fix (telling you the exact command first)
 ./doctor.sh --profile    # terminal slow to open? names the plugin eating the time
 ```
 
-It covers: whether the CLI tools are present, whether the font **actually resolves** (a wrong name makes iTerm2 fall back silently, invisible to the eye), whether the Dynamic Profile is valid and its Guid unique, the GUI settings, whether **the whole ecosystem really matches**, the `.zshrc` load order, Node manager conflicts, and **shell startup time** (median of 7 runs).
+It covers: whether the CLI tools are present, whether the font **actually resolves** (a wrong name makes iTerm2 fall back silently, invisible to the eye), whether the Dynamic Profile is valid (Triggers + semantic rules), the GUI settings (including Cmd-click), whether **the whole ecosystem really matches**, the `.zshrc` load order, Node manager conflicts, and **shell startup time** (median of 7 runs).
 
 ---
 
@@ -517,6 +519,28 @@ ssh server -t 'tmux -CC new -A -s deploy'   # attach if it exists, create if not
 
 > Triggers only apply to **newly opened tabs** — right after installing, remember to press `Cmd+T`.
 
+### Semantic Interaction Layer v1: Cmd-click paths / SHAs / ports (installed by default)
+
+Triggers answer “will you look?”; the semantic layer answers “fewer steps” — Cmd-click `src/app.ts:42` in an error, a commit SHA in a log, or `localhost:3000`, and **open or act**.
+
+| Match | Cmd-click (first action) | Also in menu |
+|---|---|---|
+| `path/to/file.ext:42` or `:42:8` | Open at line in best local editor (Cursor / VS Code …) | Copy path:line |
+| Git SHA (`[0-9a-f]{7,40}`) | `git show --stat` in the repo cwd | Copy SHA |
+| `localhost:3xxx` / `127.0.0.1:…` | Open in browser | Copy host:port |
+
+Quad-click selects the whole span via Smart Selection. Semantic History is set to `best editor`.
+
+```bash
+./theme.sh <current-theme>   # redeploy after upgrade
+# then Cmd+T — Smart Selection only applies to new sessions
+./doctor.sh --status         # semantic line should show product rules + SH=best editor
+```
+
+Shareable docs page: [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
+
+> ⚠️ **iTerm2 only**: Ghostty / Warp / Terminal.app have no Smart Selection equivalent — same honesty as Triggers. Paid multi-terminal sync is about palette look, not clickable semantics.
+
 ### Shell Integration: images in the terminal, success visible at a glance
 
 `imgcat image.png` shows an image right in the terminal; every command gets a marker on the left (green = success, red = failure), `Cmd+Shift+↑/↓` jumps between command blocks, and `it2copy` on a remote machine copies straight into your local clipboard.
@@ -576,6 +600,19 @@ open -e ~/.zshrc.local
 
 The icon font did not install, which is common on a restricted network. Re-run `CN=1 ./install.sh` and it gets added.
 Section 2 of `./doctor.sh` tells you whether the font name written in the profile resolves — **installed is not the same as on screen**, and iTerm2 falls back silently when the name is wrong.
+</details>
+
+<details>
+<summary><b>Cmd-click on a path / SHA / port does nothing</b></summary>
+
+The semantic layer ships with the profile, but four common misses:
+
+1. **No new tab after a theme switch** — Smart Selection only applies to new sessions; press `Cmd+T`
+2. **Upgraded without redeploying** — `./theme.sh <current-theme>`, then a new tab
+3. **Cmd-click turned off** — `./doctor.sh` checks `CommandSelection`; or run `./setup-gui.sh` (outside iTerm2)
+4. **No editor installed** — Semantic History is `best editor`; install VS Code or Cursor
+
+Start with `./doctor.sh --status` and the `semantic` line. Full page: [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
 </details>
 
 <details>

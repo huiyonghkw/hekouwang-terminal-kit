@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semantic layer · hekouwang-terminal-kit</title>
+<meta name="description" content="Cmd-click path:line, Git SHA, localhost:port — Semantic Interaction Layer v1.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+<div class="masthead">
+  <div class="wrap">
+    <a class="mh-l" href="../index.html" style="text-decoration:none"><b>hekouwang-terminal-kit</b></a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a><a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/theme.html"><span class="en">Themes &amp; auto</span><span class="zh">换肤与跟随</span></a><a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a><a href="../guide/semantic.html" aria-current="page"><span class="en">Semantic layer</span><span class="zh">语义交互层</span></a><a href="../guide/doctor.html"><span class="en">Doctor &amp; uninstall</span><span class="zh">体检与卸载</span></a><a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a><a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a><a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a><a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
+  <div class="grp">
+    <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
+  </div>
+</aside>
+<article class="doc">
+<div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">Semantic layer</span><span class="zh">语义交互层</span></div>
+<h1><span class="en">Semantic Interaction Layer</span><span class="zh">语义交互层</span></h1>
+<p class="lead"><span class="en">Click paths, SHAs, and ports — not just prettier highlights.</span><span class="zh">点路径、SHA、端口 —— 不只是更好看的高亮。</span></p>
+
+<div class="h2sub">v1 · Cmd-click · Smart Selection · Semantic History</div>
+<p><span class="en">Triggers already color <code>ERROR</code> / <code>WARN</code> / <code>SUCCESS</code>. The semantic layer adds the next step: <b>open or act on</b> the string under the cursor. It ships with every iTerm2 profile from this kit (free and paid) — same delivery path as Triggers.</span><span class="zh">Triggers 已经给 <code>ERROR</code> / <code>WARN</code> / <code>SUCCESS</code> 上色。语义层补的是下一步：对光标下的字符串<strong>点开或执行动作</strong>。随本套装每一份 iTerm2 Profile 交付（开源版与付费版都有）—— 和 Triggers 同一条交付路径。</span></p>
+
+<h2><span class="en">Try it in 30 seconds</span><span class="zh">30 秒试一遍</span></h2>
+<div class="term"><div class="bar"><i></i><i></i><i></i><span>semantic</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./theme.sh</span> <span class="cm"># <span class="en">redeploy current theme if you just upgraded</span><span class="zh">刚升级就先重部署当前主题</span></span>
+<span class="cm"># <span class="en">Then Cmd+T — Smart Selection only applies to new tabs</span><span class="zh">然后 Cmd+T —— Smart Selection 只对新 tab 生效</span></span>
+<span class="p">$</span> <span class="o">echo</span> src/app.ts:42
+<span class="p">$</span> <span class="o">echo</span> a1b2c3d
+<span class="p">$</span> <span class="o">echo</span> localhost:3000</pre></div>
+<ul>
+<li><span class="en"><b>Cmd-click</b> <code>src/app.ts:42</code> → opens in your best local editor (Cursor / VS Code / …).</span><span class="zh"><b>Cmd-click</b> <code>src/app.ts:42</code> → 用本机最佳编辑器打开（Cursor / VS Code …）。</span></li>
+<li><span class="en"><b>Cmd-click</b> a Git SHA → runs <code>git show --stat</code> (right-click also offers Copy).</span><span class="zh"><b>Cmd-click</b> Git SHA → 跑 <code>git show --stat</code>（右键还可 Copy）。</span></li>
+<li><span class="en"><b>Cmd-click</b> <code>localhost:3000</code> → opens the browser.</span><span class="zh"><b>Cmd-click</b> <code>localhost:3000</code> → 打开浏览器。</span></li>
+<li><span class="en"><b>Quad-click</b> selects the whole semantic span (Smart Selection).</span><span class="zh"><b>四击</b>按 Smart Selection 选中整段语义串。</span></li>
+</ul>
+
+<h2><span class="en">What matches</span><span class="zh">匹配什么</span></h2>
+<div class="tablewrap"><table>
+<thead><tr><th><span class="en">Match</span><span class="zh">匹配</span></th><th><span class="en">First action (Cmd-click)</span><span class="zh">第一条动作（Cmd-click）</span></th><th><span class="en">Also in menu</span><span class="zh">右键还可</span></th></tr></thead>
+<tbody>
+<tr><td><code>path/file.ext:42</code> · <code>:42:8</code></td><td><span class="en">Open at line</span><span class="zh">打开到行</span></td><td>Copy path:line</td></tr>
+<tr><td>Git SHA <code>[0-9a-f]{7,40}</code></td><td><code>git show --stat</code></td><td>Copy SHA</td></tr>
+<tr><td><code>localhost:3xxx</code> · <code>127.0.0.1:…</code></td><td><span class="en">Open in browser</span><span class="zh">浏览器打开</span></td><td>Copy host:port</td></tr>
+</tbody></table></div>
+<p><span class="en">Stock iTerm2 rules (Paths, HTTP URL, email, …) stay in the same list. Setting <code>Smart Selection Rules</code> replaces inheritance, so the generator embeds the factory set plus these product rules.</span><span class="zh">iTerm2 出厂规则（Paths、HTTP URL、邮箱…）留在同一份列表里。写了 <code>Smart Selection Rules</code> 会整表替换继承，所以生成器必须自带出厂组 + 产品规则。</span></p>
+
+<div class="ask"><span class="lb">iTerm2 only</span>
+<span class="en">Semantic layer uses iTerm2 Smart Selection + Semantic History. Ghostty / Warp / Terminal.app have no equivalent — same honesty as Triggers. Paid multi-terminal sync is about palette look, not clickable semantics.</span><span class="zh">语义层依赖 iTerm2 的 Smart Selection + Semantic History。Ghostty / Warp / 自带终端没有对应物 —— 和 Triggers 同一条诚实边界。付费多终端同步管的是配色观感，不是可点语义。</span>
+</div>
+
+<h2><span class="en">If Cmd-click does nothing</span><span class="zh">Cmd-click 没反应时</span></h2>
+<ol>
+<li><span class="en">Open a <b>new tab</b> after <code>./theme.sh</code> (old sessions keep the old rule set).</span><span class="zh"><code>./theme.sh</code> 之后<strong>新开 tab</strong>（老会话还留着旧规则集）。</span></li>
+<li><span class="en">Check the dashboard: <code>./doctor.sh --status</code> — <code>semantic</code> should show product rules and <code>SH=best editor</code>.</span><span class="zh">先看仪表盘：<code>./doctor.sh --status</code> —— <code>semantic</code> 行应有产品规则和 <code>SH=best editor</code>。</span></li>
+<li><span class="en">Cmd-click must be on: <code>CommandSelection=YES</code> (pinned by <code>./setup-gui.sh</code>).</span><span class="zh">Cmd-click 必须开着：<code>CommandSelection=YES</code>（<code>./setup-gui.sh</code> 会钉住）。</span></li>
+<li><span class="en">Install an editor iTerm2 recognizes (VS Code / Cursor / …) so “best editor” has somewhere to go.</span><span class="zh">装一个 iTerm2 认得出的编辑器（VS Code / Cursor …），「最佳编辑器」才有地方可去。</span></li>
+</ol>
+
+<div class="pager"><a href="../guide/node.html">← <span class="en">Node</span><span class="zh">Node</span></a><a href="../guide/doctor.html"><span class="en">Doctor</span><span class="zh">体检</span> →</a></div>
+</article>
+</div>
+</div>
+<div class="wrap"><footer>
+  <span class="brand">会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

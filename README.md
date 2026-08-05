@@ -71,9 +71,9 @@ This kit is aimed at those gaps. **Whatever I can do with AI, I run first, then 
 ## 2. How this differs from the dotfiles repos out there
 
 1. **One palette, four terminals** 〔paid〕. Most theme switches only recolor one app. Here `./theme.sh` reskins iTerm2, Ghostty, Warp, and **macOS Terminal**, plus `cat` (bat), `Ctrl+T` (fzf), `ls` (eza), `git diff` (delta), tmux, and VS Code — because their colors are **generated from one palette**, not hand-copied.
-2. **Details for AI workflows** 〔open source〕. `Shift+Enter` newline without submit; `ERROR/WARN/SUCCESS` auto-color; `Password:` prompts open the password manager; follow system light/dark 〔paid〕.
+2. **Details for AI workflows** 〔open source〕. `Shift+Enter` newline without submit; `ERROR/WARN/SUCCESS` auto-color; **Cmd-click** `path:line` / Git SHA / `localhost:port`; `Password:` prompts open the password manager; follow system light/dark 〔paid〕.
 3. **Safe to install, safe to remove** 〔open source〕. `install.sh --dry-run` lists every file and setting; existing `.zshrc` goes through `migrate.sh` into `~/.zshrc.local`; `uninstall.sh` restores from backup.
-4. **A checkup that can fix itself** 〔open source〕. `doctor.sh --fix` repairs after confirm; `--profile` names the plugin slowing startup (on my machine it was `compinit`, 258ms).
+4. **A checkup that can fix itself** 〔open source〕. `doctor.sh --status` shows the pinned state dashboard; `--fix` repairs after confirm; `--profile` names the plugin slowing startup (on my machine it was `compinit`, 258ms).
 5. **It is a Claude Code Skill** 〔paid〕. After it lives in `~/.claude/skills/`, you say "switch to a light theme" / "why is startup slow" and the agent picks the script, runs it, and explains — **you describe the outcome, not the command**.
 
 After install you get:
@@ -98,8 +98,8 @@ The open-source build is not a demo: 3 palettes, blur, log coloring, `Shift+Ente
 | | Open source (MIT · free) | Paid · ¥19.9 |
 |---|---|---|
 | Install / migrate / theme / doctor / update / sync / uninstall | ✅ | ✅ |
-| Minimal chrome · blur · Triggers · Shift+Enter | ✅ | ✅ |
-| Modern CLI set · `doctor.sh --fix/--profile` · `.zshrc` migrate | ✅ | ✅ |
+| Minimal chrome · blur · Triggers · Semantic Cmd-click · Shift+Enter | ✅ | ✅ |
+| Modern CLI set · `doctor.sh --status/--fix/--profile` · `.zshrc` migrate | ✅ | ✅ |
 | **Themes** | 3 community | + 4 brand (**2 light**) |
 | **Claude Code Skill** | — | ✅ |
 | **Multi-terminal sync** + **ecosystem match** (bat/fzf/eza/git diff/tmux/VS Code) | — | ✅ |
@@ -253,7 +253,8 @@ Paid extras: `./theme.sh --auto` follows system appearance; project workspaces (
 ## 8. Maintenance: checkup / update / uninstall
 
 ```bash
-./doctor.sh            # checkup
+./doctor.sh            # checkup (section 0 = state dashboard)
+./doctor.sh --status   # dashboard only: theme / auto / node / semantic / Ghostty reload
 ./doctor.sh --fix      # repair item by item after confirm
 ./doctor.sh --profile  # slow startup? names the plugin
 
@@ -270,9 +271,9 @@ Put personal aliases / PATH in `~/.zshrc.local` (the template loads it). Do not 
 
 ## 9. Advanced & FAQ
 
-tmux `-CC`, Triggers, Shell Integration, multi-terminal differences, full FAQ (font `?` glyphs, `cat` color after theme switch, the `cat | head` color trap, …) →
+tmux `-CC`, Triggers, **Semantic Interaction Layer** (Cmd-click), Shell Integration, multi-terminal differences, full FAQ (font `?` glyphs, `cat` color after theme switch, the `cat | head` color trap, …) →
 
-**[`docs/manual.md`](docs/manual.md)** (中文：[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md))
+**[`docs/manual.md`](docs/manual.md)** (中文：[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)) · docs site: [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
 
 | Also | Go to |
 |---|---|
