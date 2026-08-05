@@ -13,8 +13,8 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Themes & auto · OneLook</title>
-<meta name="description" content="Switch palettes; follow-system is opt-in and pinning turns it off.">
-<link rel="stylesheet" href="../assets/site.css?v=2.9.3">
+<meta name="description" content="Fuzzy-pick themes with an ANSI live preview; follow-system is opt-in.">
+<link rel="stylesheet" href="../assets/site.css?v=2.10.1">
 </head>
 <body>
 <div class="prog" id="prog"></div>
@@ -23,7 +23,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   <div class="wrap">
     <a class="mh-l" href="../index.html" style="text-decoration:none"><b>OneLook</b></a>
     <nav class="mh-nav" aria-label="Primary">
-            <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
       <a href="../guide/index.html" aria-current="page"><span class="en">Docs</span><span class="zh">文档</span></a>
       <a href="../tools/index.html"><span class="en">Tools</span><span class="zh">工具</span></a>
       <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
@@ -39,7 +39,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <div class="wrap"><div class="docgrid">
 <aside class="side" aria-label="Docs">
   <div class="st"><span class="en">Guide</span><span class="zh">指南</span></div>
-    <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a>
   <a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a>
   <a href="../guide/theme.html" aria-current="page"><span class="en">Themes & auto</span><span class="zh">换肤与跟随</span></a>
   <a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a>
@@ -47,27 +47,36 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   <a href="../guide/doctor.html"><span class="en">Doctor & uninstall</span><span class="zh">体检与卸载</span></a>
   <div class="grp">
     <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
-        <a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a>
+    <a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a>
     <a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a>
     <a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a>
     <a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
-        <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
     <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
   </div>
 </aside>
 <article class="doc">
 <div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">Themes & auto</span><span class="zh">换肤与跟随系统</span></div>
 <h1><span class="en">Themes & auto</span><span class="zh">换肤与跟随系统</span></h1>
-<p class="lead"><span class="en">Switch palettes; follow-system is opt-in and pinning turns it off.</span><span class="zh">换肤；跟随系统是可选的，钉住主题会关掉它。</span></p>
+<p class="lead"><span class="en">Fuzzy-pick a theme with a live ANSI preview — prompt, <code>eza</code>, <code>git diff</code>, syntax, log colors — before you commit.</span><span class="zh">模糊选主题，右侧真彩色预览提示符 / <code>eza</code> / <code>git diff</code> / 语法 / 日志标色，看准了再切。</span></p>
+
+<div class="fig" style="margin:18px 0 28px">
+  <div class="hd"><span class="no">FIG</span><span class="tag tag-free">free</span></div>
+  <img src="../images/theme-fzf-pick.png" alt="fzf theme picker with ANSI preview for v1-keji" loading="lazy" width="100%">
+  <div class="cap"><span class="en"><b>./theme.sh</b> — left: fzf list · right: ANSI card (here <code>v1-keji</code>). Needs <code>fzf</code> (<code>brew install fzf</code>); without it you get the text gallery.</span><span class="zh"><b>./theme.sh</b> — 左：fzf 列表 · 右：ANSI 整块预览（图为 <code>v1-keji</code>）。需安装 <code>fzf</code>（<code>brew install fzf</code>）；没有则退回文字画廊。</span></div>
+</div>
 
 <div class="h2sub">./theme.sh · --auto off by default</div>
-<h2><span class="en">Switch theme</span><span class="zh">换肤</span></h2>
+<h2><span class="en">Fuzzy pick + live preview</span><span class="zh">模糊选 + 实时预览</span></h2>
 <div class="term"><div class="bar"><i></i><i></i><i></i><span>theme</span></div>
-<pre class="sc"><span class="p">$</span> <span class="o">./theme.sh</span>                 <span class="cm"># <span class="en">fzf pick + ANSI preview (or gallery)</span><span class="zh">fzf 选肤 + ANSI 预览（或画廊）</span></span>
-<span class="p">$</span> <span class="o">./theme.sh</span> --list          <span class="cm"># <span class="en">gallery only</span><span class="zh">只要画廊</span></span>
-<span class="p">$</span> <span class="o">./theme.sh</span> tokyo-night
-<span class="p">$</span> <span class="o">./theme.sh</span> --preview tokyo-night</pre></div>
-<p><span class="en">Open-source build ships three community schemes: <code>catppuccin-mocha</code>, <code>tokyo-night</code>, <code>gruvbox-dark</code>. Brand themes (V2 warm dark/light, …) are in the paid pack.</span><span class="zh">开源版自带三套社区主题：<code>catppuccin-mocha</code>、<code>tokyo-night</code>、<code>gruvbox-dark</code>。品牌主题（V2 米黑/米白等）在付费包。</span></p>
+<pre class="sc"><span class="p">$</span> <span class="o">./theme.sh</span>                 <span class="cm"># <span class="en">fzf + ANSI preview pane</span><span class="zh">fzf + 右侧 ANSI 预览</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --pick          <span class="cm"># <span class="en">same, explicit</span><span class="zh">同上，显式入口</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --list          <span class="cm"># <span class="en">gallery only (no fzf)</span><span class="zh">只要画廊（不进 fzf）</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> tokyo-night     <span class="cm"># <span class="en">switch by name</span><span class="zh">按名切换</span></span>
+<span class="p">$</span> <span class="o">./theme.sh</span> --preview tokyo-night
+<span class="p">$</span> <span class="o">./theme.sh</span> --gallery</pre></div>
+<p><span class="en">In the picker: <b>Enter</b> applies · <b>Ctrl+/</b> toggles the preview · <b>Esc</b> cancels. The preview is true-color ANSI — independent of your current theme — so what you see is what you get after the switch.</span><span class="zh">选肤时：<b>Enter</b> 切换 · <b>Ctrl+/</b> 显隐预览 · <b>Esc</b> 取消。预览是真彩色 ANSI，与当前主题无关 —— 看到的就是切过去之后的样子。</span></p>
+<p><span class="en">Open-source build ships three community schemes: <code>catppuccin-mocha</code>, <code>tokyo-night</code>, <code>gruvbox-dark</code>. Brand themes (V1 / V2 / V3, …) are in the paid pack — they still show up in the picker when you have the paid build.</span><span class="zh">开源版自带三套社区主题：<code>catppuccin-mocha</code>、<code>tokyo-night</code>、<code>gruvbox-dark</code>。品牌主题（V1 / V2 / V3 …）在付费包 —— 装了付费档后也会出现在选肤列表里。</span></p>
 <h2><span class="en">Follow system appearance</span><span class="zh">跟随系统深浅色</span></h2>
 <p><span class="en"><b>Off by default.</b> Turn on only when you want it:</span><span class="zh"><b>默认关闭。</b>想开时再跑：</span></p>
 <div class="term"><div class="bar"><i></i><i></i><i></i><span>auto</span></div>
@@ -75,7 +84,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 <span class="p">$</span> <span class="o">./theme.sh</span> --auto tokyo-night catppuccin-mocha   <span class="cm"># <span class="en">custom dark/light pair</span><span class="zh">自定暗/亮配对</span></span>
 <span class="p">$</span> <span class="o">./theme.sh</span> --auto off</pre></div>
 <div class="ask"><span class="lb">pin</span>
-<span class="en">A manual <code>./theme.sh &lt;name&gt;</code> <b>pins</b> that theme. If follow-system was on, it turns following off — so a dark pick is not overwritten when macOS is in light mode.</span><span class="zh">手动 <code>./theme.sh &lt;名字&gt;</code> 会<strong>钉住</strong>该主题。若当时开着跟随，会自动关掉 —— 避免配了黑色却被系统浅色顶回白色。</span>
+<span class="en">A manual <code>./theme.sh &lt;name&gt;</code> (or Enter in the picker) <b>pins</b> that theme. If follow-system was on, it turns following off — so a dark pick is not overwritten when macOS is in light mode.</span><span class="zh">手动 <code>./theme.sh &lt;名字&gt;</code>（或在选肤里按 Enter）会<strong>钉住</strong>该主题。若当时开着跟随，会自动关掉 —— 避免配了黑色却被系统浅色顶回白色。</span>
 </div>
 
 <div class="pager"><a href="../guide/install.html">← <span class="en">Install</span><span class="zh">安装</span></a><a href="../guide/node.html"><span class="en">Node</span><span class="zh">Node</span> →</a></div>
@@ -85,6 +94,6 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   <span class="brand">OneLook · 会勇禾口王的AI笔记</span>
   <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
 </footer></div>
-<script src="../assets/site.js?v=2.9.3"></script>
+<script src="../assets/site.js?v=2.10.1"></script>
 </body>
 </html>
