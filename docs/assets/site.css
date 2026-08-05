@@ -321,15 +321,16 @@ footer{border-top:1px solid var(--border);padding:34px 0 60px;
 .hero-card{position:relative;z-index:1;background:var(--surface);border:1px solid var(--border2);
   border-radius:16px;box-shadow:var(--shadow2);overflow:hidden;padding:0}
 .hero-card .term{margin:0;border:0;border-radius:0;box-shadow:none}
+.hero-card .term .bar{justify-content:flex-start}
+.hero-card .term .bar .hero-badge{margin-left:auto;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);color:#d7dbe6;font-weight:600;line-height:1.2}
 .hero-card .palette{display:flex;gap:5px;padding:12px 14px;border-top:1px solid var(--border);background:var(--surface2)}
 .hero-card .palette i{flex:1;height:10px;border-radius:3px;display:block}
 .hero-card .apps{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 14px;background:var(--surface2)}
 .hero-card .apps span{font-family:var(--mono);font-size:11px;padding:4px 8px;border-radius:6px;
   background:var(--surface);border:1px solid var(--border);color:var(--text2)}
 .hero-card .apps span.paid{color:var(--accent2);border-color:rgba(106,69,224,.28);background:rgba(106,69,224,.06)}
-.hero-badge{position:absolute;z-index:2;right:14px;top:14px;font-family:var(--mono);font-size:11px;
-  letter-spacing:.08em;padding:6px 10px;border-radius:999px;background:var(--surface);
-  border:1px solid var(--border2);box-shadow:var(--shadow);color:var(--text);font-weight:600}
 
 .featgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0 6px}
 @media(max-width:900px){.featgrid{grid-template-columns:1fr 1fr}}
