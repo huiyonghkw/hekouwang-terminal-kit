@@ -1,14 +1,19 @@
 <h1 align="center">OneLook</h1>
 
 <p align="center">
-  <code>hekouwang-terminal-kit</code> · turn same colors into the same look<br><br>
-  <b>One palette, three layers:</b> optical · scene · semantic.<br>
-  Free configures iTerm2. Paid makes that palette walk out of iTerm2 —
-  four terminals and the whole CLI chain change together.
+  <b>Same colors → same look.</b> Safe to install, safe to uninstall, one palette.<br>
+  <code>hekouwang-terminal-kit</code>
+</p>
+
+<p align="center">
+  If you juggle terminals, themes, and CLI tools that each keep their own colors,
+  <b>OneLook</b> turns one palette into a coherent look — and stays safe to install and remove.
 </p>
 
 <p align="center">
   <a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/index.html?lang=en"><b>Docs site</b></a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/?lang=en">Landing / buy</a>
 </p>
 
 <p align="center">
@@ -17,6 +22,23 @@
   <img src="https://img.shields.io/badge/open%20source-a%20properly%20configured%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
 </p>
+
+### Docs (same map as the site)
+
+| | |
+|---|---|
+| [Install](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/install.html?lang=en) | install / migrate / dry-run / China mirrors |
+| [Themes & auto](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/theme.html?lang=en) | `theme.sh`, pin vs `--auto`, fzf + ANSI preview |
+| [Four terminals](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=en) | iTerm2 · Ghostty · Warp · Terminal.app |
+| [Node manager](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/node.html?lang=en) | fnm / nvm / brew / vfox — pick one |
+| [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html?lang=en) | Cmd-click `path:line` / SHA / port |
+| [Doctor & uninstall](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/doctor.html?lang=en) | `--status` dashboard, uninstall, backups |
+| [CLI index](https://huiyonghkw.github.io/hekouwang-terminal-kit/tools/index.html?lang=en) · [Theme gallery](https://huiyonghkw.github.io/hekouwang-terminal-kit/themes/index.html?lang=en) · [Changelog](https://huiyonghkw.github.io/hekouwang-terminal-kit/changelog.html?lang=en) | |
+
+> **Open source** = a complete iTerm2 (3 community schemes, blur, Triggers, semantic Cmd-click, CLI set, doctor).
+> **Paid** = that palette walks out to **Ghostty · Warp · Terminal.app** + tool chain + Skill.
+> The docs site documents the free path fully; paid is “what / why buy”, not a cookbook.
+> See [Four terminals](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=en).
 
 <p align="center">
   <img src="docs/images/01-cover.en.png" width="88%" alt="Turning a dark, ugly terminal into a workbench that fits your hand">
@@ -274,7 +296,7 @@ Put personal aliases / PATH in `~/.zshrc.local` (the template loads it). Do not 
 
 tmux `-CC`, Triggers, **Semantic Interaction Layer** (Cmd-click), Shell Integration, multi-terminal differences, full FAQ (font `?` glyphs, `cat` color after theme switch, the `cat | head` color trap, …) →
 
-**[`docs/manual.md`](docs/manual.md)** (中文：[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)) · docs site: [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
+**[`docs/manual.md`](docs/manual.md)** (中文：[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)) · docs site: [Semantic layer](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html?lang=en)
 
 | Also | Go to |
 |---|---|

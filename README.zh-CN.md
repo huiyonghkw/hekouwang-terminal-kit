@@ -1,14 +1,19 @@
 <h1 align="center">OneLook</h1>
 
 <p align="center">
-  <code>hekouwang-terminal-kit</code> · 把「同色」做成「同观感」<br><br>
-  <b>一份色板，三层观感：</b>光学 · 场景 · 语义。<br>
-  免费版配好 iTerm2。付费版让这份色板走出 iTerm2——
-  四个终端和整条命令行工具链一起变。
+  <b>同色 → 同观感。</b>敢装敢卸，一份色板。<br>
+  <code>hekouwang-terminal-kit</code>
+</p>
+
+<p align="center">
+  如果你在终端、主题、CLI 工具之间来回折腾，而它们各自一套颜色，
+  <b>OneLook</b> 把一份色板做成统一观感 —— 而且敢装也敢卸。
 </p>
 
 <p align="center">
   <a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/index.html?lang=zh"><b>文档站</b></a>
+  · <a href="https://huiyonghkw.github.io/hekouwang-terminal-kit/?lang=zh">落地页 / 购买</a>
 </p>
 
 <p align="center">
@@ -17,6 +22,22 @@
   <img src="https://img.shields.io/badge/%E5%BC%80%E6%BA%90%E7%89%88-%E9%85%8D%E5%A5%BD%E7%9A%84%20iTerm2%20%C2%B7%20MIT-06a88c">
   <img src="https://img.shields.io/badge/license-MIT-00d4aa">
 </p>
+
+### 文档（与文档站同一张地图）
+
+| | |
+|---|---|
+| [安装](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/install.html?lang=zh) | 安装、迁移、预演、国内镜像 |
+| [换肤与跟随](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/theme.html?lang=zh) | `theme.sh`、钉住与跟随系统、fzf + ANSI 预览 |
+| [四终端](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=zh) | iTerm2 · Ghostty · Warp · 自带终端 |
+| [Node 管理器](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/node.html?lang=zh) | fnm / nvm / brew / vfox —— 四选一 |
+| [语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html?lang=zh) | Cmd-click 路径:行号 / SHA / 端口 |
+| [体检与卸载](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/doctor.html?lang=zh) | `--status` 仪表盘、卸载、备份 |
+| [CLI 索引](https://huiyonghkw.github.io/hekouwang-terminal-kit/tools/index.html?lang=zh) · [主题画廊](https://huiyonghkw.github.io/hekouwang-terminal-kit/themes/index.html?lang=zh) · [更新日志](https://huiyonghkw.github.io/hekouwang-terminal-kit/changelog.html?lang=zh) | |
+
+> **开源版**＝配好的 iTerm2（3 套社区配色、毛玻璃、Triggers、语义 Cmd-click、CLI、体检）。
+> **付费版**＝让这份色板走到 **Ghostty · Warp · 自带终端** + 工具链 + Skill。
+> 文档站把免费用法写全；付费只写「是什么 / 为什么买」。见[四终端](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/terminals.html?lang=zh)。
 
 <p align="center">
   <img src="docs/images/01-cover.png" width="88%" alt="把又黑又丑的终端调成顺手的工作台">
@@ -269,7 +290,7 @@ CN=1 ./install.sh
 
 tmux `-CC`、Triggers、**语义交互层**（Cmd-click）、Shell Integration、多终端差异、完整 FAQ（字体变 `?`、换肤后 `cat` 没变色、`cat | head` 验色陷阱等）→
 
-**[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)**（English: [`docs/manual.md`](docs/manual.md)）· 文档站深链：[语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html)
+**[`docs/manual.zh-CN.md`](docs/manual.zh-CN.md)**（English: [`docs/manual.md`](docs/manual.md)）· 文档站深链：[语义交互层](https://huiyonghkw.github.io/hekouwang-terminal-kit/guide/semantic.html?lang=zh)
 
 | 其他 | 去哪 |
 |---|---|

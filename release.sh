@@ -1286,11 +1286,12 @@ PYI18N
     fi
   fi
 
-  # ---- 落地页地址：一处定义、七处引用，别漂 -------------------
-  # lib/links.sh 是唯一真相源。README（中英）、FUNDING.yml、落地页自己都得跟它一致，
+  # ---- 落地页地址：一处定义、多处引用，别漂 -------------------
+  # lib/links.sh 是唯一真相源。README（中英）、FUNDING.yml、落地页自己都得跟它同源，
   # 否则会出现「换肤回执把人送到 A、README 送到 B」这种没人会发现的分叉。
-  # ⛔ 判据是「文件里出现的每一个 huiyonghkw.github.io 地址都等于真相源」，
-  #    不是「文件里含有真相源」—— 后者在多出一个旧地址时照样报绿（半扇门）。
+  # ⛔ 判据是「每一个 huiyonghkw.github.io 地址都必须挂在真相源之下」：
+  #    等于真相源，或 = 真相源 + 子路径 / ?query（文档站深链合法）。
+  #    不是「文件里含有真相源」—— 后者在多出一个别的域名时照样报绿（半扇门）。
   printf "\n${b}落地页地址一致性（lib/links.sh 是真相源）${o}\n"
   URL_SRC="$(sed -n 's/^HKW_URL_BUY="\(.*\)"$/\1/p' "$SCRIPT_DIR/lib/links.sh" 2>/dev/null)"
   if [ -z "$URL_SRC" ]; then
@@ -1307,17 +1308,21 @@ PYI18N
       fi
       while IFS= read -r u; do
         [ -n "$u" ] || continue
-        if [ "$u" != "$URL_SRC" ]; then
-          printf "  ${r}✗ %s 指向 %s${o}\n" "$f" "$u"; URL_BAD=1
-        fi
+        # 同源：精确相等，或挂在真相源前缀下（guide/tools/… · ?lang=）
+        case "$u" in
+          "$URL_SRC"|"$URL_SRC"*) ;;
+          *)
+            printf "  ${r}✗ %s 指向 %s${o}\n" "$f" "$u"; URL_BAD=1
+            ;;
+        esac
       done <<EOF_URLS
 $HITS
 EOF_URLS
     done
     if [ "$URL_BAD" -eq 0 ]; then
-      printf "  ${g}✓ 四处引用与真相源一致${o}\n"
+      printf "  ${g}✓ 四处引用均挂在真相源之下${o}\n"
     else
-      printf "  ${r}→ 改 lib/links.sh 之后，上面这些文件要一起改${o}\n"; LINT_BAD=1
+      printf "  ${r}→ 改 lib/links.sh 之后，上面这些文件要一起改（深链须仍以真相源为前缀）${o}\n"; LINT_BAD=1
     fi
   fi
 
