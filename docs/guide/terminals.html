@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+/* Sync lang before paint: ?lang -> localStorage -> navigator */
+(function(){try{var K='hkw-lang',q=null;try{q=new URLSearchParams(location.search).get('lang')}catch(e){}
+if(q!=='zh'&&q!=='en')q=null;var s=q;if(!s)try{s=localStorage.getItem(K)}catch(e){}
+if(s!=='zh'&&s!=='en')s=/^zh/i.test(navigator.language||'')?'zh':'en';
+if(s==='zh')document.documentElement.classList.add('lang-zh');
+document.documentElement.lang=s==='zh'?'zh-CN':'en';
+if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Four terminals · OneLook</title>
+<meta name="description" content="iTerm2 · Ghostty · Warp · Terminal.app — what each tier syncs, and what stays iTerm2-only.">
+<link rel="stylesheet" href="../assets/site.css?v=2.10.2">
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+<div class="masthead">
+  <div class="wrap">
+    <a class="mh-l" href="../index.html" style="text-decoration:none"><b>OneLook</b></a>
+    <nav class="mh-nav" aria-label="Primary">
+      <a href="../index.html"><span class="en">Product</span><span class="zh">产品</span></a>
+      <a href="../guide/index.html" aria-current="page"><span class="en">Docs</span><span class="zh">文档</span></a>
+      <a href="../tools/index.html"><span class="en">Tools</span><span class="zh">工具</span></a>
+      <a href="../themes/index.html"><span class="en">Themes</span><span class="zh">主题</span></a>
+      <a href="../pricing.html"><span class="en">Pricing</span><span class="zh">购买</span></a>
+      <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">GitHub</a>
+    </nav>
+    <div class="toggle" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true">EN</button>
+      <button id="btn-zh" aria-pressed="false">中文</button>
+    </div>
+  </div>
+</div>
+<div class="wrap"><div class="docgrid">
+<aside class="side" aria-label="Docs">
+  <div class="st"><span class="en">Guide</span><span class="zh">指南</span></div>
+  <a href="../guide/index.html"><span class="en">Intro</span><span class="zh">简介</span></a>
+  <a href="../guide/install.html"><span class="en">Install</span><span class="zh">安装</span></a>
+  <a href="../guide/theme.html"><span class="en">Themes & auto</span><span class="zh">换肤与跟随</span></a>
+  <a href="../guide/terminals.html" aria-current="page"><span class="en">Four terminals</span><span class="zh">四终端</span></a>
+  <a href="../guide/node.html"><span class="en">Node manager</span><span class="zh">Node 管理器</span></a>
+  <a href="../guide/semantic.html"><span class="en">Semantic layer</span><span class="zh">语义交互层</span></a>
+  <a href="../guide/doctor.html"><span class="en">Doctor & uninstall</span><span class="zh">体检与卸载</span></a>
+  <div class="grp">
+    <div class="st"><span class="en">Also</span><span class="zh">另见</span></div>
+    <a href="../tools/index.html"><span class="en">CLI index</span><span class="zh">脚本索引</span></a>
+    <a href="../themes/index.html"><span class="en">Theme gallery</span><span class="zh">主题画廊</span></a>
+    <a href="../pricing.html"><span class="en">Paid build</span><span class="zh">付费版</span></a>
+    <a href="../changelog.html"><span class="en">Changelog</span><span class="zh">更新日志</span></a>
+    <a href="../index.html"><span class="en">Landing / buy</span><span class="zh">落地页 / 购买</span></a>
+    <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">Source (MIT)</span><span class="zh">源码 (MIT)</span></a>
+  </div>
+</aside>
+<article class="doc">
+<div class="crumb"><a href="../index.html"><span class="en">Home</span><span class="zh">首页</span></a> · <a href="../guide/index.html"><span class="en">Docs</span><span class="zh">文档</span></a> · <span class="en">Four terminals</span><span class="zh">四终端</span></div>
+<h1><span class="en">Four terminals</span><span class="zh">四终端</span></h1>
+<p class="lead"><span class="en"><b>iTerm2 · Ghostty · Warp · macOS Terminal.app</b> — one palette, four apps. Free configures iTerm2; paid makes the others follow.</span><span class="zh"><b>iTerm2 · Ghostty · Warp · macOS 自带终端</b> —— 一份色板，四个 App。开源版配好 iTerm2；付费版让另外三个跟着走。</span></p>
+
+<div class="ask"><span class="lb">what “support” means</span>
+<span class="en"><b>Support here = palette look</b>, not feature parity. Triggers, semantic Cmd-click, window badges, and tmux Control Mode stay <b>iTerm2-only</b> — the other apps have no equivalent. Paid multi-terminal sync is about <b>the same colors</b>, not cloning every iTerm2 capability.</span><span class="zh"><b>这里的「支持」＝配色观感</b>，不是功能对等。Triggers、语义 Cmd-click、窗口水印、tmux Control Mode 仍是 <b>iTerm2 独家</b> —— 另外三个 App 没有对应物。付费多终端同步管的是<strong>同色</strong>，不是把 iTerm2 每一项都搬过去。</span>
+</div>
+
+<div class="h2sub">free vs paid · per app</div>
+<h2><span class="en">Who gets what</span><span class="zh">谁拿到什么</span></h2>
+<div class="tablewrap"><table>
+<thead><tr>
+  <th></th>
+  <th><span class="en">Open source</span><span class="zh">开源版</span></th>
+  <th><span class="en">Paid</span><span class="zh">付费版</span></th>
+</tr></thead>
+<tbody>
+<tr>
+  <td><b>iTerm2</b></td>
+  <td class="y"><span class="en">Full kit: themes · blur · Triggers · semantic · CLI · doctor</span><span class="zh">整套：主题 · 毛玻璃 · Triggers · 语义 · CLI · 体检</span></td>
+  <td class="v"><span class="en">Same + brand themes · optical · scene</span><span class="zh">同上 + 品牌主题 · 光学 · 场景</span></td>
+</tr>
+<tr>
+  <td><b>Ghostty</b></td>
+  <td class="n"><span class="en">Untouched (keeps its own themes)</span><span class="zh">不动（继续用自带主题）</span></td>
+  <td class="v"><span class="en">Same palette as iTerm2 on <code>./theme.sh</code></span><span class="zh"><code>./theme.sh</code> 时与 iTerm2 同色</span></td>
+</tr>
+<tr>
+  <td><b>Warp</b></td>
+  <td class="n"><span class="en">Untouched</span><span class="zh">不动</span></td>
+  <td class="v"><span class="en">Same palette YAML + active theme pin</span><span class="zh">同色 YAML + 钉住当前主题</span></td>
+</tr>
+<tr>
+  <td><b>Terminal.app</b></td>
+  <td class="n"><span class="en">Untouched</span><span class="zh">不动</span></td>
+  <td class="v"><span class="en">Same palette as default Profile</span><span class="zh">同色写进默认 Profile</span></td>
+</tr>
+<tr>
+  <td><span class="en">Tool chain</span><span class="zh">工具链</span><br><span class="muted">bat / fzf / eza / delta / tmux / VS Code</span></td>
+  <td class="n"><span class="en">Each keeps factory colors</span><span class="zh">各自出厂色</span></td>
+  <td class="v"><span class="en">Generated from the same palette</span><span class="zh">同一份色板生成</span></td>
+</tr>
+</tbody></table></div>
+
+<p><span class="en">Ghostty already ships hundreds of built-in themes. What you buy is <b>not</b> “give Ghostty themes” — it is <b>the same source as your iTerm2</b>, so changing once does not leave three apps and six tools speaking different dialects.</span><span class="zh">Ghostty 自带几百套主题。买的不是「给 Ghostty 塞主题」—— 是<strong>与 iTerm2 同源</strong>，换一次不会留下三个 App、六种工具各说各话。</span></p>
+
+<div class="cmp">
+  <div class="fig"><div class="hd"><span class="no">FIG</span><span class="tag tag-free">free</span></div>
+    <img src="../images/cmp-ghostty-free.png" alt="Ghostty free — own colors" loading="lazy">
+    <div class="cap"><b>Ghostty</b> · <span class="en">open source leaves it alone</span><span class="zh">开源版不动它</span></div></div>
+  <div class="fig"><div class="hd"><span class="no">FIG</span><span class="tag tag-paid">paid</span></div>
+    <img src="../images/cmp-ghostty-paid.png" alt="Ghostty paid — same as iTerm2" loading="lazy">
+    <div class="cap"><b>Ghostty</b> · <span class="en">same palette as iTerm2</span><span class="zh">与 iTerm2 同色</span></div></div>
+</div>
+
+<div class="h2sub">per app · honest limits</div>
+<h2><span class="en">Per terminal</span><span class="zh">逐个终端</span></h2>
+
+<div class="rows">
+  <div class="row"><div class="sq">01</div><div>
+    <div class="tt">iTerm2</div>
+    <div class="ds"><span class="en"><b>Home base.</b> Free and paid both land here first: Dynamic Profiles, Triggers, semantic Cmd-click, blur, status bar. After any theme switch, <b>open a new tab</b> so profile rules reload.</span><span class="zh"><b>大本营。</b>开源与付费都先落在这里：Dynamic Profile、Triggers、语义 Cmd-click、毛玻璃、状态栏。换肤后<strong>新开 tab</strong>，规则才生效。</span></div>
+  </div></div>
+  <div class="row v"><div class="sq">02</div><div>
+    <div class="tt">Ghostty <span class="tag tag-paid">paid</span></div>
+    <div class="ds"><span class="en">Colors sync on theme switch. Config is <b>not</b> live: press <code>Cmd+Shift+,</code> to reload — a new tab alone is not enough. No Triggers / semantic / badge here.</span><span class="zh">换肤时同步配色。配置<strong>不会</strong>保存即生效：按 <code>Cmd+Shift+,</code> 重载 —— 只开新标签不够。没有 Triggers / 语义 / 水印。</span></div>
+  </div></div>
+  <div class="row v"><div class="sq">03</div><div>
+    <div class="tt">Warp <span class="tag tag-paid">paid</span></div>
+    <div class="ds"><span class="en">Same palette file + active theme pin. Opacity / blur sweet spots differ from iTerm2 — the paid build writes values that are actually visible, not “almost opaque”.</span><span class="zh">同色文件 + 钉住当前主题。透明度 / 毛玻璃甜区与 iTerm2 不同 —— 付费版写的是肉眼能看出差别的值，不是「几乎不透明」。</span></div>
+  </div></div>
+  <div class="row v"><div class="sq">04</div><div>
+    <div class="tt">Terminal.app <span class="tag tag-paid">paid</span></div>
+    <div class="ds"><span class="en">Default Profile follows the same palette. Like iTerm2, quitting can overwrite prefs from memory — doctor / install know this. No Triggers, no Dynamic Profile hot-reload.</span><span class="zh">默认 Profile 跟同一份色板。和 iTerm2 一样，退出时可能用内存配置覆盖 —— 安装 / 体检知道这件事。没有 Triggers，没有 Dynamic Profile 热加载。</span></div>
+  </div></div>
+</div>
+
+<div class="ask"><span class="lb">install rule</span>
+<span class="en">Paid sync only fires if the app is <b>actually installed</b>. No Ghostty.app → no Ghostty write. Same for Warp / VS Code. Unused apps stay untouched.</span><span class="zh">付费同步只在你<strong>真的装了</strong>那个 App 时才写。没装 Ghostty.app → 不碰 Ghostty。Warp / VS Code 同理。不用的 App 原样不动。</span>
+</div>
+
+<h2><span class="en">How it feels day to day</span><span class="zh">日常怎么用</span></h2>
+<p><span class="en">On the paid build, <code>./theme.sh</code> (picker or by name) is one command for all four terminals you have installed, plus the tool chain. Open source still uses the same command — it only touches iTerm2. Fuzzy pick + ANSI preview work the same either way; see <a href="../guide/theme.html">Themes &amp; auto</a>.</span><span class="zh">付费档里，<code>./theme.sh</code>（选肤或按名）一条命令覆盖你已装的四个终端 + 工具链。开源版命令相同 —— 只动 iTerm2。模糊选 + ANSI 预览两边一样；见<a href="../guide/theme.html">换肤与跟随</a>。</span></p>
+<p><span class="en"><code>./doctor.sh --status</code> surfaces Ghostty “config newer than process” so you know to reload. Details: <a href="../guide/doctor.html">Doctor</a>.</span><span class="zh"><code>./doctor.sh --status</code> 会标出 Ghostty「配置比进程新」，提醒你去重载。明细见<a href="../guide/doctor.html">体检</a>。</span></p>
+
+<p><a class="btn btn-primary" href="../pricing.html"><span class="en">Paid build →</span><span class="zh">付费版 →</span></a>
+<a class="btn" href="../themes/index.html"><span class="en">Theme gallery →</span><span class="zh">主题画廊 →</span></a></p>
+
+<div class="pager"><a href="../guide/theme.html">← <span class="en">Themes</span><span class="zh">换肤</span></a><a href="../guide/node.html"><span class="en">Node</span><span class="zh">Node</span> →</a></div>
+</article>
+</div></div>
+<div class="wrap"><footer>
+  <span class="brand">OneLook · 会勇禾口王的AI笔记</span>
+  <span class="handle">@huiyonghkw · <a href="https://github.com/huiyonghkw/hekouwang-terminal-kit">github</a></span>
+</footer></div>
+<script src="../assets/site.js?v=2.10.2"></script>
+</body>
+</html>
