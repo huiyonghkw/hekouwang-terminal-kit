@@ -101,14 +101,21 @@ h1 .hl{background:linear-gradient(100deg,var(--accent),var(--accent2));
        -webkit-text-fill-color:transparent;color:transparent;
        font-weight:700;
        -webkit-text-stroke:0;paint-order:normal}
-/* 中文标题里这段改纯色细字，彻底规避渐变中文字的边缘发虚问题 */
+/* 中文标题关键词：走专用渐变，强覆盖旧样式，避免描边/合成造成重影 */
 html.lang-zh h1 .hl{
-  background:none;
-  -webkit-background-clip:border-box;
-  background-clip:border-box;
-  -webkit-text-fill-color:var(--accent2);
-  color:var(--accent2);
-  font-weight:500;
+  display:inline-block;
+  font-family:var(--font-display);
+  font-synthesis:none;
+  background:linear-gradient(90deg,#06a88c 0%,#2f8fd3 52%,#6a45e0 100%) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  color:transparent !important;
+  -webkit-text-stroke:0 !important;
+  paint-order:normal !important;
+  text-shadow:none !important;
+  filter:none !important;
+  font-weight:800;
   letter-spacing:0;
 }
 h2{font-size:clamp(23px,3.3vw,31px);font-weight:800;position:relative;z-index:1}
