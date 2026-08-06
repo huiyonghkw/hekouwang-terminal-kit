@@ -99,8 +99,18 @@ h1{font-size:clamp(32px,5.2vw,50px);font-weight:900;letter-spacing:-.025em}
 h1 .hl{background:linear-gradient(100deg,var(--accent),var(--accent2));
        -webkit-background-clip:text;background-clip:text;
        -webkit-text-fill-color:transparent;color:transparent;
-       /* background-clip:text 抗锯齿会「吃」笔画，补一点描边让渐字跟实心黑字同粗 */
-       -webkit-text-stroke:.035em rgba(15,19,32,.13);paint-order:stroke fill}
+       font-weight:700;
+       -webkit-text-stroke:0;paint-order:normal}
+/* 中文标题里这段改纯色细字，彻底规避渐变中文字的边缘发虚问题 */
+html.lang-zh h1 .hl{
+  background:none;
+  -webkit-background-clip:border-box;
+  background-clip:border-box;
+  -webkit-text-fill-color:var(--accent2);
+  color:var(--accent2);
+  font-weight:500;
+  letter-spacing:0;
+}
 h2{font-size:clamp(23px,3.3vw,31px);font-weight:800;position:relative;z-index:1}
 /* 每节背后的巨型幽灵序号（counter 自动递增，不用手填） */
 h2::after{counter-increment:sec;content:counter(sec,decimal-leading-zero);
