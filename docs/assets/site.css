@@ -115,8 +115,8 @@ html.lang-zh h1 .hl{
   paint-order:normal !important;
   text-shadow:none !important;
   filter:none !important;
-  font-weight:800;
-  letter-spacing:0;
+  font-weight:900;
+  letter-spacing:-.01em;
 }
 h2{font-size:clamp(23px,3.3vw,31px);font-weight:800;position:relative;z-index:1}
 /* 每节背后的巨型幽灵序号（counter 自动递增，不用手填） */
