@@ -43,15 +43,25 @@ if(q!=='zh'&&q!=='en')q=null;var s=q;if(!s)try{s=localStorage.getItem(K)}catch(e
 if(s!=='zh'&&s!=='en')s=/^zh/i.test(navigator.language||'')?'zh':'en';
 if(s==='zh')document.documentElement.classList.add('lang-zh');
 document.documentElement.lang=s==='zh'?'zh-CN':'en';
+var titles={zh:'OneLook —— 把「同色」做成同观感',en:'OneLook — turn same colors into the same look'};
+var descriptions={zh:'OneLook 用一份色板统一终端、命令行工具与语义状态。开源版完整配置 iTerm2；付费版扩展到六终端与整条工具链。',en:'OneLook: optical, scene, and semantic layers on one palette. Open source configures iTerm2; the paid build makes that palette walk out of iTerm2.'};
+document.title=titles[s];
+document.addEventListener('DOMContentLoaded',function(){
+  function meta(lang){document.title=titles[lang];var md=document.querySelector('meta[name="description"]');if(md)md.setAttribute('content',descriptions[lang])}
+  meta(s);
+  var en=document.getElementById('btn-en'),zh=document.getElementById('btn-zh');
+  if(en)en.addEventListener('click',function(){meta('en')});
+  if(zh)zh.addEventListener('click',function(){meta('zh')});
+});
 if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OneLook — turn same colors into the same look</title>
-<meta name="description" content="OneLook: optical, scene, and semantic layers on one palette. Open source configures iTerm2; the paid build makes that palette walk out of iTerm2. Safe to install and fully uninstall.">
+<meta name="description" content="OneLook: optical, scene, and semantic layers on one palette. Open source configures iTerm2; the paid build makes that palette walk out of iTerm2.">
 <link rel="icon" href="/hekouwang-terminal-kit/favicon.svg?v=2" type="image/svg+xml">
 <link rel="shortcut icon" href="/hekouwang-terminal-kit/favicon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/hekouwang-terminal-kit/favicon.svg?v=2">
-<link rel="stylesheet" href="assets/site.css?v=2.10.12">
+<link rel="stylesheet" href="assets/site.css?v=2.11.4">
 </head>
 <body>
 
@@ -76,7 +86,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   </div>
 </div>
 
-<div class="wrap wrap-wide"><main>
+<div class="wrap wrap-wide"><main class="landing-main">
 
 <!-- ============ HERO · 左文案 + 右视觉（参考 vfox 结构，OneLook 叙事）============ -->
 <section class="landing-hero">
@@ -95,29 +105,13 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
       </p>
       <div class="btns">
         <a class="btn btn-primary" href="guide/install.html">
-          <span class="en">Quick start →</span><span class="zh">👋 快速上手 →</span>
+          <span class="en">Install the free build →</span><span class="zh">安装免费版 →</span>
         </a>
-        <a class="btn" href="guide/index.html">
-          <span class="en">Why OneLook?</span><span class="zh">为什么是 OneLook?</span>
-        </a>
-        <a class="btn" href="https://github.com/huiyonghkw/hekouwang-terminal-kit">
-          <span class="en">GitHub</span><span class="zh">查看 GitHub</span>
+        <a class="btn" href="#tiers">
+          <span class="en">See the ¥19.9 full build</span><span class="zh">查看 ¥19.9 完整版</span>
         </a>
       </div>
-      <div class="readout">
-        <div>
-          <div class="k"><span class="en">open source</span><span class="zh">开源版</span></div>
-          <div class="v"><span class="en">Complete iTerm2</span><span class="zh">完整 iTerm2</span></div>
-        </div>
-        <div>
-          <div class="k"><span class="en">paid</span><span class="zh">付费档</span></div>
-          <div class="v"><em>¥19.9</em></div>
-        </div>
-        <div>
-          <div class="k"><span class="en">refund</span><span class="zh">退款</span></div>
-          <div class="v"><span class="en">7 days</span><span class="zh">七天无理由</span></div>
-        </div>
-      </div>
+      <p class="hero-link"><a href="https://github.com/huiyonghkw/hekouwang-terminal-kit"><span class="en">View source on GitHub →</span><span class="zh">在 GitHub 查看源码 →</span></a></p>
     </div>
 
     <div class="hero-viz" aria-hidden="true">
@@ -126,8 +120,9 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
         <div class="term">
           <div class="bar"><i></i><i></i><i></i><span>theme.sh · preview</span><span class="hero-badge">1 palette</span></div>
 <pre class="sc"><span class="p">$</span> <span class="o">./theme.sh</span> v2-mihei
-<span class="ok">✓</span> iTerm2 · Ghostty · Warp · cmux · Tabby · Terminal
-<span class="cm"># bat / fzf / eza / delta · same family</span></pre>
+<span class="ok">FREE  ✓</span> iTerm2
+<span class="paidline">PAID  ✓</span> Ghostty · Warp · cmux · Tabby · Terminal
+<span class="cm">        bat · fzf · eza · delta · tmux · VS Code</span></pre>
         </div>
         <div class="palette">
           <i style="background:#1a1b26"></i><i style="background:#f7768e"></i>
@@ -147,62 +142,83 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
     </div>
   </div>
 
-  <div class="term" style="margin-top:36px">
-    <div class="bar"><i></i><i></i><i></i><span>hekouwang-terminal-kit</span></div>
-<pre class="sc"><span class="cm"># <span class="en">open-source build · free · MIT</span><span class="zh">开源版 · 免费 · MIT</span></span>
-<span class="p">$</span> <span class="o">git clone</span> https://github.com/huiyonghkw/hekouwang-terminal-kit
-<span class="p">$</span> <span class="o">cd</span> hekouwang-terminal-kit && <span class="o">./install.sh</span> --dry-run
-<span class="p">$</span> <span class="o">./install.sh</span>
-<span class="ok">✓</span> <span class="cm"><span class="en">changed your mind? ./uninstall.sh restores from backup</span><span class="zh">后悔了？./uninstall.sh 从备份还原</span></span></pre>
-  </div>
-  <p class="muted" style="margin-top:12px">
-    <span class="en">macOS only. Ships no font files — detects what you already have. <a href="#buy">Paid build →</a></span>
-    <span class="zh">只支持 macOS。不分发字体 —— 探测本机已装字体。<a href="#buy">付费版 →</a></span>
-  </p>
 </section>
 
-<!-- ============ 功能卡网格 ============ -->
-<section class="pre noseq">
-  <h2><span class="en">Why OneLook</span><span class="zh">为什么选 OneLook</span></h2>
-  <div class="h2sub">safe to install · one palette · honest limits</div>
-  <div class="featgrid">
-    <div class="feat">
-      <div class="ic" aria-hidden="true">🛟</div>
-      <div class="tt"><span class="en">Safe in, safe out</span><span class="zh">敢装敢卸</span></div>
-      <p class="ds"><span class="en"><code>--dry-run</code>, migrate your <code>.zshrc</code>, uninstall restores from backup — not delete-and-pray.</span><span class="zh"><code>--dry-run</code>、迁移已有 <code>.zshrc</code>、卸载从备份还原 —— 不是删了拉倒。</span></p>
+<!-- ============ 实测证据 ============ -->
+<section class="pre noseq" id="evidence">
+  <div class="evidence-grid">
+    <div>
+      <div class="eyebrow"><span></span><span class="en">measured, not guessed</span><span class="zh">逐槽实测，不靠眼估</span></div>
+      <h2><span class="en">The comment said “identical.”<br><em>12 of 16 slots were not.</em></span><span class="zh">注释写着「完全一致」，<br><em>16 个色槽错了 12 个。</em></span></h2>
+      <p><span class="en">In July 2026 I compared a hand-maintained Warp theme against its iTerm2 source, slot by slot. Nothing reported an error; the colors had simply drifted.</span><span class="zh">2026 年 7 月，我把手工维护的 Warp 主题和 iTerm2 源色逐槽核对。全程没有报错，颜色只是静默地漂了。</span></p>
+      <p class="muted"><span class="en">That is why OneLook derives every target from one palette instead of copying theme files by hand.</span><span class="zh">所以 OneLook 不再手抄主题文件，而是从一份色板推导所有目标。</span></p>
     </div>
-    <div class="feat">
-      <div class="ic" aria-hidden="true">🎨</div>
-      <div class="tt"><span class="en">One palette</span><span class="zh">一份色板</span></div>
-      <p class="ds"><span class="en">Colors are derived, not copied. Hand-maintained Warp themes drift silently — I measured 8/16 slots wrong.</span><span class="zh">颜色是推出来的，不是抄的。手工维护的 Warp 主题会静默漂 —— 我量过 16 槽错 8 个。</span></p>
-    </div>
-    <div class="feat paid">
-      <div class="ic" aria-hidden="true">🖥️</div>
-      <div class="tt"><span class="en">Six terminals</span><span class="zh">六终端</span> <span class="tag tag-paid">paid</span></div>
-      <p class="ds"><span class="en">iTerm2 · Ghostty · Warp · cmux · Tabby · Terminal.app follow the same palette in one <code>./theme.sh</code>. <a href="guide/terminals.html">Docs →</a></span><span class="zh">iTerm2 · Ghostty · Warp · cmux · Tabby · 自带终端，一条 <code>./theme.sh</code> 同色。<a href="guide/terminals.html">说明 →</a></span></p>
-    </div>
-    <div class="feat">
-      <div class="ic" aria-hidden="true">👆</div>
-      <div class="tt"><span class="en">Semantic clicks</span><span class="zh">语义点开</span></div>
-      <p class="ds"><span class="en">Cmd-click <code>path:line</code> / Git SHA / <code>localhost:port</code> — ships with every profile.</span><span class="zh">Cmd-click <code>路径:行号</code> / Git SHA / <code>localhost:端口</code> —— 随 Profile 交付。</span></p>
-    </div>
-    <div class="feat">
-      <div class="ic" aria-hidden="true">🩺</div>
-      <div class="tt"><span class="en">Self-checking</span><span class="zh">会自检</span></div>
-      <p class="ds"><span class="en"><code>doctor.sh --status</code> dashboard, then details; <code>--fix</code> after you confirm.</span><span class="zh"><code>doctor.sh --status</code> 仪表盘再明细；<code>--fix</code> 逐项确认后修。</span></p>
-    </div>
-    <div class="feat paid">
-      <div class="ic" aria-hidden="true">🤖</div>
-      <div class="tt"><span class="en">Agent-driven</span><span class="zh">AI 可驱动</span> <span class="tag tag-paid">paid</span></div>
-      <p class="ds"><span class="en">Claude Code Skill: say “light theme” / “why slow” — the agent picks the script.</span><span class="zh">Claude Code Skill：说「换亮色」「怎么这么慢」—— AI 自己挑脚本跑。</span></p>
+    <div class="slot-proof" aria-label="12 of 16 ANSI color slots differed">
+      <div class="slot-head"><span>ANSI · 16 SLOTS</span><b>12 DRIFTED</b></div>
+      <div class="slots">
+        <i class="okslot"></i><i></i><i></i><i></i><i></i><i class="okslot"></i><i></i><i></i>
+        <i></i><i></i><i class="okslot"></i><i></i><i></i><i></i><i></i><i class="okslot"></i>
+      </div>
+      <div class="slot-legend"><span><i class="good"></i><span class="en">matched · 4</span><span class="zh">一致 · 4</span></span><span><i class="drift"></i><span class="en">drifted · 12</span><span class="zh">漂移 · 12</span></span></div>
     </div>
   </div>
+</section>
+
+<!-- ============ 三层观感 ============ -->
+<section class="pre" id="layers">
+  <h2><span class="en">“Same look” has three layers</span><span class="zh">「同观感」不是只对 hex</span></h2>
+  <div class="h2sub"><span class="en">optical · scene · semantic</span><span class="zh">光学 · 场景 · 语义</span></div>
+  <div class="layergrid">
+    <article class="layer"><span class="layer-no">01</span><h3><span class="en">Optical</span><span class="zh">光学层</span></h3><p><span class="en">Contrast is computed for light and dark surfaces. Colors are adjusted for where they are rendered, not blindly copied.</span><span class="zh">亮底、暗底分别计算对比度；根据渲染位置调整，而不是把同一个 hex 到处硬贴。</span></p></article>
+    <article class="layer paid"><span class="layer-no">02</span><h3><span class="en">Scene</span><span class="zh">场景层</span></h3><p><span class="en">Terminals, bat, fzf, git diff, tmux and VS Code are generated from the same source palette.</span><span class="zh">终端、bat、fzf、git diff、tmux、VS Code 都由同一份源色板生成。</span></p></article>
+    <article class="layer warn"><span class="layer-no">03</span><h3><span class="en">Semantic</span><span class="zh">语义层</span></h3><p><span class="en">Success, warning, error, paths and Git references keep the same visual meaning across tools.</span><span class="zh">成功、提醒、错误、路径和 Git 引用，在不同工具里继续表达同一种意思。</span></p></article>
+  </div>
+</section>
+
+<!-- ============ 核心能力入口 ============ -->
+<section class="pre" id="capabilities">
+  <h2><span class="en">Five things OneLook actually does</span><span class="zh">OneLook 的五项核心能力</span></h2>
+  <div class="h2sub"><span class="en">see the result here · open the docs for details</span><span class="zh">首页看结果 · 文档看细节</span></div>
+  <div class="capgrid">
+    <a class="capitem" href="guide/theme.html">
+      <span class="capno">01</span><span class="capbody"><b><span class="en">Themes & auto</span><span class="zh">换肤与跟随</span></b><small><span class="en">Preview before switching; optionally follow system light and dark mode.</span><span class="zh">先预览再切换，也可以按需跟随系统深浅色。</span></small></span><span class="tag tag-free">free</span><span class="caparrow">→</span>
+    </a>
+    <a class="capitem paid" href="guide/terminals.html">
+      <span class="capno">02</span><span class="capbody"><b><span class="en">Six terminals</span><span class="zh">六终端</span></b><small><span class="en">iTerm2 is free; paid makes Ghostty, Warp, cmux, Tabby and Terminal.app follow.</span><span class="zh">iTerm2 免费；付费版让 Ghostty、Warp、cmux、Tabby、自带终端跟着走。</span></small></span><span class="tag tag-paid">paid</span><span class="caparrow">→</span>
+    </a>
+    <a class="capitem" href="guide/node.html">
+      <span class="capno">03</span><span class="capbody"><b><span class="en">Node manager</span><span class="zh">Node 管理器</span></b><small><span class="en">Pick exactly one of fnm, nvm, Homebrew Node or vfox; stop PATH fights.</span><span class="zh">fnm、nvm、Homebrew Node、vfox 只留一套，结束 PATH 打架。</span></small></span><span class="tag tag-free">free</span><span class="caparrow">→</span>
+    </a>
+    <a class="capitem" href="guide/semantic.html">
+      <span class="capno">04</span><span class="capbody"><b><span class="en">Semantic interaction</span><span class="zh">语义交互层</span></b><small><span class="en">Cmd-click paths, line numbers, Git SHAs and localhost ports.</span><span class="zh">Cmd-click 直接点开路径、行号、Git SHA 与本地端口。</span></small></span><span class="tag tag-free">free</span><span class="caparrow">→</span>
+    </a>
+    <a class="capitem" href="guide/doctor.html">
+      <span class="capno">05</span><span class="capbody"><b><span class="en">Doctor & uninstall</span><span class="zh">体检与卸载</span></b><small><span class="en">Read-only checks first; uninstall restores from backup instead of deleting blindly.</span><span class="zh">默认先做只读体检；卸载从备份还原，不是直接删掉。</span></small></span><span class="tag tag-free">free</span><span class="caparrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ 两条路径 ============ -->
+<section class="pre" id="paths">
+  <h2><span class="en">Start free. Upgrade only if you need the palette outside iTerm2.</span><span class="zh">先免费装；需要走出 iTerm2，再升级</span></h2>
+  <div class="h2sub"><span class="en">two clear paths · no trial clock</span><span class="zh">两条清楚的路径 · 免费版永不过期</span></div>
+  <div class="pathgrid">
+    <div class="pathcard free"><span class="tag tag-free">free · MIT</span><h3><span class="en">A complete iTerm2 setup</span><span class="zh">完整配好 iTerm2</span></h3><p><span class="en">Three schemes, blur, triggers, semantic Cmd-click, CLI set, doctor, migration and uninstall.</span><span class="zh">3 套配色、毛玻璃、Triggers、语义 Cmd-click、CLI、自检、迁移与卸载。</span></p><a class="btn btn-primary" href="guide/install.html"><span class="en">Install free →</span><span class="zh">安装免费版 →</span></a></div>
+    <div class="pathcard paid"><span class="tag tag-paid">paid · ¥19.9</span><h3><span class="en">One palette across the whole toolchain</span><span class="zh">一份色板走完整条工具链</span></h3><p><span class="en">Six terminals, CLI tools, workspaces, palette derivation and agent-driven operations. Includes one year of updates.</span><span class="zh">六终端、命令行工具、工作区、色板推导和 AI 驱动；含一年更新。</span></p><a class="btn" href="#tiers"><span class="en">Compare builds →</span><span class="zh">查看完整分档 →</span></a></div>
+  </div>
+  <div class="term install-term">
+    <div class="bar"><i></i><i></i><i></i><span>hekouwang-terminal-kit · safe install</span></div>
+<pre class="sc"><span class="p">$</span> <span class="o">./install.sh</span> --dry-run     <span class="cm"># <span class="en">preview every change</span><span class="zh">先预览每一项改动</span></span>
+<span class="p">$</span> <span class="o">./install.sh</span>               <span class="cm"># <span class="en">backup, then apply</span><span class="zh">备份后再应用</span></span>
+<span class="p">$</span> <span class="o">./uninstall.sh</span>             <span class="cm"># <span class="en">restore from backup</span><span class="zh">从备份还原</span></span></pre>
+  </div>
+  <p class="muted"><span class="en">macOS only. Ships no font files — it detects what you already have.</span><span class="zh">只支持 macOS。不分发字体，只探测你本机已经安装的字体。</span></p>
 </section>
 
 <!-- ============ 01 对比 ============ -->
 <section class="pre">
   <h2><span class="en">What the paid build actually buys you</span><span class="zh">付费版到底买到什么</span></h2>
-  <div class="h2sub">free vs paid · same machine, same three commands</div>
+  <div class="h2sub"><span class="en">free vs paid · same machine, same three commands</span><span class="zh">免费 vs 付费 · 同一台机器 · 同样三条命令</span></div>
   <p>
     <span class="en">On the left, each tool picks its own colors. On the right, every one of them is
       generated from a single palette — so switching theme once moves all of them together.</span>
@@ -239,18 +255,18 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   </div>
   <p>
     <span class="en">A Warp theme I maintained myself carried a comment saying "identical to the iTerm2 one"
-      while <b>8 of its 16 color slots were actually wrong</b> — and nothing ever reported an error.
+      while <b>12 of its 16 color slots were actually wrong</b> — and nothing ever reported an error.
       In the paid build the colors are derived, not copied, so a theme switch recomputes all of them.</span>
     <span class="zh">我自己手工维护的一套 Warp 主题，注释上写着「与 iTerm2 那套完全一致」，
-      实际上 <b>16 个色槽错了 8 个</b> —— 全程没有任何报错。
+      实际上 <b>16 个色槽错了 12 个</b> —— 全程没有任何报错。
       付费版里颜色是推导出来的、不是抄过去的，所以换一次肤就重算一遍，永远同色系。</span>
   </p>
 </section>
 
 <!-- ============ 分档 ============ -->
-<section class="pre">
+<section class="pre" id="tiers">
   <h2><span class="en">Where the line is</span><span class="zh">线划在哪儿</span></h2>
-  <div class="h2sub">free = a good-looking iTerm2 · paid = that palette walks out of it</div>
+  <div class="h2sub"><span class="en">free = a good-looking iTerm2 · paid = that palette walks out of it</span><span class="zh">免费 = 配好 iTerm2 · 付费 = 让色板走出 iTerm2</span></div>
 
   <div class="tablewrap">
   <table>
@@ -309,80 +325,15 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
     <span class="zh">分档逻辑摆在明面上：公开仓里的 <code>release.sh</code> 就是导出这两档的那个脚本，
       不搞解锁码、不回连服务器。付费件缺席时生成器照常出完整的 iTerm2 主题，只会说明哪几样属于付费包。</span>
   </p>
-</section>
-
-<!-- ============ 04 怎么买 ============ -->
-<section class="pre" id="buy">
-  <h2><span class="en">Getting the paid build</span><span class="zh">怎么买</span></h2>
-  <div class="h2sub">three steps · WeChat Pay or Alipay · ¥19.9</div>
-
-  <div class="buy">
-    <div class="rows">
-      <div class="row v"><div class="sq">01</div><div>
-        <div class="tt"><span class="en">Pay ¥19.9</span><span class="zh">付款 ¥19.9</span></div>
-        <div class="ds"><span class="en">Scan either code below — WeChat Pay or Alipay, whichever you have.</span><span class="zh">扫下面任意一个码 —— 微信支付、支付宝都行，你顺手哪个用哪个。</span></div></div></div>
-      <div class="row v"><div class="sq">02</div><div>
-        <div class="tt"><span class="en">Add me, send the receipt</span><span class="zh">加我，发付款截图</span></div>
-        <div class="ds"><span class="en">WeChat <code>hekouwang</code>, note "terminal kit".</span><span class="zh">微信 <code>hekouwang</code>，备注「终端套装」。</span></div></div></div>
-      <div class="row v"><div class="sq">03</div><div>
-        <div class="tt"><span class="en">Pick how you want it</span><span class="zh">选一条交付路</span></div>
-        <div class="ds"><span class="en">A zip with <code>./unlock.sh</code> (no GitHub account needed), or I add you to the private repo so <code>git pull</code> keeps you updated.</span>
-          <span class="zh">一个 zip，<code>./unlock.sh</code> 一键装（不用 GitHub 账号）；或者我把你加进私有仓，以后 <code>git pull</code> 拿更新。</span></div></div></div>
-    </div>
-
-    <!-- 两组，对着上面 01 / 02 两步：先付款，再加我。三个码挤一排会看不出先后。 -->
-    <div class="qrgrp">
-      <div class="ghd"><span class="n">01</span><span class="en">Pay — either one</span><span class="zh">付款 · 二选一</span></div>
-      <div class="qr">
-        <div class="qrbox">
-          <img src="images/pay-wechat.png" alt="WeChat Pay code">
-          <div class="lbl"><span class="en"><b>WeChat Pay</b> · ¥19.9</span><span class="zh"><b>微信支付</b> · ¥19.9</span></div>
-        </div>
-        <div class="qrbox">
-          <img src="images/pay-alipay.png" alt="Alipay payment code">
-          <div class="lbl"><span class="en"><b>Alipay</b> · ¥19.9</span><span class="zh"><b>支付宝</b> · ¥19.9</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="qrgrp">
-      <div class="ghd"><span class="n">02</span><span class="en">Then add me</span><span class="zh">然后加我</span></div>
-      <div class="qr">
-        <div class="qrbox">
-          <img src="images/wechat-qr.png" alt="Add me on WeChat">
-          <div class="lbl"><span class="en"><b>Scan to add me</b></span><span class="zh"><b>扫码加我</b></span></div>
-        </div>
-        <div class="wxid">
-          <div class="k"><span class="en">or search this id</span><span class="zh">或者直接搜微信号</span></div>
-          <div class="id">hekouwang</div>
-          <div class="n"><span class="en">Send the payment screenshot and note "terminal kit". I'll ask which delivery route you want and send it over.</span><span class="zh">把付款截图发我，备注「终端套装」。我会问你走哪条交付路，然后发给你。</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="ask">
-      <span class="lb">no risk</span>
-      <span class="en"><b>Seven-day refund, no questions asked.</b> Installing the open-source build first and
-        deciding two days later is completely fine — it is not a trial, and nothing expires.</span>
-      <span class="zh"><b>七天无理由退款。</b>先装开源版、过两天再决定完全没问题 —— 它不是试用版，也不会到期。</span>
-    </div>
-
-    <div class="ask">
-      <span class="lb">outside china</span>
-      <span class="en"><b>No WeChat Pay or Alipay?</b> Card payment isn't set up yet — I'd rather say that than pretend.
-        Email <a href="mailto:huiyonghkw@gmail.com">huiyonghkw@gmail.com</a> and we'll sort out a way;
-        you'll get the same zip and the same year of updates.</span>
-      <span class="zh"><b>在海外、微信支付和支付宝都用不了？</b>目前还没接信用卡收款，这点我就直说了。
-        邮件 <a href="mailto:huiyonghkw@gmail.com">huiyonghkw@gmail.com</a>，我们另想办法，
-        拿到的是同一个 zip、同样一年更新。</span>
-    </div>
+  <div class="tier-cta">
+    <a class="btn" href="pricing.html"><span class="en">Pricing and purchase →</span><span class="zh">前往购买页 →</span></a>
   </div>
 </section>
 
 <!-- ============ 05 边界 ============ -->
-<section class="pre">
+<section class="pre" id="limits">
   <h2><span class="en">Before you buy, the limits</span><span class="zh">买之前，先看边界</span></h2>
-  <div class="h2sub w">what it does not do</div>
+  <div class="h2sub w"><span class="en">what it does not do</span><span class="zh">它明确不做什么</span></div>
   <ul>
     <li><span class="en"><b>macOS only.</b> There is no Linux or Windows build and I'm not planning one.</span>
         <span class="zh"><b>只支持 macOS。</b>没有 Linux / Windows 版，也没打算做。</span></li>
@@ -395,6 +346,18 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
   </ul>
 </section>
 
+<!-- ============ 06 常见问题 ============ -->
+<section class="pre" id="faq">
+  <h2><span class="en">Questions before you install</span><span class="zh">安装前常见问题</span></h2>
+  <div class="h2sub"><span class="en">configuration · updates · privacy</span><span class="zh">配置 · 更新 · 隐私</span></div>
+  <div class="faqgrid">
+    <details><summary><span class="en">Will it overwrite my existing .zshrc?</span><span class="zh">会覆盖我现有的 .zshrc 吗？</span></summary><p><span class="en">No. The installer migrates the existing file and makes a backup before applying changes. Run <code>--dry-run</code> first to see the exact plan.</span><span class="zh">不会。安装器会迁移现有文件，并在应用改动前备份。你可以先跑 <code>--dry-run</code> 看清全部计划。</span></p></details>
+    <details><summary><span class="en">Does the free build expire?</span><span class="zh">免费版会到期吗？</span></summary><p><span class="en">No. It is the complete MIT-licensed iTerm2 build, not a trial. Upgrade only if you want the same palette in more terminals and tools.</span><span class="zh">不会。它是 MIT 授权的完整 iTerm2 版，不是试用版。只有想把色板扩展到更多终端和工具时才需要升级。</span></p></details>
+    <details><summary><span class="en">Does it upload my configuration?</span><span class="zh">会上传我的终端配置吗？</span></summary><p><span class="en">No phone-home and no unlock server. Theme generation and application run locally; the public <code>release.sh</code> shows how the two builds are split.</span><span class="zh">不会回连服务器，也没有在线解锁。主题生成与应用都在本地执行；公开的 <code>release.sh</code> 直接展示两档如何分开。</span></p></details>
+    <details><summary><span class="en">How do paid updates arrive?</span><span class="zh">付费版怎么拿更新？</span></summary><p><span class="en">Choose a zip package or access to the private repository. Both include one year of updates; the repository route lets you use <code>git pull</code>.</span><span class="zh">可以选择 zip 包或私有仓权限，两种都含一年更新；私有仓路径可以直接用 <code>git pull</code>。</span></p></details>
+  </div>
+</section>
+
 </main></div>
 
 <div class="wrap wrap-wide">
@@ -404,7 +367,7 @@ if(q)try{localStorage.setItem(K,q)}catch(e){}}catch(e){}})();
 </footer>
 </div>
 
-<script src="assets/site.js?v=2.10.6"></script>
+<script src="assets/site.js?v=2.11.0"></script>
 
 </body>
 </html>
