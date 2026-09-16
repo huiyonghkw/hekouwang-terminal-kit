@@ -9,6 +9,12 @@
 
 ---
 
+## [Unreleased] · 2026-09-16 · 文档与网页同步（公开可见）
+
+- 文档站与 README 同步 V2 米黑的字形规格：本机已安装时使用 **Anthropic Mono Web**（14 pt，横纵间距均为 100%）；这是 V2 的主题覆盖，不改变开源默认的 Maple Mono NF CN。
+- 更新日志、对比卡和产品页统一当前口径：付费版一条命令同步 **六终端**（iTerm2 · Ghostty · Warp · cmux · Tabby · 自带终端）及工具链；开源版仍只配置 iTerm2。
+- 补充安全切换与一致性验收说明：先用 `./theme.sh --plan <name>` 预演，部署结果可用 `./doctor.sh --parity` 核对。
+
 ## [2.10.8] · 六终端说明页（公开可见）
 
 文档站「四终端」升格为「六终端」：对照表与落地页标明付费档同步 iTerm2 · Ghostty · Warp · cmux · Tabby · 自带终端。开源版仍只同步 iTerm2。
