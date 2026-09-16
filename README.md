@@ -233,7 +233,7 @@ You do nothing here — the installer already wrote them with `defaults write`:
 
 1. **Theme = Minimal**: no title bar, border, or scrollbar — one canvas + blur
 2. **Colors**: lightness solved from WCAG contrast (body 5.5:1 / accent 9:1)
-3. **Font = Maple Mono NF CN** (open-source default): monospace + Nerd icons + CJK; **this kit ships no font files**. The paid build has a font priority table that can pick up Operator Mono you already bought
+3. **Font = Maple Mono NF CN** (open-source default): monospace + Nerd icons + CJK; **this kit ships no font files**. The paid build has a font priority table that can pick up Operator Mono you already bought; V2 Warm Dark uses Anthropic Mono Web at 14 pt / 100% spacing when installed
 
 ---
 

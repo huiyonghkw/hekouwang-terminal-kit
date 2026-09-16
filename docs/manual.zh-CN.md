@@ -312,7 +312,7 @@ CN=1 ./install.sh
 
 1. **主题 = Minimal**：去掉标题栏、边框和滚动条，整窗是一块干净画布，带一点毛玻璃。
 2. **配色**：不是抄来的社区主题——色相取自品牌色板，明度按 WCAG 对比度反解（正文 5.5:1、强调 9:1），所以既克制又读得清。
-3. **字体 = Maple Mono NF CN**（推荐默认）：等宽 + **自带 Nerd Font 图标 + 中文等宽**，一套顶过去「主字体 + 图标字体」两套，`ls` 的图标永远不会变成 `?` 方块。
+3. **字体 = Maple Mono NF CN**（推荐默认）：等宽 + **自带 Nerd Font 图标 + 中文等宽**，一套顶过去「主字体 + 图标字体」两套，`ls` 的图标永远不会变成 `?` 方块。付费版 V2 米黑在本机已安装该字体时，会使用 **Anthropic Mono Web：14 pt、横纵间距均为 100%**。
    > 授权说明：Maple Mono 是 SIL OFL-1.1，**免费可商用可分发**。旧版本曾捆绑 Operator Mono（H&Co 商业字体，第三方仓库分发），2.0 起已移除——**本套装不分发任何字体文件**。
    > 付费版另有一张[字体优先级表](#字体认你已有的不替你装)，会自动认出你已装的 Operator Mono 等商业字体并用上；开源版固定用这个推荐默认。
 
@@ -387,6 +387,8 @@ JetBrainsMono-Regular|JetBrains Mono||Apache-2.0，兜底
 ```
 
 **本套装不分发任何字体文件。** Operator Mono 这类商业字体（约 $199）你自己买过、装在本机上，这里就自动用上；没有的人自动落到 Maple Mono NF CN。想换别的字体，在表最上面加一行，重跑 `./theme.sh` 即可。
+
+> **V2 米黑的字形规格：**Anthropic Mono Web 是 V2 的显式主题覆盖，不会改成全局默认。它使用 `AnthropicMonoWebWeb-Regular`、14 pt、横纵间距均为 100%；显式传入 `./theme.sh <主题> --font <PostScript 名>` 仍拥有最高优先级。
 
 > 为什么要探测而不是写死一个名字：字体名写错时 iTerm2 和 Ghostty 都是**静默回退到系统字体**，不报错。`./doctor.sh` 第 2 节会告诉你最终用的是哪套、以及 Profile 里写的名字能不能被解析到。
 > 另：两个 App 取名口径不同——iTerm2 要 PostScript 名（`OperatorMono-Book`），Ghostty 要 family 名（`Operator Mono`）+ `font-style`。表里两列都存着，别互相抄。

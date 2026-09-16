@@ -299,7 +299,7 @@ When you see `✅ All done!` it worked. It finishes by running `doctor.sh`, and 
 
 1. **Theme = Minimal**: no title bar, no border, no scrollbar; the window is one clean canvas with a touch of blur.
 2. **Colors**: not a community theme copied in — hue comes from the brand palette and lightness is solved backwards from WCAG contrast (5.5:1 body, 9:1 emphasis), so it stays restrained and still reads clearly.
-3. **Font = Maple Mono NF CN** (recommended default): monospaced, **with Nerd Font icons and monospaced CJK built in**, so one font replaces the old "main font + icon font" pair and `ls` icons never turn into `?` boxes.
+3. **Font = Maple Mono NF CN** (recommended default): monospaced, **with Nerd Font icons and monospaced CJK built in**, so one font replaces the old "main font + icon font" pair and `ls` icons never turn into `?` boxes. The paid V2 Warm Dark profile uses **Anthropic Mono Web at 14 pt with a 100% horizontal and vertical grid** when that font is already installed.
    > Licensing: Maple Mono is SIL OFL-1.1, **free to use commercially and to redistribute**. Older versions bundled Operator Mono (an H&Co commercial font, redistributed by a third-party repo); that was removed in 2.0 — **this kit distributes no font files at all**.
    > The paid build adds a [font priority table](#fonts-uses-what-you-have-installs-nothing) that picks up commercial fonts you already installed, such as Operator Mono. The open-source build always uses the recommended default.
 
@@ -372,6 +372,8 @@ JetBrainsMono-Regular|JetBrains Mono||Apache-2.0, fallback
 ```
 
 **This kit distributes no font files.** If you bought a commercial font like Operator Mono (about $199) and installed it, it gets used automatically; if you did not, it falls back to Maple Mono NF CN. To use a different font, add a line at the top of the table and re-run `./theme.sh`.
+
+> **V2 Warm Dark typography:** Anthropic Mono Web is an explicit V2 profile override, not the global default. It uses `AnthropicMonoWebWeb-Regular` at 14 pt and 100% horizontal / vertical spacing; an explicit `./theme.sh <theme> --font <PostScript-name>` still takes precedence.
 
 > Why detect instead of hard-coding a name: when the font name is wrong, both iTerm2 and Ghostty **silently fall back to a system font** without an error. Section 2 of `./doctor.sh` tells you which font actually ends up in use and whether the name written in the profile resolves at all.
 > Also: the two apps name things differently — iTerm2 wants the PostScript name (`OperatorMono-Book`), Ghostty wants the family name (`Operator Mono`) plus `font-style`. The table keeps both columns; do not copy one into the other.
