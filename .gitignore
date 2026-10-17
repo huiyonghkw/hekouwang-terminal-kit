@@ -41,3 +41,6 @@ config/themes/v2-mihei.json
 config/themes/v1-keji.json
 config/themes/v2-mibai.json
 config/themes/v3-caijing-bai.json
+
+# 首发/推广文案草稿：只留本机，不进公开仓
+launch/
